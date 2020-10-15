@@ -12,6 +12,6 @@ void serialEvent(){  //serialEvent
 void loop()
 {
     Serial.println("Start");
-    delay(30000);
+    delay(25000);
 }
 

@@ -15,8 +15,6 @@ using Micom_Inline.Properties;
 
 namespace Micom_Inline
 {
-
-
     public partial class Main : Form
     {
         // Permissions 
@@ -51,6 +49,10 @@ namespace Micom_Inline
         public int ElnecAddress = 11227;
         public int TCP_TimeOut = 1500;
 
+
+        public int CharCircle = 1;
+        
+
         public string PortReciver = string.Empty;
 
         PCB_Model model = new PCB_Model
@@ -58,6 +60,8 @@ namespace Micom_Inline
             ModelName = "",
             PCBcode = "",
         };
+
+        DateTime lastWorkingTime = new DateTime();
 
         AMW_CONFIG _CONFIG = new AMW_CONFIG();
 
@@ -93,10 +97,14 @@ namespace Micom_Inline
             Port.DataReceived += new SerialDataReceivedEventHandler(DataReciver);
 
             pnLogin.Visible = false;
-            tbHistory.AppendText("<<<<<<AUTO MICOM SYSTEM>>>>>>" + Environment.NewLine);
+            tbHistory.AppendText("<<<<<< AUTO MICOM WRITING SYSTEM >>>>>>" + Environment.NewLine);
             Permissions = OP;
             SetUIAcess(Permissions);
             tsslPermissions.Text = "User: " + Permissions;
+            gbLog.Visible = false;
+            gbTestHistory.Visible = true;
+            lastWorkingTime = DateTime.Now;
+            timerUpdateChar.Start();
 
             Thread communicationSite1 = new Thread(ElnecComuncationBackgroudSite1);
             communicationSite1.Start();
@@ -118,7 +126,6 @@ namespace Micom_Inline
             Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
 
 
-
         }
 
         public void DateTimeShow()
@@ -126,7 +133,11 @@ namespace Micom_Inline
             while (true)
             {
                 string t = DateTime.Now.ToString();
-                lbClock.Invoke(new MethodInvoker(delegate { lbClock.Text = t; }));
+                TimeSpan lostTime = DateTime.Now.Subtract(lastWorkingTime);
+                lbClock.Invoke(new MethodInvoker(delegate {
+                    lbClock.Text = t;
+                    if(Site1.WorkProcess.Process == WorkProcess.Ready && Site2.WorkProcess.Process == WorkProcess.Ready || Site3.WorkProcess.Process == WorkProcess.Ready && Site4.WorkProcess.Process == WorkProcess.Ready)
+                           lbFreeTime.Text = "Lost time: "+ lostTime.TotalSeconds.ToString("f0") + " S"; }));
                 Thread.Sleep(1000);
             }
 
@@ -136,7 +147,7 @@ namespace Micom_Inline
         private void Main_Load(object sender, EventArgs e)
         {
             DgwTestMode_Init();
-            DrawChart(98, 2);
+            DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
             showTime.Start();
         }
@@ -182,6 +193,7 @@ namespace Micom_Inline
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds > 100)
                 _barcode.Clear();
+
 
             // process barcode
             if (e.KeyChar == 13)
@@ -248,7 +260,7 @@ namespace Micom_Inline
 
         private void Main_Resize(object sender, System.EventArgs e)
         {
-            DrawChart(98, 2);
+            DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, 360);
         }
 
 
@@ -301,8 +313,12 @@ namespace Micom_Inline
 
             if (!Port.IsOpen)
             {
-                Port.PortName = SearchCom();
-                Port.Open();
+                try
+                {
+                    Port.PortName = SearchCom();
+                    Port.Open();
+                }
+                catch (Exception) { }
             }
 
         }
@@ -391,7 +407,7 @@ namespace Micom_Inline
                 if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 // if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 {
-
+                    AMWsProcess.Statitis_OK += 4;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
                 }
                 else if (Site1.Result == ElnecSite.EMPTY && Site2.Result == ElnecSite.EMPTY && Site3.Result == ElnecSite.EMPTY && Site4.Result == ElnecSite.EMPTY)
@@ -400,34 +416,53 @@ namespace Micom_Inline
                 }
                 else
                 {
+                    if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK)
+                        AMWsProcess.Statitis_OK += 1;
+                    else
+                        AMWsProcess.Statitis_NG += 1;
+
+                    if (Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                        AMWsProcess.Statitis_OK += 1;
+                    else
+                        AMWsProcess.Statitis_NG += 1;
+
+
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
                 }
 
-                tbHistory.Invoke(new MethodInvoker(delegate { tbHistory.AppendText( DateTime.Now.ToString() + " A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
-                    Site1.ClearSiteParam();
-                    Site2.ClearSiteParam();
-                    Site3.ClearSiteParam();
-                    Site4.ClearSiteParam();
+                tbHistory.Invoke(new MethodInvoker(delegate
+                {
+                    tbHistory.AppendText(DateTime.Now.ToString() + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                    CharCircle = 1;
+                    timerUpdateChar.Start();
+                    lastWorkingTime = DateTime.Now;
                 }));
-
+                Site1.ClearSiteParam();
+                Site2.ClearSiteParam();
+                Site3.ClearSiteParam();
+                Site4.ClearSiteParam();
             }
-
-
         }
-        private void DrawChart(int okNumber, int ngNumber)
+
+
+
+        private void DrawChart(int okNumber, int ngNumber, int charCicle)
         {
             int Total = okNumber + ngNumber;
 
             lbCounterNumberNG.Text = ngNumber.ToString();
             lbCounterNumberOK.Text = okNumber.ToString();
             lbCounterNumberTotal.Text = Total.ToString();
-
-            float persentOk = (float)okNumber / (float)Total * 100;
-
+            float persentOk;
+            if (Total > 0)
+                persentOk = (float)okNumber / (float)Total * 100;
+            else
+                persentOk = 0;
+            lbCounterNumberDef.Text = persentOk.ToString("f1");
 
             if (Total == 0) Total = 10000000;
-            float okRadian = (float)360.0 / Total * okNumber;
-            float ngRadian = (float)360.0 - okRadian;
+            float okRadian = (float)charCicle / Total * okNumber;
+            float ngRadian = (float)charCicle - okRadian;
 
             int startRectY = pBChar.Size.Height / 2 - pBChar.Size.Width / 2;
             int startRectX = pBChar.Size.Width / 2 - pBChar.Size.Height / 2;
@@ -480,9 +515,7 @@ namespace Micom_Inline
 
         public void DgwTestMode_Init()
         {
-            dgtTestMode.Rows.Add("1", "ELN", "", "WRITE", "", "", "", "", "");
-            dgtTestMode.Rows.Add("2", "DLY", "", "", "", "", "", "", "");
-            dgtTestMode.Rows.Add("3", "END", "", "", "", "", "", "", "");
+            dgtTestMode.Rows.Add("1", "ELN", "", "WRITE", "", "", "", "");
         }
 
         private void TbLog_TextChanged(object sender, EventArgs e)
@@ -490,7 +523,11 @@ namespace Micom_Inline
             tbLog.SelectionStart = tbLog.Text.Length;
             tbLog.AppendText(tbLog.SelectedText);
         }
-
+        private void TbHistory_TextChanged(object sender, EventArgs e)
+        {
+            tbHistory.SelectionStart = tbHistory.Text.Length;
+            tbHistory.AppendText(tbHistory.SelectedText);
+        }
         // Elnec control funtions
 
         public void CloseElnec()
@@ -542,7 +579,7 @@ namespace Micom_Inline
                     if (Site1.Command != "null")
                     {
                         socket.Send(encoding.GetBytes(Site1.Command));
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site1: " + Site1.Command + System.Environment.NewLine); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site1: " + Site1.Command + System.Environment.NewLine); }));
                         Site1.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
@@ -550,7 +587,7 @@ namespace Micom_Inline
                 {
                     Console.WriteLine("day la moot dong debug");
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
-                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site1: Interrupt "  + System.Environment.NewLine); }));
+                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site1: "+ ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site1.WorkProcess.Process = WorkProcess.Ready;
                 }
 
@@ -564,13 +601,13 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        Site1.WorkProcess.Process = WorkProcess.Ready;
+                        //Site1.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data,0,d);
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
                         ProcessSite( Site1, lbSiteName1, lbSite1Checksum, lbROM1checkSum, lbRomNameSite1, lbResultA,  recive.Replace("\\*/n\\*/", System.Environment.NewLine));                    
                     }
                 }
@@ -597,7 +634,7 @@ namespace Micom_Inline
                     if (Site2.Command != "null")
                     {
                         socket.Send(encoding.GetBytes(Site2.Command));
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + Site2.Command + System.Environment.NewLine); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + Site2.Command + System.Environment.NewLine); }));
                         Site2.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
@@ -605,7 +642,7 @@ namespace Micom_Inline
                 if (Site2.WorkProcess.Process == WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
-                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
+                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site2.WorkProcess.Process = WorkProcess.Ready;
                 }
 
@@ -619,13 +656,13 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        Site2.WorkProcess.Process = WorkProcess.Ready;
+                        //Site2.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
                         ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                     }
                 }
@@ -652,7 +689,7 @@ namespace Micom_Inline
                     if (Site3.Command != "null")
                     {
                         socket.Send(encoding.GetBytes(Site3.Command));
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + Site3.Command + System.Environment.NewLine); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + Site3.Command + System.Environment.NewLine); }));
                         Site3.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
@@ -660,7 +697,7 @@ namespace Micom_Inline
                 if (Site3.WorkProcess.Process == WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
-                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
+                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site3.WorkProcess.Process = WorkProcess.Ready;
                 }
 
@@ -674,13 +711,13 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        Site3.WorkProcess.Process = WorkProcess.Ready;
+                        //Site3.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
                         ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                     }
                 }
@@ -706,7 +743,7 @@ namespace Micom_Inline
                     if (Site4.Command != "null")
                     {
                         socket.Send(encoding.GetBytes(Site4.Command));
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + Site4.Command + System.Environment.NewLine); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + Site4.Command + System.Environment.NewLine); }));
                         Site4.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
@@ -714,7 +751,7 @@ namespace Micom_Inline
                 if (Site4.WorkProcess.Process == WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
-                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
+                    tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site4.WorkProcess.Process = WorkProcess.Ready;
                 }
                 while (true)
@@ -727,13 +764,13 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        Site4.WorkProcess.Process = WorkProcess.Ready;
+                        //Site4.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 32767) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
+                        tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine)); }));
                         ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                     }
                 }
@@ -765,7 +802,8 @@ namespace Micom_Inline
                     {
                         case "CreditBoxDeviceCreditDecrementValue":
                             {
-                                Site.WorkProcess.Process = WorkProcess.Interrup;
+                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                                Site.WorkProcess.Process = WorkProcess.Ready;
                                 break;
                             }
                         case ElnecSite.PROG_IS_BUSY:
@@ -808,6 +846,8 @@ namespace Micom_Inline
                             }
                         case ElnecSite.OPRESULT:
                             {
+                                Site.WorkProcess.Process = WorkProcess.Interrup;
+                                //Site.WorkProcess.Process = WorkProcess.Ready;
                                 Site.SITE_OPRESULT = data[1];
                                 break;
                             }
@@ -830,13 +870,25 @@ namespace Micom_Inline
                 if (Site.SITE_OPTYPE == "5")
                 {
                     pbTesting.Invoke(new MethodInvoker(delegate { pbTesting.Value = Convert.ToInt32(Site.SITE_PROGRESS); }));
+                    if (Site.SITE_PROGRESS == "99" && Site.Command == ElnecSite.GET_PRG_STATUS)
+                    {
+                        Site.WorkProcess.Process = WorkProcess.Interrup;
+                        // Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                        // Site.WorkProcess.Process = WorkProcess.Ready;
+                    }
+                           
+                }
+                if (Site.SITE_OPTYPE == "0")
+                {
+                    Site.WorkProcess.Process = WorkProcess.Ready;
                 }
 
                 if (Site.SITE_OPRESULT == ElnecSite.OPRESULT_FAIL || Site.SITE_OPRESULT == ElnecSite.OPRESULT_HWERR || Site.SITE_OPRESULT == ElnecSite.OPRESULT_NONE)
                 {
                     if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_NG)
                     {
-                        Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                        Site.WorkProcess.Process = WorkProcess.Interrup;
+                        //Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                         Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
                         Site.Result = ElnecSite.RESULT_NG;
                     }
@@ -846,7 +898,8 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_OK)
                     {
-                        Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                        Site.WorkProcess.Process = WorkProcess.Interrup;
+                        //Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                         Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
                         Site.Result = ElnecSite.RESULT_OK;
                     }
@@ -870,7 +923,6 @@ namespace Micom_Inline
                         NG_label(lbRomNameSite);
                     }
             }
-            Thread.Sleep(100);
             FinalTestLabel();
         }
         private void btSite1Open_Click(object sender, EventArgs e)
@@ -1015,8 +1067,7 @@ namespace Micom_Inline
             string path = Path.GetDirectoryName(openFileDialogSite1.FileName);
             _CONFIG.recentWorkPath = path;
             string[] paths = path.Split('\\');
-            model.ModelName = paths[paths.Length - 1];
-            lbModelName.Text = model.ModelName;
+
 
             if (lbSite1Sellect.BackColor == lbROMsellected.BackColor)
             {
@@ -1042,6 +1093,24 @@ namespace Micom_Inline
                 lbROM4checkSum.Text = lbRomNameSite4.Text.Split('_')[1].Replace(" ", string.Empty);
                 model.ROMs[3].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
             }
+
+
+            model.ModelName = lbRomNameSite1.Text;
+
+            if (lbRomNameSite1.Text != lbRomNameSite2.Text)
+            {
+                model.ModelName += "/" + lbRomNameSite2.Text;
+            }
+            else if(lbRomNameSite1.Text != lbRomNameSite3.Text)
+            {
+                model.ModelName += "/" + lbRomNameSite3.Text;
+            }
+            else if(lbRomNameSite1.Text != lbRomNameSite4.Text)
+            {
+                model.ModelName += "/" + lbRomNameSite4.Text;
+            }
+
+            lbModelName.Text = model.ModelName;
         }
         private void openFileDialogSite2_FileOk(object sender, CancelEventArgs e)
         {
@@ -1139,8 +1208,6 @@ namespace Micom_Inline
 
             string[] config = File.ReadAllLines(openFileModel.FileName);
 
-            lbModelName.Text = config[0];
-
             lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
             lbROM1checkSum.Text = lbRomNameSite1.Text.Split('_')[1].Replace(" ", string.Empty);
             lbRomNameSite2.Text = config[2].Split('\\')[config[2].Split('\\').Length - 1];
@@ -1149,6 +1216,23 @@ namespace Micom_Inline
             lbROM3checkSum.Text = lbRomNameSite3.Text.Split('_')[1].Replace(" ", string.Empty);
             lbRomNameSite4.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
             lbROM4checkSum.Text = lbRomNameSite4.Text.Split('_')[1].Replace(" ", string.Empty);
+
+            model.ModelName = lbRomNameSite1.Text.Remove(lbRomNameSite1.Text.Length - 5, 5);
+
+            if (lbRomNameSite1.Text != lbRomNameSite2.Text)
+            {
+                model.ModelName += "/" + lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.Length - 5, 5); 
+            }
+            else if (lbRomNameSite1.Text != lbRomNameSite3.Text)
+            {
+                model.ModelName += "/" + lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.Length - 5, 5); 
+            }
+            else if (lbRomNameSite1.Text != lbRomNameSite4.Text)
+            {
+                model.ModelName += "/" + lbRomNameSite4.Text.Remove(lbRomNameSite4.Text.Length - 5, 5); 
+            }
+
+            lbModelName.Text = model.ModelName;
 
             Site1.WorkProcess.Process = WorkProcess.Interrup;
             Site2.WorkProcess.Process = WorkProcess.Interrup;
@@ -1165,6 +1249,57 @@ namespace Micom_Inline
                 AMWsProcess.PutComandToFIFO(config[i]);
                 Console.WriteLine(config[i]);
             }
+        }
+
+        public void openLastWokingModel(string path)
+        {
+            try
+            {
+                string[] config = File.ReadAllLines(path);
+                lbRomNameSite1.Invoke(new MethodInvoker(delegate { 
+                lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
+                lbROM1checkSum.Text = lbRomNameSite1.Text.Split('_')[1].Replace(" ", string.Empty);
+                lbRomNameSite2.Text = config[2].Split('\\')[config[2].Split('\\').Length - 1];
+                lbROM2checkSum.Text = lbRomNameSite2.Text.Split('_')[1].Replace(" ", string.Empty);
+                lbRomNameSite3.Text = config[3].Split('\\')[config[3].Split('\\').Length - 1];
+                lbROM3checkSum.Text = lbRomNameSite3.Text.Split('_')[1].Replace(" ", string.Empty);
+                lbRomNameSite4.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
+                lbROM4checkSum.Text = lbRomNameSite4.Text.Split('_')[1].Replace(" ", string.Empty);
+
+                model.ModelName = lbRomNameSite1.Text.Remove(lbRomNameSite1.Text.Length - 5, 5);
+
+                if (lbRomNameSite1.Text != lbRomNameSite2.Text)
+                {
+                    model.ModelName += "/" + lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.Length - 5, 5);
+                }
+                else if (lbRomNameSite1.Text != lbRomNameSite3.Text)
+                {
+                    model.ModelName += "/" + lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.Length - 5, 5);
+                }
+                else if (lbRomNameSite1.Text != lbRomNameSite4.Text)
+                {
+                    model.ModelName += "/" + lbRomNameSite4.Text.Remove(lbRomNameSite4.Text.Length - 5, 5);
+                }
+
+                lbModelName.Text = model.ModelName;
+                }));
+                Site1.WorkProcess.Process = WorkProcess.Interrup;
+                Site2.WorkProcess.Process = WorkProcess.Interrup;
+                Site3.WorkProcess.Process = WorkProcess.Interrup;
+                Site4.WorkProcess.Process = WorkProcess.Interrup;
+
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[1]);
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[2]);
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[3]);
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[4]);
+
+                for (int i = 5; i < config.Length; i++)
+                {
+                    AMWsProcess.PutComandToFIFO(config[i]);
+                    Console.WriteLine(config[i]);
+                }
+            }
+            catch (Exception) { }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -1242,6 +1377,44 @@ namespace Micom_Inline
         private void tslPreviewName_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void logo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logoDEV_Click(object sender, EventArgs e)
+        {
+            if (Form.ModifierKeys == Keys.Control)
+            {
+                if (gbLog.Visible == true)
+                {
+                    gbLog.Visible = false;
+                    gbTestHistory.Visible = true;
+                }
+                else
+                {
+                    gbLog.Visible = true;
+                    gbTestHistory.Visible = false;
+                }
+            }
+        }
+
+        private void timerUpdateChar_Tick(object sender, EventArgs e)
+        {
+            if (CharCircle <= 360)
+            {
+                DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
+                CharCircle = CharCircle + (360 - CharCircle) / 50 +1;
+                timerUpdateChar.Start();
+            }
+            else
+            {
+                timerUpdateChar.Stop();
+                //timerUpdateChar.Dispose();
+            }
+            
         }
     }
 
@@ -1644,8 +1817,9 @@ namespace Micom_Inline
                   + "defautComPort@" + this.defaulComPort + Environment.NewLine
                   + "defaultBaudrate@" + this.defaulBaudrate.ToString() + Environment.NewLine
                   + "defaultADMIN_ACC@" + ADMIN_ACC + Environment.NewLine
-                  + "defaultADMIN_PASS@" + Environment.NewLine;
-                File.WriteAllText(configPath + "config.cfg", config);
+                  + "defaultADMIN_PASS@" + ADMIN_PASS + Environment.NewLine;
+
+                    File.WriteAllText(configPath + "config.cfg", config);
         }
     }
 
@@ -1661,7 +1835,10 @@ namespace Micom_Inline
         public const int Stop = 2;
         public const int Processing = 3;
         public const int Interrup = 4;
-  
+
+        public int Statitis_OK;
+        public int Statitis_NG;
+
 
         public int WorkingSite = 0;
 
