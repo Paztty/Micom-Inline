@@ -23,6 +23,7 @@ namespace Micom_Inline
         public string Permissions = "OP";
         // const color
         public Color activeColor = Color.FromArgb(30, 136, 221);
+        public Color nonactiveColor = Color.FromArgb(62,62,62);
         public Color deactiveColor = Color.Green;
         public Color busyColor = Color.DarkGray;
 
@@ -126,6 +127,31 @@ namespace Micom_Inline
             Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
 
 
+
+            btSkipBarcode.BackColor = activeColor;
+            btUserBarcode.BackColor = nonactiveColor;
+
+            lbBC1.BackColor = nonactiveColor;
+            lbBC2.BackColor = nonactiveColor;
+            lbBC3.BackColor = nonactiveColor;
+            lbBC4.BackColor = nonactiveColor;
+
+            lbBarcodeTesting1.BackColor = nonactiveColor;
+            lbBarcodeTesting2.BackColor = nonactiveColor;
+            lbBarcodeTesting3.BackColor = nonactiveColor;
+            lbBarcodeTesting4.BackColor = nonactiveColor;
+
+            lbBarCode1.BackColor = nonactiveColor;
+            lbBarCode2.BackColor = nonactiveColor;
+            lbBarCode3.BackColor = nonactiveColor;
+            lbBarCode4.BackColor = nonactiveColor;
+
+            lbBarCode1Value.BackColor = nonactiveColor;
+            lbBarCode2Value.BackColor = nonactiveColor;
+            lbBarCode3Value.BackColor = nonactiveColor;
+            lbBarCode4Value.BackColor = nonactiveColor;
+
+
         }
 
         public void DateTimeShow()
@@ -150,6 +176,11 @@ namespace Micom_Inline
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
             showTime.Start();
+
+
+
+
+
         }
 
         // Serial reciver
@@ -163,10 +194,14 @@ namespace Micom_Inline
                 Console.WriteLine(Frame);
                 if (Frame.Contains("Start"))
                 {
+                    resetdgwTestMode();
+
                     Site1.WorkProcess.PutComandToFIFO( ElnecSite.PROGRAM_DEVICE );
                     Site2.WorkProcess.PutComandToFIFO( ElnecSite.PROGRAM_DEVICE );
                     Site3.WorkProcess.PutComandToFIFO( ElnecSite.PROGRAM_DEVICE );
                     Site4.WorkProcess.PutComandToFIFO( ElnecSite.PROGRAM_DEVICE );
+
+                    highlinedgwTestMode(0);
 
                     ActiveLabel(lbResultA);
                     ActiveLabel(lbResultB);
@@ -402,17 +437,17 @@ namespace Micom_Inline
         }
         public void FinalTestLabel()
         {
-            if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
+            if (Site1.Result == ElnecSite.EMPTY && Site2.Result == ElnecSite.EMPTY && Site3.Result == ElnecSite.EMPTY && Site4.Result == ElnecSite.EMPTY)
+            {
+                lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "WAIT"; lbMachineStatus.BackColor = activeColor; }));
+            }
+            else if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
             {
                 if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 // if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 {
-                    AMWsProcess.Statitis_OK += 4;
+                    AMWsProcess.Statitis_OK += 2;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
-                }
-                else if (Site1.Result == ElnecSite.EMPTY && Site2.Result == ElnecSite.EMPTY && Site3.Result == ElnecSite.EMPTY && Site4.Result == ElnecSite.EMPTY)
-                {
-                    lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "WAIT"; lbMachineStatus.BackColor = activeColor; }));
                 }
                 else
                 {
@@ -432,15 +467,20 @@ namespace Micom_Inline
 
                 tbHistory.Invoke(new MethodInvoker(delegate
                 {
-                    tbHistory.AppendText(DateTime.Now.ToString() + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                    string now = DateTime.Now.ToString();
+                    tbHistory.AppendText( now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                    _CONFIG.reportWrite(now, lbModelName.Text, lbMachineStatus.Text, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
                     CharCircle = 1;
                     timerUpdateChar.Start();
                     lastWorkingTime = DateTime.Now;
+                    highlinedgwTestMode(2);
+                    timerReleaseBoard.Start();
+                    Site1.ClearSiteParam();
+                    Site2.ClearSiteParam();
+                    Site3.ClearSiteParam();
+                    Site4.ClearSiteParam();
                 }));
-                Site1.ClearSiteParam();
-                Site2.ClearSiteParam();
-                Site3.ClearSiteParam();
-                Site4.ClearSiteParam();
+
             }
         }
 
@@ -515,8 +555,27 @@ namespace Micom_Inline
 
         public void DgwTestMode_Init()
         {
-            dgtTestMode.Rows.Add("1", "ELN", "", "WRITE", "", "", "", "");
+            dgtTestMode.Rows.Add("1", "STA", "command", "WRITE", "", "", "", "");
+            dgtTestMode.Rows.Add("2", "ROM", "program", "READ", "", "", "", "");
+            dgtTestMode.Rows.Add("3", "DLY", "delay 500ms", "DELAY", "", "", "", "");
+            dgtTestMode.Rows.Add("4", "FIN", "release", "CMD", "", "", "", "");
         }
+
+        public void resetdgwTestMode()
+        {
+            dgtTestMode.Rows[0].Selected = false;
+            dgtTestMode.Rows[1].Selected = false;
+            dgtTestMode.Rows[2].Selected = false;
+            dgtTestMode.Rows[3].Selected = false;
+        }
+        public void highlinedgwTestMode(int line)
+        {
+            if (line >= 0 && line < dgtTestMode.Rows.Count)
+                dgtTestMode.Rows[line].Selected = true;
+        }
+
+
+
 
         private void TbLog_TextChanged(object sender, EventArgs e)
         {
@@ -677,8 +736,7 @@ namespace Micom_Inline
             // 1. listen
             listener.Start();
             while (true)
-            {
-                
+            { 
                 if (ServerStatus == SERVER_OFF)
                     break;
                 Socket socket = listener.AcceptSocket();
@@ -788,6 +846,10 @@ namespace Micom_Inline
             for (int function = 0; function < ElnecResponses.Length; function++)
             {
                 string ElnecResponse = ElnecResponses[function];
+                if (ElnecResponse.Contains("Programming device:"))
+                {
+                    highlinedgwTestMode(1);
+                }
                 if (ElnecResponse.StartsWith("cindex:"))
                 {
                     ElnecResponse = ElnecResponse.Remove(0, 9);
@@ -1416,6 +1478,65 @@ namespace Micom_Inline
             }
             
         }
+
+        private void timerReleaseBoard_Tick(object sender, EventArgs e)
+        {
+            highlinedgwTestMode(3);
+            timerReleaseBoard.Stop();
+        }
+
+        private void btUserBarcode_Click(object sender, EventArgs e)
+        {
+            btSkipBarcode.BackColor = nonactiveColor;
+            btUserBarcode.BackColor = activeColor;
+
+            lbBC1.BackColor = deactiveColor;
+            lbBC2.BackColor = deactiveColor;
+            lbBC3.BackColor = deactiveColor;
+            lbBC4.BackColor = deactiveColor;
+
+            lbBarcodeTesting1.BackColor = activeColor;
+            lbBarcodeTesting2.BackColor = activeColor;
+            lbBarcodeTesting3.BackColor = activeColor;
+            lbBarcodeTesting4.BackColor = activeColor;
+
+            lbBarCode1.BackColor = deactiveColor;
+            lbBarCode2.BackColor = deactiveColor;
+            lbBarCode3.BackColor = deactiveColor;
+            lbBarCode4.BackColor = deactiveColor;
+
+            lbBarCode1Value.BackColor = activeColor;
+            lbBarCode2Value.BackColor = activeColor;
+            lbBarCode3Value.BackColor = activeColor;
+            lbBarCode4Value.BackColor = activeColor;
+        }
+
+        private void btSkipBarcode_Click(object sender, EventArgs e)
+        {
+            btSkipBarcode.BackColor = activeColor;
+            btUserBarcode.BackColor = nonactiveColor;
+
+            lbBC1.BackColor = nonactiveColor;
+            lbBC2.BackColor = nonactiveColor;
+            lbBC3.BackColor = nonactiveColor;
+            lbBC4.BackColor = nonactiveColor;
+
+            lbBarcodeTesting1.BackColor = nonactiveColor;
+            lbBarcodeTesting2.BackColor = nonactiveColor;
+            lbBarcodeTesting3.BackColor = nonactiveColor;
+            lbBarcodeTesting4.BackColor = nonactiveColor;
+
+            lbBarCode1.BackColor = nonactiveColor;
+            lbBarCode2.BackColor = nonactiveColor;
+            lbBarCode3.BackColor = nonactiveColor;
+            lbBarCode4.BackColor = nonactiveColor;
+
+            lbBarCode1Value.BackColor = nonactiveColor;
+            lbBarCode2Value.BackColor = nonactiveColor;
+            lbBarCode3Value.BackColor = nonactiveColor;
+            lbBarCode4Value.BackColor = nonactiveColor;
+
+        }
     }
 
 
@@ -1810,7 +1931,7 @@ namespace Micom_Inline
         public void SaveConfig()
         {
             if (!Directory.Exists(configPath)) Directory.CreateDirectory(configPath);
-                string config =
+            string config =
                     "recentModePath@" + this.recentModelPath + Environment.NewLine
                   + "recentWorkPath@" + this.recentWorkPath + Environment.NewLine
                   + "reportPath@" + this.reportPath + Environment.NewLine
@@ -1819,7 +1940,37 @@ namespace Micom_Inline
                   + "defaultADMIN_ACC@" + ADMIN_ACC + Environment.NewLine
                   + "defaultADMIN_PASS@" + ADMIN_PASS + Environment.NewLine;
 
-                    File.WriteAllText(configPath + "config.cfg", config);
+            File.WriteAllText(configPath + "config.cfg", config);
+        }
+
+
+        public void reportWrite( string now, string model, string Result, string site1Result, string site2Result, string site3Result, string site4Result)
+        {
+            string path = this.reportPath;
+            string moment = now;
+            string today_txt = "Report-" + DateTime.Now.ToString("yyyy-MM-dd");
+
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+            if (File.Exists(path + today_txt + ".txt")) // Nếu file lịch sử tồn tại thì lưu thông tin vào
+            {
+                int line = File.ReadAllLines(path + today_txt + ".txt").Length;
+                using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
+                {
+                    string reportData = "L" + line.ToString() + "|" + Result + "|" + model + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
+                    sw.WriteLine(reportData);
+                }
+
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
+                {
+                    string reportData = "STT|" + "Final result|" + "Model " + "|" + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
+                    reportData += "L" + "1" + "|" + Result + "|" + model + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
+                    sw.WriteLine(reportData);
+                }
+            }
         }
     }
 
@@ -1889,6 +2040,11 @@ namespace Micom_Inline
             else
                 return -1;
         }
+
+
+
+
+
 
     }
 }
