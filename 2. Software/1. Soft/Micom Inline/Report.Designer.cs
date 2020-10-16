@@ -37,14 +37,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgReport = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -69,6 +61,15 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btExport = new System.Windows.Forms.Button();
             this.saveFileReport = new System.Windows.Forms.SaveFileDialog();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgReport)).BeginInit();
@@ -93,6 +94,7 @@
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -106,15 +108,17 @@
             this.groupBox1.Controls.Add(this.dgReport);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(3, 93);
+            this.groupBox1.Location = new System.Drawing.Point(8, 98);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1308, 510);
+            this.groupBox1.Size = new System.Drawing.Size(1298, 500);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Report data";
             // 
             // dgReport
             // 
+            this.dgReport.AllowUserToAddRows = false;
+            this.dgReport.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             this.dgReport.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
@@ -135,6 +139,7 @@
             this.Column1,
             this.Column2,
             this.Column3,
+            this.Column9,
             this.Column4,
             this.Column5,
             this.Column6,
@@ -152,6 +157,7 @@
             this.dgReport.GridColor = System.Drawing.Color.Gray;
             this.dgReport.Location = new System.Drawing.Point(3, 16);
             this.dgReport.Name = "dgReport";
+            this.dgReport.ReadOnly = true;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -168,48 +174,8 @@
             this.dgReport.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.dgReport.RowTemplate.DefaultCellStyle.Padding = new System.Windows.Forms.Padding(1);
             this.dgReport.RowTemplate.ReadOnly = true;
-            this.dgReport.Size = new System.Drawing.Size(1302, 491);
+            this.dgReport.Size = new System.Drawing.Size(1292, 481);
             this.dgReport.TabIndex = 1;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "STT";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Result";
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Model";
-            this.Column3.Name = "Column3";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Time";
-            this.Column4.Name = "Column4";
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Site 1";
-            this.Column5.Name = "Column5";
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Site 2";
-            this.Column6.Name = "Column6";
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Site 3";
-            this.Column7.Name = "Column7";
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Site 4";
-            this.Column8.Name = "Column8";
             // 
             // panel2
             // 
@@ -217,9 +183,9 @@
             this.panel2.Controls.Add(this.groupBox3);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Location = new System.Drawing.Point(8, 8);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1308, 84);
+            this.panel2.Size = new System.Drawing.Size(1298, 84);
             this.panel2.TabIndex = 3;
             // 
             // groupBox3
@@ -237,7 +203,7 @@
             this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(0, 31);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1308, 53);
+            this.groupBox3.Size = new System.Drawing.Size(1298, 53);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Fillter";
@@ -246,10 +212,10 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.AutoSize = true;
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.button3.BackColor = System.Drawing.Color.Black;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(1114, 23);
+            this.button3.Location = new System.Drawing.Point(1104, 23);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(108, 23);
             this.button3.TabIndex = 9;
@@ -263,7 +229,7 @@
             this.btApplyFillter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.btApplyFillter.FlatAppearance.BorderSize = 0;
             this.btApplyFillter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btApplyFillter.Location = new System.Drawing.Point(1228, 23);
+            this.btApplyFillter.Location = new System.Drawing.Point(1218, 23);
             this.btApplyFillter.Name = "btApplyFillter";
             this.btApplyFillter.Size = new System.Drawing.Size(75, 23);
             this.btApplyFillter.TabIndex = 8;
@@ -273,7 +239,6 @@
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.AutoSize = true;
             this.button4.BackColor = System.Drawing.Color.Green;
             this.button4.FlatAppearance.BorderSize = 0;
@@ -289,10 +254,9 @@
             // cbbPCBcode
             // 
             this.cbbPCBcode.AllowDrop = true;
-            this.cbbPCBcode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-            this.cbbPCBcode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbbPCBcode.BackColor = System.Drawing.Color.White;
             this.cbbPCBcode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbPCBcode.ForeColor = System.Drawing.Color.White;
+            this.cbbPCBcode.ForeColor = System.Drawing.Color.Black;
             this.cbbPCBcode.FormattingEnabled = true;
             this.cbbPCBcode.Location = new System.Drawing.Point(721, 24);
             this.cbbPCBcode.Name = "cbbPCBcode";
@@ -358,7 +322,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1308, 31);
+            this.panel3.Size = new System.Drawing.Size(1298, 31);
             this.panel3.TabIndex = 2;
             // 
             // lbFormName
@@ -369,7 +333,7 @@
             this.lbFormName.ForeColor = System.Drawing.Color.White;
             this.lbFormName.Location = new System.Drawing.Point(0, 0);
             this.lbFormName.Name = "lbFormName";
-            this.lbFormName.Size = new System.Drawing.Size(1308, 31);
+            this.lbFormName.Size = new System.Drawing.Size(1298, 31);
             this.lbFormName.TabIndex = 0;
             this.lbFormName.Text = "Report managerment";
             this.lbFormName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -381,7 +345,7 @@
             this.groupBox2.Controls.Add(this.tableLayoutPanel2);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(3, 609);
+            this.groupBox2.Location = new System.Drawing.Point(8, 604);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(669, 44);
             this.groupBox2.TabIndex = 4;
@@ -498,7 +462,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1217, 630);
+            this.button2.Location = new System.Drawing.Point(1212, 625);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 23);
             this.button2.TabIndex = 10;
@@ -514,7 +478,7 @@
             this.btExport.FlatAppearance.BorderSize = 0;
             this.btExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btExport.ForeColor = System.Drawing.Color.White;
-            this.btExport.Location = new System.Drawing.Point(1013, 630);
+            this.btExport.Location = new System.Drawing.Point(1008, 625);
             this.btExport.Name = "btExport";
             this.btExport.Size = new System.Drawing.Size(198, 23);
             this.btExport.TabIndex = 9;
@@ -526,6 +490,69 @@
             // 
             this.saveFileReport.Tag = ".txt";
             this.saveFileReport.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileReport_FileOk);
+            // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 5F;
+            this.Column1.HeaderText = "STT";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.FillWeight = 10F;
+            this.Column2.HeaderText = "Result";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.FillWeight = 25F;
+            this.Column3.HeaderText = "Model";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column9
+            // 
+            this.Column9.FillWeight = 20F;
+            this.Column9.HeaderText = "Bar code";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.FillWeight = 20F;
+            this.Column4.HeaderText = "Time";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.FillWeight = 5F;
+            this.Column5.HeaderText = "Site 1";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column6
+            // 
+            this.Column6.FillWeight = 5F;
+            this.Column6.HeaderText = "Site 2";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.FillWeight = 5F;
+            this.Column7.HeaderText = "Site 3";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.FillWeight = 5F;
+            this.Column8.HeaderText = "Site 4";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
             // 
             // Report
             // 
@@ -581,14 +608,15 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lbStaTTnum;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.SaveFileDialog saveFileReport;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.SaveFileDialog saveFileReport;
     }
 }

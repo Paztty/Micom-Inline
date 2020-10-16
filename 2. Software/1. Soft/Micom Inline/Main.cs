@@ -176,10 +176,7 @@ namespace Micom_Inline
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
             showTime.Start();
-
-
-
-
+            timerReleaseBoard.Start();
 
         }
 
@@ -207,6 +204,9 @@ namespace Micom_Inline
                     ActiveLabel(lbResultB);
                     ActiveLabel(lbResultC);
                     ActiveLabel(lbResultD);
+                  
+                    lbMachineStatus.Invoke(new MethodInvoker( delegate { lbMachineStatus.Text = "TESTING"; lbMachineStatus.BackColor = activeColor; }));
+
 
                     Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
@@ -392,7 +392,10 @@ namespace Micom_Inline
 
         private void BtSetting_Click(object sender, EventArgs e)
         {
-            pnLogin.Visible = true;
+            if(pnLogin.Visible != true)
+                pnLogin.Visible = true;
+            else
+                pnLogin.Visible = false;
 
             btSetting.BackColor = Color.FromArgb(50, 50, 50);
             btLoadModel.BackColor = Color.FromArgb(30, 30, 30);
@@ -437,11 +440,7 @@ namespace Micom_Inline
         }
         public void FinalTestLabel()
         {
-            if (Site1.Result == ElnecSite.EMPTY && Site2.Result == ElnecSite.EMPTY && Site3.Result == ElnecSite.EMPTY && Site4.Result == ElnecSite.EMPTY)
-            {
-                lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "WAIT"; lbMachineStatus.BackColor = activeColor; }));
-            }
-            else if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
+            if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
             {
                 if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 // if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
@@ -461,14 +460,13 @@ namespace Micom_Inline
                     else
                         AMWsProcess.Statitis_NG += 1;
 
-
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
                 }
 
                 tbHistory.Invoke(new MethodInvoker(delegate
                 {
                     string now = DateTime.Now.ToString();
-                    tbHistory.AppendText( now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                    tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                     _CONFIG.reportWrite(now, lbModelName.Text, lbMachineStatus.Text, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
                     CharCircle = 1;
                     timerUpdateChar.Start();
@@ -479,10 +477,11 @@ namespace Micom_Inline
                     Site2.ClearSiteParam();
                     Site3.ClearSiteParam();
                     Site4.ClearSiteParam();
+                    lbMachineStatus.Text = "WAITING";
                 }));
 
             }
-        }
+        }      
 
 
 
@@ -533,7 +532,7 @@ namespace Micom_Inline
                 SolidBrush brushInside = new SolidBrush(bacgroudColor);
 
                 g.FillPie(brush, rect, 0, okRadian);
-                g.FillPie(Brushes.Black, rect, okRadian, ngRadian);
+                g.FillPie(Brushes.Red, rect, okRadian, ngRadian);
                 g.FillPie(brushInside, rectInside, 0, 360);
 
                 string persenOkString = persentOk.ToString("F1") + " %";
@@ -878,6 +877,11 @@ namespace Micom_Inline
                                 lbSiteChecksum.Invoke(new MethodInvoker(delegate { lbSiteChecksum.Text = data[1]; }));
                                 break;
                             }
+                        case ElnecSite.GETDEVCHECKSUM_REQ_RESULT:
+                            {
+                                lbSiteChecksum.Invoke(new MethodInvoker(delegate { lbSiteChecksum.Text = data[1]; }));
+                                break;
+                            }
                         case ElnecSite.CLIENT_READY_ANSWER + ElnecSite.KEY_CLIENT_READY_YES:
                             {
                                 lbSiteName.BackColor = activeColor;
@@ -969,6 +973,7 @@ namespace Micom_Inline
                 }
                 if (Site.SITE_LOADPRJRESULT == ElnecSite.FILE_LOAD_GOOD)
                 {
+                    OK_label(lbRomNameSite);
                     if (lbROMcheckSum.Text == lbSiteChecksum.Text)
                         {
                             lbROMcheckSum.BackColor = Color.Green;
@@ -1368,11 +1373,17 @@ namespace Micom_Inline
         {
             if (label1.BackColor != activeColor)
                 label1.BackColor = activeColor;
+            else
+                label1.BackColor = deactiveColor;
 
-            Site1.OpenSite("1180-" + ElnecAddress.ToString(), RemoteIP, RemotePort);
-            Site2.OpenSite("1180-" + (ElnecAddress + 1).ToString(), RemoteIP, RemotePort + 1);
-            Site3.OpenSite("1180-" + (ElnecAddress + 2).ToString(), RemoteIP, RemotePort + 2);
-            Site4.OpenSite("1180-" + (ElnecAddress + 3).ToString(), RemoteIP, RemotePort + 3);
+            Site1.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+            Site1.WorkProcess.Process = WorkProcess.Ready;
+            Site2.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+            Site2.WorkProcess.Process = WorkProcess.Ready;
+            Site3.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+            Site3.WorkProcess.Process = WorkProcess.Ready;
+            Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+            Site4.WorkProcess.Process = WorkProcess.Ready;
         }
 
         private void lbSiteName1_Click(object sender, EventArgs e)
@@ -1481,8 +1492,26 @@ namespace Micom_Inline
 
         private void timerReleaseBoard_Tick(object sender, EventArgs e)
         {
-            highlinedgwTestMode(3);
-            timerReleaseBoard.Stop();
+            if (timerReleaseBoard.Interval == 500)
+            {
+                highlinedgwTestMode(3);
+                timerReleaseBoard.Stop();
+            }
+            else if (timerReleaseBoard.Interval == 1000)
+            {
+                if (lbSiteName1.BackColor != activeColor || lbSiteName2.BackColor != activeColor || lbSiteName3.BackColor != activeColor || lbSiteName4.BackColor != activeColor)
+                {
+                    Site1.OpenSite("1180-" + (ElnecAddress).ToString(), RemoteIP, RemotePort);
+                    Site2.OpenSite("1180-" + (ElnecAddress + 1).ToString(), RemoteIP, RemotePort + 1);
+                    Site3.OpenSite("1180-" + (ElnecAddress + 2).ToString(), RemoteIP, RemotePort + 2);
+                    Site4.OpenSite("1180-" + (ElnecAddress + 3).ToString(), RemoteIP, RemotePort + 3);
+                    timerReleaseBoard.Interval = 500;
+                    timerReleaseBoard.Stop();
+                }
+
+            }
+
+
         }
 
         private void btUserBarcode_Click(object sender, EventArgs e)
@@ -1535,6 +1564,25 @@ namespace Micom_Inline
             lbBarCode2Value.BackColor = nonactiveColor;
             lbBarCode3Value.BackColor = nonactiveColor;
             lbBarCode4Value.BackColor = nonactiveColor;
+
+        }
+
+        private void siteCheckSumRefrest_Click(object sender, EventArgs e)
+        {
+            if (siteCheckSumRefrest.BackColor != activeColor)
+                siteCheckSumRefrest.BackColor = activeColor;
+            else
+                siteCheckSumRefrest.BackColor = deactiveColor;
+
+
+            Site1.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+            Site1.WorkProcess.Process = WorkProcess.Ready;
+            Site2.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+            Site2.WorkProcess.Process = WorkProcess.Ready;
+            Site3.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+            Site3.WorkProcess.Process = WorkProcess.Ready;
+            Site4.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+            Site4.WorkProcess.Process = WorkProcess.Ready;
 
         }
     }

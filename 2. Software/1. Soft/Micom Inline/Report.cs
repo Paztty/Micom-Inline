@@ -74,7 +74,8 @@ namespace Micom_Inline
 
         private void button4_Click(object sender, EventArgs e)
         {
-            loadReportToday();
+            dtpFrom.Value = DateTime.Now;
+            dtpTo.Value = DateTime.Now;
         }
 
         public void loadReport(DateTime date)
@@ -104,9 +105,9 @@ namespace Micom_Inline
                             NG++;
                             dgReport.Rows[i].Selected = true;
                         }
-                    if (!ModelList.Contains(dataInLine[2]))
+                    if (!ModelList.Contains(dgReport.Rows[i].Cells[2].Value.ToString()))
                     {
-                        ModelList.Add(dataInLine[2]);
+                        ModelList.Add(dgReport.Rows[i].Cells[2].Value.ToString());
                         modelCode = ModelList.ToArray();
                     }
                 }
@@ -118,7 +119,7 @@ namespace Micom_Inline
 
         public void loadReportToday()
         {
-            lbFormName.Text = "Report from: " + DateTime.Now.ToString("yyyy-MM-dd");
+            lbFormName.Text = "Report: " + DateTime.Now.ToString("yyyy-MM-dd");
             string pathReport = @"C:\Auto Micom Writing\AMW Report\Report-" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
             String[] dataInLine;
             if (File.Exists(pathReport)) // if computer has report file, push it on data grit view
@@ -131,29 +132,37 @@ namespace Micom_Inline
                     if (dataInLine[0].Contains("L"))
                     {
                         Total++;
-                        dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7]);
+                        dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7], dataInLine[8]);
                     }
 
                     if (dataInLine[1].Contains("OK")) Ok++;
                     if (dataInLine[1].Contains("FAIL"))
                     {
                         NG++;
-                    }
-                    if (!ModelList.Contains(dataInLine[2]))
-                    {
-                        ModelList.Add(dataInLine[2]);
-                        modelCode = ModelList.ToArray();
+                        dgReport.Rows[i].Selected = true;
                     }
                 }
+
                 lbStaTTnum.Text = Total.ToString();
                 lbStaOKnum.Text = Ok.ToString("D");
                 lbStaNGnum.Text = NG.ToString("D");
             }
+            for (int i = 0; i < dgReport.Rows.Count - 1; i++)
+            {
+                if (!ModelList.Contains(dgReport.Rows[i].Cells[2].Value))
+                {
+                    ModelList.Add(dgReport.Rows[i].Cells[2].Value.ToString());
+                    Console.WriteLine(dgReport.Rows[i].Cells[2].Value.ToString());
+                }
+            }
+            modelCode = ModelList.ToArray();
+            cbbPCBcode.DataSource = modelCode;
         }
+
 
         private void btExport_Click(object sender, EventArgs e)
         {
-            exReport = "STT|" + "Final result|" + "Model " + "|" + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
+            exReport = "STT|" + "Final result|" + "Model " + "|" + "Bar code " + "|"  + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
             for (int i = 0; i < dgReport.Rows.Count - 1; i++)
                 {
                     for (int j = 0; j < dgReport.Columns.Count; j++)
