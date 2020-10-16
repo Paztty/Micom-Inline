@@ -136,6 +136,7 @@
     <None Include="icon\Dev Logo with name.jpg" />
     <None Include="icon\Dev_Logo_with_name-removebg-preview.png" />
     <None Include="icon\Logo.jpg" />
+    <None Include="icon\user.png" />
     <Content Include="SoftLogo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

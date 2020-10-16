@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Micom_Inline.Properties;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.IO.Ports;
+using System.Management;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
-using System.IO;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Management;
-using Micom_Inline.Properties;
 
 namespace Micom_Inline
 {
@@ -477,6 +477,7 @@ namespace Micom_Inline
                     Site2.ClearSiteParam();
                     Site3.ClearSiteParam();
                     Site4.ClearSiteParam();
+                    lbMachineStatus.BackColor = activeColor;
                     lbMachineStatus.Text = "WAITING";
                 }));
 
@@ -1197,47 +1198,43 @@ namespace Micom_Inline
         {
             btNameReview.Text = "Load model";
         }
-
         private void btLoadModel_MouseLeave(object sender, EventArgs e)
         {
             btNameReview.Text = "Technical Team";
         }
-
         private void lbModelName_MouseLeave(object sender, EventArgs e)
         {
             btNameReview.Text = "Technical Team";
         }
-
         private void lbModelName_MouseMove(object sender, MouseEventArgs e)
         {
             btNameReview.Text = "Model name";
         }
-
         private void btAuto_MouseLeave(object sender, EventArgs e)
         {
             btNameReview.Text = "Technical Team";
         }
-
         private void btAuto_MouseMove(object sender, MouseEventArgs e)
         {
             btNameReview.Text = "Auto";
         }
-
         private void btManual_MouseLeave(object sender, EventArgs e)
         {
             btNameReview.Text = "Technical Team";
         }
-
         private void btManual_MouseMove(object sender, MouseEventArgs e)
         {
             btNameReview.Text = "Manual";
         }
-
-        private void btReportFolder_MouseHover(object sender, EventArgs e)
+        private void btSWUser_MouseMove(object sender, MouseEventArgs e)
         {
-
+            btNameReview.Text = "Switch User";
         }
 
+        private void btSWUser_MouseLeave(object sender, EventArgs e)
+        {
+            btNameReview.Text = "Technical Team";
+        }
         private void btReportFolder_MouseLeave(object sender, EventArgs e)
         {
             btNameReview.Text = "Technical Team";
@@ -1585,6 +1582,8 @@ namespace Micom_Inline
             Site4.WorkProcess.Process = WorkProcess.Ready;
 
         }
+
+
     }
 
 
@@ -1850,23 +1849,19 @@ namespace Micom_Inline
 
     class PCB_Model
     {
-
         public const string PROGRAM_PATH = @"C:\Auto Micom Writing\AMW Programs\";
-
         public string PCBcode;
         public string ModelPath;
         public string ModelName;
 
         public SaveFileDialog saveFileDialog = new SaveFileDialog();
         
-
         public ROM[] ROMs = {   new ROM(),
                                 new ROM(),
                                 new ROM(),
-                                new ROM()  };
+                                new ROM()};
 
         public PCB_Model() { }
-
         public void save(object sender, System.EventArgs e)
         {
             string configModel =
@@ -1911,6 +1906,9 @@ namespace Micom_Inline
 
         public string ADMIN_ACC = "admin";
         public string ADMIN_PASS = "123456";
+
+        public string MANAGER_ACC = "manager";
+        public string MANAGER_PASS = "123654789";
 
         public AMW_CONFIG()
         {
@@ -2077,7 +2075,6 @@ namespace Micom_Inline
             }
             return slotAvailble;
         }
-
         public int PutComandToFIFO(string Comand)
         {
             if (this.GetSlotCommandAvailble() > 0)
@@ -2088,11 +2085,5 @@ namespace Micom_Inline
             else
                 return -1;
         }
-
-
-
-
-
-
     }
 }
