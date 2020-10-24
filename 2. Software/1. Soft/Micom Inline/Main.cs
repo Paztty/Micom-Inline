@@ -554,11 +554,14 @@ namespace Micom_Inline
         {
             if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
             {
+                string now = DateTime.Now.ToString();
+                string final = "";
                 //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 {
                     AMWsProcess.Statitis_OK += 2;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
+                    final = "OK";
                     ResultRespoonse = Result_okPBA;
                 }
                 else if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
@@ -570,6 +573,7 @@ namespace Micom_Inline
                 {
                     ResultRespoonse = Result_ngPBA;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
+                    final = "FAIL";
                 }
 
 
@@ -583,16 +587,12 @@ namespace Micom_Inline
                 else
                     AMWsProcess.Statitis_NG += 1;
 
+                _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
 
                 tbHistory.Invoke(new MethodInvoker(delegate
                 {
-                    string now = DateTime.Now.ToString();
-                    string final = lbMachineStatus.Text;
-                    tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
-                    _CONFIG.reportWrite(now, lbModelName.Text, lbMachineStatus.Text, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-
+                    tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine); 
                     Console.WriteLine(ResultRespoonse);
-
                     CharCircle = 1;
                     timerUpdateChar.Start();
                     lastWorkingTime = DateTime.Now;

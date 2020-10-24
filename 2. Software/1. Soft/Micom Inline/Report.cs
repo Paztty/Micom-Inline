@@ -139,7 +139,6 @@ namespace Micom_Inline
                 for (int i = lines.Length - 1; i >= 0; i--)
                 {
                     dataInLine = lines[i].Split('|');
-
                         if (dataInLine[0].Contains("L"))
                         {
                             Total++;
