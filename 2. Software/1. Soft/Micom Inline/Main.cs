@@ -51,7 +51,7 @@ namespace Micom_Inline
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
         public int ElnecAddress = 0;
-        public int TCP_TimeOut = 3000;
+        public int TCP_TimeOut = 5000;
 
         //arduino
         const int Cmd_startValue = 64;
@@ -776,7 +776,6 @@ namespace Micom_Inline
                         tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site1: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine);
                     }));
 
-                    Site1.WorkProcess.Process = WorkProcess.Ready;
                 }
 
                 while (true)
@@ -807,6 +806,7 @@ namespace Micom_Inline
                 socket.Close();
             }
             listener.Stop();
+            Console.WriteLine("Thread 1 break");
         }
         public void ElnecComuncationBackgroudSite2()
         {
@@ -836,7 +836,7 @@ namespace Micom_Inline
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
-                    Site2.WorkProcess.Process = WorkProcess.Ready;
+     
                 }
 
                 while (true)
@@ -868,6 +868,7 @@ namespace Micom_Inline
                 socket.Close();
             }
             listener.Stop();
+            Console.WriteLine("Thread 2 break");
         }
         public void ElnecComuncationBackgroudSite3()
         {
@@ -896,7 +897,6 @@ namespace Micom_Inline
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
-                    Site3.WorkProcess.Process = WorkProcess.Ready;
                 }
 
                 while (true)
@@ -928,6 +928,7 @@ namespace Micom_Inline
                 socket.Close();
             }
             listener.Stop();
+            Console.WriteLine("Thread 3 break");
         }
         public void ElnecComuncationBackgroudSite4()
         {
@@ -956,7 +957,6 @@ namespace Micom_Inline
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
-                    Site4.WorkProcess.Process = WorkProcess.Ready;
                 }
                 while (true)
                 {
@@ -988,6 +988,7 @@ namespace Micom_Inline
                 socket.Close();
             }
             listener.Stop();
+            Console.WriteLine("Thread 4 break");
         }
         // Site1 process
         public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, string Response)
@@ -1015,15 +1016,12 @@ namespace Micom_Inline
                     {
                         case "CreditBoxDeviceCreditDecrementValue":
                             {
-                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                                 Site.WorkProcess.Process = WorkProcess.Ready;
                                 break;
                             }
                         case ElnecSite.PROG_IS_BUSY:
                             {
                                 lbSiteName.BackColor = busyColor;
-                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-                                Site.WorkProcess.Process = WorkProcess.Ready;
                                 break;
                             }
                         case ElnecSite.GETDEVCHECKSUM_RESULT:
@@ -1067,8 +1065,6 @@ namespace Micom_Inline
                         case ElnecSite.OPRESULT:
                             {
                                 Site.SITE_OPRESULT = data[1];
-                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-                                Site.WorkProcess.Process = WorkProcess.Ready;
                                 break;
                             }
                         case ElnecSite.OPTYPE:
@@ -1096,15 +1092,10 @@ namespace Micom_Inline
                     }
                 }
 
-                if (Site.SITE_OPTYPE == "0")
-                {
-                    Site.WorkProcess.Process = WorkProcess.Ready;
-                }
-
                 if (Site.SITE_OPTYPE == "10")
                 {
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-                    Site.WorkProcess.Process = WorkProcess.Ready;
+                    Site.SITE_OPTYPE = "";
                 }
 
                 if (Site.SITE_DETAILE == "1")
@@ -1114,9 +1105,9 @@ namespace Micom_Inline
                         Site.WorkProcess.Process = WorkProcess.Interrup;
                         Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
                         Site.Result = ElnecSite.RESULT_OK;
-                        Site.SITE_DETAILE = "";
                     }
                     OK_label(lbResult);
+                    Site.SITE_DETAILE = "";
                 }
 
                 if (Site.SITE_DETAILE == "999")
@@ -1146,6 +1137,7 @@ namespace Micom_Inline
                         lbROMcheckSum.BackColor = Color.Red;
                         lbSiteChecksum.BackColor = Color.Red;
                     }
+                    Site.SITE_LOADPRJRESULT = "";
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
