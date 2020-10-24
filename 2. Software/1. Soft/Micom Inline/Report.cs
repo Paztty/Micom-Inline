@@ -22,6 +22,16 @@ namespace Micom_Inline
         public Report()
         {
             InitializeComponent();
+            if(Main.Permissions == Main.TECH)
+                btExport.Click -= btExport_Click;
+            if (Main.Permissions == Main.MANAGER)
+            {
+                btExport.Click -= btExport_Click;
+                btExport.Click += btExport_Click;
+            }
+                
+
+            ModelList.Add("All");
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -47,7 +57,9 @@ namespace Micom_Inline
 
         private void btApplyFillter_Click(object sender, EventArgs e)
         {
-                DateTime dayFrom = dtpFrom.Value;
+            dgReport.Rows.Clear();
+            dgReport.Refresh();
+            DateTime dayFrom = dtpFrom.Value;
                 DateTime dayTo = dtpTo.Value;
                 lbFormName.Text = "Report from: " + dayFrom.ToString("yyyy-MM-dd") + " to: " + dayTo.ToString("yyyy-MM-dd");
                 while (dayFrom <= dayTo)
@@ -59,7 +71,52 @@ namespace Micom_Inline
 
         private void cbbPCBcode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cbbPCBcode.DataSource = modelCode;
+            Ok = 0;
+            NG = 0;
+            Total = 0;
+            dgReport.Rows.Clear();
+            dgReport.Refresh();
+            DateTime dayFrom = dtpFrom.Value;
+            DateTime dayTo = dtpTo.Value;
+            lbFormName.Text = "Report from: " + dayFrom.ToString("yyyy-MM-dd") + " to: " + dayTo.ToString("yyyy-MM-dd");
+            while (dayFrom <= dayTo)
+            {
+                String[] dataInLine;
+                string pathReport = @"C:\Auto Micom Writing\AMW Report\Report-" + dayFrom.ToString("yyyy-MM-dd") + ".txt";
+                if (File.Exists(pathReport)) // if computer has report file, push it on data grit view
+                {
+                    var lines = File.ReadAllLines(pathReport);
+                    for (int i = lines.Length - 1; i >= 0; i--)
+                    {
+                        dataInLine = lines[i].Split('|');
+                        if (dataInLine[0].Contains("L") && cbbPCBcode.SelectedValue.ToString() == "All")
+                        {
+                            Total++;
+                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], "not user", dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7]);
+                        }
+                        if (dataInLine[0].Contains("L") && dataInLine[2] == cbbPCBcode.SelectedValue.ToString())
+                        {
+                            Total++;
+                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], "not user", dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7]);
+                        }
+
+                        if (dataInLine[1].Contains("OK")) Ok++;
+                        if (dataInLine[1].Contains("FAIL")) NG++;
+                    }
+
+                }
+                dayFrom = dayFrom.AddDays(1);
+            }
+            for (int i = 0; i < dgReport.Rows.Count - 1; i++)
+            {
+                if (dgReport.Rows[i].Cells[1].Value.ToString() == "FAIL")
+                    dgReport.Rows[i].Selected = true;
+            }
+
+
+            lbStaTTnum.Text = Total.ToString();
+            lbStaOKnum.Text = Ok.ToString("D");
+            lbStaNGnum.Text = NG.ToString("D");
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -73,7 +130,7 @@ namespace Micom_Inline
             Ok = 0;
             NG = 0;
             Total = 0;
-            dgReport.Rows.Clear();
+
             String[] dataInLine;
             string pathReport = @"C:\Auto Micom Writing\AMW Report\Report-" + date.ToString("yyyy-MM-dd") + ".txt";
             if (File.Exists(pathReport)) // if computer has report file, push it on data grit view
@@ -107,7 +164,7 @@ namespace Micom_Inline
             }
             modelCode = ModelList.ToArray();
             cbbPCBcode.DataSource = modelCode;
-            dgReport.Refresh();
+
         }
 
         private void Report_Load(object sender, EventArgs e)
@@ -120,7 +177,7 @@ namespace Micom_Inline
             exReport = "STT|" + "Final result|" + "Model " + "|" + "Bar code " + "|"  + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
             for (int i = 0; i < dgReport.Rows.Count - 1; i++)
                 {
-                    for (int j = 0; j < dgReport.Columns.Count - 1; j++)
+                    for (int j = 0; j < dgReport.Columns.Count; j++)
                     {
                         exReport += dgReport.Rows[i].Cells[j].Value.ToString ();
                         exReport += "|";

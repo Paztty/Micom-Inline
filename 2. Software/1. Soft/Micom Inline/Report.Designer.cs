@@ -37,6 +37,15 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgReport = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -61,15 +70,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btExport = new System.Windows.Forms.Button();
             this.saveFileReport = new System.Windows.Forms.SaveFileDialog();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgReport)).BeginInit();
@@ -179,6 +179,69 @@
             this.dgReport.Size = new System.Drawing.Size(1292, 481);
             this.dgReport.TabIndex = 1;
             // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 5F;
+            this.Column1.HeaderText = "STT";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.FillWeight = 10F;
+            this.Column2.HeaderText = "Result";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.FillWeight = 25F;
+            this.Column3.HeaderText = "Model";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column9
+            // 
+            this.Column9.FillWeight = 20F;
+            this.Column9.HeaderText = "Bar code";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.FillWeight = 20F;
+            this.Column4.HeaderText = "Time";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.FillWeight = 5F;
+            this.Column5.HeaderText = "Site 1";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column6
+            // 
+            this.Column6.FillWeight = 5F;
+            this.Column6.HeaderText = "Site 2";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.FillWeight = 5F;
+            this.Column7.HeaderText = "Site 3";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.FillWeight = 5F;
+            this.Column8.HeaderText = "Site 4";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            // 
             // panel2
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.panel2, 3);
@@ -264,7 +327,7 @@
             this.cbbPCBcode.Name = "cbbPCBcode";
             this.cbbPCBcode.Size = new System.Drawing.Size(235, 21);
             this.cbbPCBcode.TabIndex = 6;
-            this.cbbPCBcode.SelectedIndexChanged += new System.EventHandler(this.cbbPCBcode_SelectedIndexChanged);
+            this.cbbPCBcode.SelectionChangeCommitted += new System.EventHandler(this.cbbPCBcode_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -493,69 +556,6 @@
             this.saveFileReport.Tag = ".txt";
             this.saveFileReport.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileReport_FileOk);
             // 
-            // Column1
-            // 
-            this.Column1.FillWeight = 5F;
-            this.Column1.HeaderText = "STT";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.FillWeight = 10F;
-            this.Column2.HeaderText = "Result";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.FillWeight = 25F;
-            this.Column3.HeaderText = "Model";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column9
-            // 
-            this.Column9.FillWeight = 20F;
-            this.Column9.HeaderText = "Bar code";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            this.Column4.FillWeight = 20F;
-            this.Column4.HeaderText = "Time";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.FillWeight = 5F;
-            this.Column5.HeaderText = "Site 1";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            this.Column6.FillWeight = 5F;
-            this.Column6.HeaderText = "Site 2";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.FillWeight = 5F;
-            this.Column7.HeaderText = "Site 3";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            // 
-            // Column8
-            // 
-            this.Column8.FillWeight = 5F;
-            this.Column8.HeaderText = "Site 4";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            // 
             // Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -602,7 +602,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button btExport;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lbStaOKnum;
@@ -621,5 +620,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        internal System.Windows.Forms.Button btExport;
     }
 }

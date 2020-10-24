@@ -23,6 +23,8 @@ F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\Micom Inline\obj
 F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\bin\Debug\Micom Inline.exe.config
 F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\bin\Debug\Micom Inline.exe
 F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\bin\Debug\Micom Inline.pdb
+F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\obj\Debug\Micom Inline.csprojAssemblyReference.cache
+F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\obj\Debug\Micom_Inline.OPForm.resources
 F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\obj\Debug\Micom_Inline.Report.resources
 F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\obj\Debug\Micom_Inline.Main.resources
 F:\1. Project\8. Auto Micom Writing\1. Micom Inline\2. Software\1. Soft\Micom Inline\obj\Debug\Micom_Inline.Properties.Resources.resources
