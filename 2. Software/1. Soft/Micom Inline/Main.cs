@@ -560,9 +560,9 @@ namespace Micom_Inline
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
                     ResultRespoonse = Result_okPBA;
                 }
-                else if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK)
+                else if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
                     ResultRespoonse = Result_okPBA1;
-                else if (Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                else if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                     ResultRespoonse = Result_okPBA2;
 
                 else if ((Site1.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG) && (Site3.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
@@ -856,7 +856,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultC, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -916,7 +916,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultB, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
