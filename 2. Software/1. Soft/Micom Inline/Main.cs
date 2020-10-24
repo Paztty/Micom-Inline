@@ -51,7 +51,7 @@ namespace Micom_Inline
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
         public int ElnecAddress = 0;
-        public int TCP_TimeOut = 1000;
+        public int TCP_TimeOut = 3000;
 
         //arduino
         const int Cmd_startValue = 64;
@@ -269,7 +269,7 @@ namespace Micom_Inline
                 else if (Frame.Contains(Data_sendQR))
                 {
                     Port.Write(String_getOK);
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
                     Port.Write(Result_okQR);
                 }
                 else if (Frame.Contains(String_getNG))
@@ -855,7 +855,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultC, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -915,7 +915,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultB, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1089,9 +1089,10 @@ namespace Micom_Inline
                 // processing data
                 if (Site.SITE_OPTYPE == "5")
                 {
-                    if (Site.SITE_PROGRESS == "99")
+                    if (Site.SITE_PROGRESS == "99" || Site.SITE_PROGRESS == "100")
                     {
                         Site.WorkProcess.Process = WorkProcess.Interrup;
+                        Site.SITE_PROGRESS = "";
                     }
                 }
 
@@ -1108,12 +1109,12 @@ namespace Micom_Inline
 
                 if (Site.SITE_DETAILE == "1")
                 {
-
                     if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_OK)
                     {
                         Site.WorkProcess.Process = WorkProcess.Interrup;
                         Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
                         Site.Result = ElnecSite.RESULT_OK;
+                        Site.SITE_DETAILE = "";
                     }
                     OK_label(lbResult);
                 }
@@ -1127,6 +1128,7 @@ namespace Micom_Inline
                         Site.Result = ElnecSite.RESULT_NG;
                     }
                     NG_label(lbResult);
+                    Site.SITE_DETAILE = "";
                 }
 
                 if (Site.SITE_LOADPRJRESULT == ElnecSite.FILE_LOAD_GOOD)
@@ -1143,13 +1145,16 @@ namespace Micom_Inline
                             tbHistory.Invoke(new MethodInvoker(delegate { tbHistory.AppendText(Environment.NewLine + "Site " + Site.Name + ": Checksum did not match." + Environment.NewLine); }));
                         lbROMcheckSum.BackColor = Color.Red;
                         lbSiteChecksum.BackColor = Color.Red;
-
                     }
+                    Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                    Site.WorkProcess.Process = WorkProcess.Ready;
                 }
                 if (Site.SITE_LOADPRJRESULT == ElnecSite.FILE_LOAD_ERROR)
                 {
                     NG_label(lbRomNameSite);
                     Site.SITE_LOADPRJRESULT = "";
+                    Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                    Site.WorkProcess.Process = WorkProcess.Ready;
                 }
             }
             FinalTestLabel();
