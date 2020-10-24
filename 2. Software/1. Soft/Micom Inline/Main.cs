@@ -51,7 +51,7 @@ namespace Micom_Inline
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
         public int ElnecAddress = 0;
-        public int TCP_TimeOut = 5000;
+        public int TCP_TimeOut = 1000;
 
         //arduino
         const int Cmd_startValue = 64;
@@ -269,7 +269,7 @@ namespace Micom_Inline
                 else if (Frame.Contains(Data_sendQR))
                 {
                     Port.Write(String_getOK);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     Port.Write(Result_okQR);
                 }
                 else if (Frame.Contains(String_getNG))
@@ -366,6 +366,7 @@ namespace Micom_Inline
         {
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, 360);
             model.Layout.drawPCBLayout(pbPCBLayout);
+            model.Layout.drawPCBLayout(pbLayout);
         }
 
 
