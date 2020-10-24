@@ -1109,6 +1109,7 @@ namespace Micom_Inline
                         Site.Result = ElnecSite.RESULT_OK;
                     }
                     OK_label(lbResult);
+                    Site.WorkProcess.Process = WorkProcess.Interrup;
                     Site.SITE_DETAILE = "";
                 }
 
@@ -1121,6 +1122,7 @@ namespace Micom_Inline
                         Site.Result = ElnecSite.RESULT_NG;
                     }
                     NG_label(lbResult);
+                    Site.WorkProcess.Process = WorkProcess.Interrup;
                     Site.SITE_DETAILE = "";
                 }
 
