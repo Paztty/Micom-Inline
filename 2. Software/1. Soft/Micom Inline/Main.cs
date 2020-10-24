@@ -560,11 +560,12 @@ namespace Micom_Inline
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
                     ResultRespoonse = Result_okPBA;
                 }
-                else if ((Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK) && (Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
+                else if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK)
                     ResultRespoonse = Result_okPBA1;
-                else if ((Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG) && (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK))
+                else if (Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                     ResultRespoonse = Result_okPBA2;
-                else if (Site1.Result == ElnecSite.RESULT_NG && Site2.Result == ElnecSite.RESULT_NG && Site3.Result == ElnecSite.RESULT_NG && Site4.Result == ElnecSite.RESULT_NG)
+
+                else if ((Site1.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG) && (Site3.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
                 {
                     ResultRespoonse = Result_ngPBA;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
@@ -1851,7 +1852,7 @@ namespace Micom_Inline
                 highlinedgwTestMode(3);
                 if (Port.IsOpen)
                     Port.Write(ResultRespoonse);
-                tbHistory.AppendText("DONE\r\n");
+                tbHistory.AppendText(ResultRespoonse + "DONE\r\n");
                 timerReleaseBoard.Stop();
             }
             else if (timerReleaseBoard.Interval == 2500)
