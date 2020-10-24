@@ -565,7 +565,7 @@ namespace Micom_Inline
                 else if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                     ResultRespoonse = Result_okPBA2;
 
-                else if ((Site1.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG) && (Site3.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
+                else if ((Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG) && (Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
                 {
                     ResultRespoonse = Result_ngPBA;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
@@ -1504,6 +1504,16 @@ namespace Micom_Inline
             model.ModelName = lbModelName.Text;
             if (config[5] == "true") model.Layout.PCB1 = true; else if (config[5] == "false") model.Layout.PCB1 = false;
             if (config[6] == "true") model.Layout.PCB2 = true; else if (config[6] == "false") model.Layout.PCB2 = false;
+
+            if (model.Layout.PCB1 == true && model.Layout.PCB2 == false)
+            {
+                Port.Write(Mode_1Array);
+            }
+            else if (model.Layout.PCB1 == true && model.Layout.PCB2 == true)
+            {
+                Port.Write(Mode_2Array);
+            }
+
             model.Layout.ArrayCount = Convert.ToInt32(config[7]);
             model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
 
