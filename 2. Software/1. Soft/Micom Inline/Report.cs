@@ -92,12 +92,12 @@ namespace Micom_Inline
                         if (dataInLine[0].Contains("L") && cbbPCBcode.SelectedValue.ToString() == "All")
                         {
                             Total++;
-                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], "not user", dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7]);
+                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2] ,dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7], dataInLine[8]);
                         }
                         if (dataInLine[0].Contains("L") && dataInLine[2] == cbbPCBcode.SelectedValue.ToString())
                         {
                             Total++;
-                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], "not user", dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7]);
+                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7], dataInLine[8]);
                         }
 
                         if (dataInLine[1].Contains("OK")) Ok++;
@@ -118,7 +118,7 @@ namespace Micom_Inline
             lbStaOKnum.Text = Ok.ToString("D");
             lbStaNGnum.Text = NG.ToString("D");
         }
-
+        
         private void button4_Click(object sender, EventArgs e)
         {
             dtpFrom.Value = DateTime.Now;
@@ -143,7 +143,7 @@ namespace Micom_Inline
                         if (dataInLine[0].Contains("L"))
                         {
                             Total++;
-                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], "not user", dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7]);
+                            dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7], dataInLine[8]);
                         }
 
                     if (dataInLine[1].Contains("OK")) Ok++;

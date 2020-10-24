@@ -35,14 +35,14 @@ namespace Micom_Inline
         public Color thirdROMsellect = Color.OliveDrab;
         public Color forthROMsellect = Color.Brown;
 
-
+        //sever config
         const string SERVER_ON = "severon";
         const string SERVER_OFF = "severoff";
         public string ServerStatus = SERVER_ON;
 
         public int ROMsellectCounter = 0;
 
-
+        //elnec
         ElnecSite Site1 = new ElnecSite(1);
         ElnecSite Site2 = new ElnecSite(2);
         ElnecSite Site3 = new ElnecSite(3);
@@ -50,9 +50,10 @@ namespace Micom_Inline
 
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
-        public int ElnecAddress = 11227;
-        public int TCP_TimeOut = 3000;
+        public int ElnecAddress = 0;
+        public int TCP_TimeOut = 1000;
 
+        //arduino
         const int Cmd_startValue = 64;
 
         const string String_getOK = "@010011*76";
@@ -76,11 +77,13 @@ namespace Micom_Inline
 
         public string ResultRespoonse = "";
 
-
+        // chart animations
         public int CharCircle = 1;
 
 
         public string PortReciver = string.Empty;
+        public string[] BaudRate = { "300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200" };
+
 
         PCB_Model model = new PCB_Model
         {
@@ -123,16 +126,21 @@ namespace Micom_Inline
 
             this.SetStyle(ControlStyles.Selectable, false);
 
-            lbROM1checkSum.AutoSize = false;
-            lbROM1checkSum.Size = new System.Drawing.Size(122, 24);
-            lbROM2checkSum.AutoSize = false;
-            lbROM2checkSum.Size = new System.Drawing.Size(122, 24);
-            lbROM3checkSum.AutoSize = false;
-            lbROM3checkSum.Size = new System.Drawing.Size(122, 24);
-            lbROM4checkSum.AutoSize = false;
-            lbROM4checkSum.Size = new System.Drawing.Size(122, 24);
+            tbStRomCsSite1.AutoSize = false;
+            tbStRomCsSite1.Size = new System.Drawing.Size(122, 24);
+            tbStRomCsSite2.AutoSize = false;
+            tbStRomCsSite2.Size = new System.Drawing.Size(122, 24);
+            tbStRomCsSite3.AutoSize = false;
+            tbStRomCsSite3.Size = new System.Drawing.Size(122, 24);
+            tbStRomCsSite4.AutoSize = false;
+            tbStRomCsSite4.Size = new System.Drawing.Size(122, 24);
 
             Port.DataReceived += new SerialDataReceivedEventHandler(DataReciver);
+
+            cbbComBaurate.DataSource = BaudRate;
+            cbbComName.DataSource = SerialPort.GetPortNames();
+
+            ElnecAddress = _CONFIG.ElnecAddress;
 
             pnLogin.Visible = false;
             tbHistory.AppendText("<<<<<< AUTO MICOM WRITING SYSTEM >>>>>>" + Environment.NewLine);
@@ -148,6 +156,7 @@ namespace Micom_Inline
             checkPermision();
             SkipBarCode();
 
+
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
             Site3.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
@@ -161,10 +170,14 @@ namespace Micom_Inline
             try
             {
                 Port.PortName = SearchCom();
-                tsslbCOM.Text = Port.PortName + "                ";
+                tsslbCOM.Text = Port.PortName + "                                             ";
                 Port.Open();
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                MessageBox.Show("Not find any machine. Check again.");
+                tsslbCOM.Text = "Com not found               ";
+            }
         }
 
         public void DateTimeShow()
@@ -191,6 +204,12 @@ namespace Micom_Inline
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
             showTime.Start();
+
+            lbAdressSite1.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + ElnecAddress.ToString("d5");
+            lbAdressSite2.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (ElnecAddress + 1).ToString("d5");
+            lbAdressSite3.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (ElnecAddress + 2).ToString("d5");
+            lbAdressSite4.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (ElnecAddress + 3).ToString("d5");
+
             timerReleaseBoard.Interval = 2500;
             timerReleaseBoard.Start();
             Thread communicationSite1 = new Thread(ElnecComuncationBackgroudSite1);
@@ -220,15 +239,11 @@ namespace Micom_Inline
                     if (lbAutoManual.Text == "Auto mode")
                     {
                         resetdgwTestMode();
+
                         Site1.WorkProcess.ClearCMDQueue();
                         Site2.WorkProcess.ClearCMDQueue();
                         Site3.WorkProcess.ClearCMDQueue();
                         Site4.WorkProcess.ClearCMDQueue();
-
-                        Site1.WorkProcess.Process = WorkProcess.Interrup;
-                        Site2.WorkProcess.Process = WorkProcess.Interrup;
-                        Site3.WorkProcess.Process = WorkProcess.Interrup;
-                        Site4.WorkProcess.Process = WorkProcess.Interrup;
 
                         Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                         Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
@@ -513,15 +528,7 @@ namespace Micom_Inline
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
 
-            model.ROMs[0].ROM_CHECKSUM = lbROM1checkSum.Text;
-            model.ROMs[1].ROM_CHECKSUM = lbROM2checkSum.Text;
-            model.ROMs[2].ROM_CHECKSUM = lbROM3checkSum.Text;
-            model.ROMs[3].ROM_CHECKSUM = lbROM4checkSum.Text;
 
-            model.SaveAsNew();
-            _CONFIG.recentModelPath = model.ModelPath;
-            _CONFIG.SaveConfig();
-            model.saveFileDialog.InitialDirectory = _CONFIG.recentModelPath;
 
         }
 
@@ -546,8 +553,8 @@ namespace Micom_Inline
         {
             if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
             {
-                if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                 {
                     AMWsProcess.Statitis_OK += 2;
                     lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
@@ -578,6 +585,7 @@ namespace Micom_Inline
                 tbHistory.Invoke(new MethodInvoker(delegate
                 {
                     string now = DateTime.Now.ToString();
+                    string final = lbMachineStatus.Text;
                     tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                     _CONFIG.reportWrite(now, lbModelName.Text, lbMachineStatus.Text, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
 
@@ -781,7 +789,7 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        //Site1.WorkProcess.Process = WorkProcess.Ready;
+                        Site1.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
@@ -841,7 +849,7 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        //Site2.WorkProcess.Process = WorkProcess.Ready;
+                        Site2.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
@@ -901,7 +909,7 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        // Site3.WorkProcess.Process = WorkProcess.Ready;
+                        Site3.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
@@ -960,7 +968,7 @@ namespace Micom_Inline
                     }
                     catch (Exception)
                     {
-                        //Site4.WorkProcess.Process = WorkProcess.Ready;
+                        Site4.WorkProcess.Process = WorkProcess.Ready;
                         break;
                     }
                     if (d > 0)
@@ -982,7 +990,7 @@ namespace Micom_Inline
             listener.Stop();
         }
         // Site1 process
-        public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, TextBox lbROMcheckSum, Label lbRomNameSite, Label lbResult, string Response)
+        public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, string Response)
         {
             // get infor from site 
             Response = Response.Replace("\r\n", "\n").Replace("\r", "\n");
@@ -1014,6 +1022,8 @@ namespace Micom_Inline
                         case ElnecSite.PROG_IS_BUSY:
                             {
                                 lbSiteName.BackColor = busyColor;
+                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                                Site.WorkProcess.Process = WorkProcess.Ready;
                                 break;
                             }
                         case ElnecSite.GETDEVCHECKSUM_RESULT:
@@ -1056,8 +1066,9 @@ namespace Micom_Inline
                             }
                         case ElnecSite.OPRESULT:
                             {
-                                Site.WorkProcess.Process = WorkProcess.Interrup;
                                 Site.SITE_OPRESULT = data[1];
+                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                                Site.WorkProcess.Process = WorkProcess.Ready;
                                 break;
                             }
                         case ElnecSite.OPTYPE:
@@ -1078,47 +1089,46 @@ namespace Micom_Inline
                 // processing data
                 if (Site.SITE_OPTYPE == "5")
                 {
-                    if (Site.SITE_PROGRESS == "99" && Site.Command == ElnecSite.GET_PRG_STATUS)
+                    if (Site.SITE_PROGRESS == "99")
                     {
                         Site.WorkProcess.Process = WorkProcess.Interrup;
-                        // Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-                        // Site.WorkProcess.Process = WorkProcess.Ready;
                     }
-
                 }
+
                 if (Site.SITE_OPTYPE == "0")
                 {
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
 
-                if (Site.SITE_OPRESULT == ElnecSite.OPRESULT_FAIL || Site.SITE_OPRESULT == ElnecSite.OPRESULT_HWERR || Site.SITE_OPRESULT == ElnecSite.OPRESULT_NONE)
+                if (Site.SITE_OPTYPE == "10")
                 {
-                    if (Site.Command == ElnecSite.PROGRAM_DEVICE)
-                    {
-                        if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_NG)
-                        {
-                            Site.WorkProcess.Process = WorkProcess.Interrup;
-                            //Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-                            Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
-                            Site.Result = ElnecSite.RESULT_NG;
-                        }
-                        NG_label(lbResult);
-                    }
+                    Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                    Site.WorkProcess.Process = WorkProcess.Ready;
                 }
-                if (Site.SITE_OPRESULT == ElnecSite.OPRESULT_GOOD)
+
+                if (Site.SITE_DETAILE == "1")
                 {
-                    if (Site.Command == ElnecSite.PROGRAM_DEVICE)
+
+                    if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_OK)
                     {
-                        if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_OK)
-                        {
-                            Site.WorkProcess.Process = WorkProcess.Interrup;
-                            //Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-                            Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
-                            Site.Result = ElnecSite.RESULT_OK;
-                        }
-                        OK_label(lbResult);
+                        Site.WorkProcess.Process = WorkProcess.Interrup;
+                        Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
+                        Site.Result = ElnecSite.RESULT_OK;
                     }
+                    OK_label(lbResult);
                 }
+
+                if (Site.SITE_DETAILE == "999")
+                {
+                    if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_NG)
+                    {
+                        Site.WorkProcess.Process = WorkProcess.Interrup;
+                        Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
+                        Site.Result = ElnecSite.RESULT_NG;
+                    }
+                    NG_label(lbResult);
+                }
+
                 if (Site.SITE_LOADPRJRESULT == ElnecSite.FILE_LOAD_GOOD)
                 {
                     OK_label(lbRomNameSite);
@@ -1209,29 +1219,21 @@ namespace Micom_Inline
         }
         private void lbROMsellected_Click(object sender, EventArgs e)
         {
+            ROMsellectCounter++;
             switch (ROMsellectCounter)
             {
-                case 0:
-                    {
-                        ROMsellectCounter++;
-                        lbROMsellected.BackColor = Color.Black;
-                        break;
-                    }
                 case 1:
                     {
-                        ROMsellectCounter++;
                         lbROMsellected.BackColor = fistROMsellect;
                         break;
                     }
                 case 2:
                     {
-                        ROMsellectCounter++;
                         lbROMsellected.BackColor = secondROMsellect;
                         break;
                     }
                 case 3:
                     {
-                        ROMsellectCounter++;
                         lbROMsellected.BackColor = thirdROMsellect;
                         break;
                     }
@@ -1247,44 +1249,42 @@ namespace Micom_Inline
 
         private void lbSite1Sellect_Click(object sender, EventArgs e)
         {
-            if (ROMsellectCounter != 0)
+            if (ROMsellectCounter != 0 && lbSite1Sellect.BackColor != lbROMsellected.BackColor)
                 lbSite1Sellect.BackColor = lbROMsellected.BackColor;
+            else
+                lbSite1Sellect.BackColor = Color.Black;
+
         }
 
         private void lbSite2Sellect_Click(object sender, EventArgs e)
         {
-            if (ROMsellectCounter != 0)
+            if (ROMsellectCounter != 0 && lbSite2Sellect.BackColor != lbROMsellected.BackColor)
                 lbSite2Sellect.BackColor = lbROMsellected.BackColor;
+            else
+                lbSite2Sellect.BackColor = Color.Black;
         }
 
         private void lbSite3Sellect_Click(object sender, EventArgs e)
         {
-            if (ROMsellectCounter != 0)
+            if (ROMsellectCounter != 0 && lbSite3Sellect.BackColor != lbROMsellected.BackColor)
                 lbSite3Sellect.BackColor = lbROMsellected.BackColor;
+            else
+                lbSite3Sellect.BackColor = Color.Black;
         }
 
         private void lbSite4Sellect_Click(object sender, EventArgs e)
         {
-            if (ROMsellectCounter != 0)
+            if (ROMsellectCounter != 0 && lbSite4Sellect.BackColor != lbROMsellected.BackColor)
                 lbSite4Sellect.BackColor = lbROMsellected.BackColor;
-        }
-        private void btRomSite1_Click(object sender, EventArgs e)
-        {
-            openFileDialogSite1.InitialDirectory = _CONFIG.recentWorkPath;
-            openFileDialogSite1.ShowDialog();
+            else
+                lbSite4Sellect.BackColor = Color.Black;
         }
 
-        private void btRomSite2_Click(object sender, EventArgs e)
-        {
-            if (lbSite2Sellect.BackColor == deactiveColor)
-                openFileDialogSite1.InitialDirectory = _CONFIG.recentWorkPath;
-            openFileDialogSite2.ShowDialog();
-        }
 
 
         private void lbROM1checkSum_TextChanged(object sender, EventArgs e)
         {
-            model.ROMs[0].ROM_CHECKSUM = lbROM1checkSum.Text;
+            model.ROMs[0].ROM_CHECKSUM = lbRomNameSite1.Text;
         }
 
         private void lbROM2checkSum_TextChanged(object sender, EventArgs e)
@@ -1308,58 +1308,118 @@ namespace Micom_Inline
             _CONFIG.recentWorkPath = path;
             string[] paths = path.Split('\\');
 
+            lbStRomNameSite1.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
+            model.ROMs[0].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
+            model.ROMs[0].ROM_CHECKSUM = lbStRomNameSite1.Text;
 
-            if (lbSite1Sellect.BackColor == lbROMsellected.BackColor)
+            if (lbSite2Sellect.BackColor == lbSite1Sellect.BackColor)
             {
-                lbRomNameSite1.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
-                model.ROMs[0].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
-                model.ROMs[0].ROM_CHECKSUM = lbROM1checkSum.Text;
-            }
-            if (lbSite2Sellect.BackColor == lbROMsellected.BackColor)
-            {
-                lbRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
+                lbStRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
                 model.ROMs[1].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
-                model.ROMs[1].ROM_CHECKSUM = lbROM2checkSum.Text;
+                model.ROMs[1].ROM_CHECKSUM = lbStRomNameSite2.Text;
             }
-            if (lbSite3Sellect.BackColor == lbROMsellected.BackColor)
+            if (lbSite3Sellect.BackColor == lbSite1Sellect.BackColor)
             {
-                lbRomNameSite3.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
+                lbStRomNameSite3.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
                 model.ROMs[2].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
-                model.ROMs[2].ROM_CHECKSUM = lbROM2checkSum.Text;
+                model.ROMs[2].ROM_CHECKSUM = lbStRomNameSite3.Text;
             }
-            if (lbSite4Sellect.BackColor == lbROMsellected.BackColor)
+            if (lbSite4Sellect.BackColor == lbSite1Sellect.BackColor)
             {
-                lbRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
+                lbStRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
                 model.ROMs[3].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
+                model.ROMs[3].ROM_CHECKSUM = lbStRomNameSite4.Text;
             }
 
-
-            model.ModelName = lbRomNameSite1.Text;
-
-            if (lbRomNameSite1.Text != lbRomNameSite2.Text)
-            {
-                model.ModelName += "/" + lbRomNameSite2.Text;
-            }
-            else if (lbRomNameSite1.Text != lbRomNameSite3.Text)
-            {
-                model.ModelName += "/" + lbRomNameSite3.Text;
-            }
-            else if (lbRomNameSite1.Text != lbRomNameSite4.Text)
-            {
-                model.ModelName += "/" + lbRomNameSite4.Text;
-            }
-
-            lbModelName.Text = model.ModelName;
         }
         private void openFileDialogSite2_FileOk(object sender, CancelEventArgs e)
         {
-            _CONFIG.recentWorkPath = Path.GetDirectoryName(openFileDialogSite2.FileName);
-            lbRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
-            lbRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
+            string path = Path.GetDirectoryName(openFileDialogSite2.FileName);
+            _CONFIG.recentWorkPath = path;
+            string[] paths = path.Split('\\');
+
+            lbStRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
             model.ROMs[1].ROM_PATH = Path.GetDirectoryName(openFileDialogSite2.FileName) + "\\" + Path.GetFileName(openFileDialogSite2.FileName);
-            model.ROMs[3].ROM_PATH = Path.GetDirectoryName(openFileDialogSite2.FileName) + "\\" + Path.GetFileName(openFileDialogSite2.FileName);
+            model.ROMs[1].ROM_CHECKSUM = lbStRomNameSite2.Text;
+
+            if (lbSite1Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite1.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
+                model.ROMs[0].ROM_PATH = Path.GetDirectoryName(openFileDialogSite2.FileName) + "\\" + Path.GetFileName(openFileDialogSite2.FileName);
+                model.ROMs[0].ROM_CHECKSUM = lbStRomNameSite1.Text;
+            }
+            if (lbSite3Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite3.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
+                model.ROMs[2].ROM_PATH = Path.GetDirectoryName(openFileDialogSite2.FileName) + "\\" + Path.GetFileName(openFileDialogSite2.FileName);
+                model.ROMs[2].ROM_CHECKSUM = lbStRomNameSite3.Text;
+            }
+            if (lbSite4Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
+                model.ROMs[3].ROM_PATH = Path.GetDirectoryName(openFileDialogSite2.FileName) + "\\" + Path.GetFileName(openFileDialogSite2.FileName);
+                model.ROMs[3].ROM_CHECKSUM = lbStRomNameSite4.Text;
+            }
+        }
+        private void openFileDialogSite3_FileOk(object sender, CancelEventArgs e)
+        {
+            string path = Path.GetDirectoryName(openFileDialogSite3.FileName);
+            _CONFIG.recentWorkPath = path;
+            string[] paths = path.Split('\\');
+
+            lbStRomNameSite3.Text = Path.GetFileNameWithoutExtension(openFileDialogSite3.FileName);
+            model.ROMs[2].ROM_PATH = Path.GetDirectoryName(openFileDialogSite3.FileName) + "\\" + Path.GetFileName(openFileDialogSite3.FileName);
+            model.ROMs[2].ROM_CHECKSUM = lbStRomNameSite3.Text;
+
+            if (lbSite1Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite1.Text = Path.GetFileNameWithoutExtension(openFileDialogSite3.FileName);
+                model.ROMs[0].ROM_PATH = Path.GetDirectoryName(openFileDialogSite3.FileName) + "\\" + Path.GetFileName(openFileDialogSite3.FileName);
+                model.ROMs[0].ROM_CHECKSUM = lbStRomNameSite1.Text;
+            }
+            if (lbSite2Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite3.FileName);
+                model.ROMs[1].ROM_PATH = Path.GetDirectoryName(openFileDialogSite3.FileName) + "\\" + Path.GetFileName(openFileDialogSite3.FileName);
+                model.ROMs[1].ROM_CHECKSUM = lbStRomNameSite2.Text;
+            }
+            if (lbSite4Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite3.FileName);
+                model.ROMs[3].ROM_PATH = Path.GetDirectoryName(openFileDialogSite3.FileName) + "\\" + Path.GetFileName(openFileDialogSite3.FileName);
+                model.ROMs[3].ROM_CHECKSUM = lbStRomNameSite4.Text;
+            }
         }
 
+        private void openFileDialogSite4_FileOk(object sender, CancelEventArgs e)
+        {
+            string path = Path.GetDirectoryName(openFileDialogSite4.FileName);
+            _CONFIG.recentWorkPath = path;
+            string[] paths = path.Split('\\');
+
+            lbStRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite4.FileName);
+            model.ROMs[3].ROM_PATH = Path.GetDirectoryName(openFileDialogSite4.FileName) + "\\" + Path.GetFileName(openFileDialogSite4.FileName);
+            model.ROMs[3].ROM_CHECKSUM = lbStRomNameSite4.Text;
+
+            if (lbSite1Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite1.Text = Path.GetFileNameWithoutExtension(openFileDialogSite4.FileName);
+                model.ROMs[0].ROM_PATH = Path.GetDirectoryName(openFileDialogSite4.FileName) + "\\" + Path.GetFileName(openFileDialogSite4.FileName);
+                model.ROMs[0].ROM_CHECKSUM = lbStRomNameSite1.Text;
+            }
+            if (lbSite2Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite4.FileName);
+                model.ROMs[1].ROM_PATH = Path.GetDirectoryName(openFileDialogSite4.FileName) + "\\" + Path.GetFileName(openFileDialogSite4.FileName);
+                model.ROMs[1].ROM_CHECKSUM = lbStRomNameSite2.Text;
+            }
+            if (lbSite3Sellect.BackColor == lbSite2Sellect.BackColor)
+            {
+                lbStRomNameSite4.Text = Path.GetFileNameWithoutExtension(openFileDialogSite4.FileName);
+                model.ROMs[2].ROM_PATH = Path.GetDirectoryName(openFileDialogSite4.FileName) + "\\" + Path.GetFileName(openFileDialogSite4.FileName);
+                model.ROMs[2].ROM_CHECKSUM = lbStRomNameSite3.Text;
+            }
+        }
         private void Main_MouseMove(object sender, MouseEventArgs e)
         {
             btNameReview.Text = "Technical Team";
@@ -1442,7 +1502,17 @@ namespace Micom_Inline
 
             string[] config = File.ReadAllLines(openFileModel.FileName);
 
+            lbModelName.Text = Path.GetFileNameWithoutExtension(openFileModel.FileName);
+            model.ModelName = lbModelName.Text;
+            if (config[5] == "true") model.Layout.PCB1 = true; else if (config[5] == "false") model.Layout.PCB1 = false;
+            if (config[6] == "true") model.Layout.PCB2 = true; else if (config[6] == "false") model.Layout.PCB2 = false;
+            model.Layout.ArrayCount = Convert.ToInt32(config[7]);
+            model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
+
+            model.Layout.drawPCBLayout(pbLayout);
+
             tbHistory.AppendText("Load project to Elnect site..");
+
             model.ROMs[0].ROM_PATH = config[1].Remove(config[1].IndexOf('@'), config[1].Length - config[1].IndexOf('@'));
             lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
             lbROM1checkSum.Text = lbRomNameSite1.Text.Remove(0, lbRomNameSite1.Text.IndexOf('@') + 1);
@@ -1471,45 +1541,21 @@ namespace Micom_Inline
             timerReleaseBoard.Interval = 749;
             timerReleaseBoard.Start();
 
-            model.ModelName = lbRomNameSite1.Text.Remove(lbRomNameSite1.Text.Length - 5, 5);
             lbSite1Sellect.BackColor = activeColor;
             lbSite2Sellect.BackColor = activeColor;
             lbSite3Sellect.BackColor = activeColor;
             lbSite4Sellect.BackColor = activeColor;
 
-            if (lbRomNameSite1.Text != lbRomNameSite2.Text)
-            {
-                model.ModelName += "/" + lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.Length - 5, 5);
-                lbSite2Sellect.BackColor = deactiveColor;
-            }
-            if (lbRomNameSite1.Text != lbRomNameSite3.Text)
-            {
-                model.ModelName += "/" + lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.Length - 5, 5);
-                lbSite3Sellect.BackColor = deactiveColor;
-            }
-            if (lbRomNameSite1.Text != lbRomNameSite4.Text)
-            {
-                model.ModelName += "/" + lbRomNameSite4.Text.Remove(lbRomNameSite4.Text.Length - 5, 5);
-                lbSite4Sellect.BackColor = deactiveColor;
-            }
+            Site1.WorkProcess.ClearCMDQueue();
+            Site2.WorkProcess.ClearCMDQueue();
+            Site3.WorkProcess.ClearCMDQueue();
+            Site4.WorkProcess.ClearCMDQueue();
 
-            lbModelName.Text = model.ModelName;
-
-            Site1.WorkProcess.Process = WorkProcess.Interrup;
-            Site2.WorkProcess.Process = WorkProcess.Interrup;
-            Site3.WorkProcess.Process = WorkProcess.Interrup;
-            Site4.WorkProcess.Process = WorkProcess.Interrup;
 
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[0].ROM_PATH);
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[1].ROM_PATH);
             Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[2].ROM_PATH);
             Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[3].ROM_PATH);
-
-            for (int i = 5; i < config.Length; i++)
-            {
-                AMWsProcess.PutComandToFIFO(config[i]);
-                Console.WriteLine(config[i]);
-            }
         }
 
         public void openLastWokingModel(string path)
@@ -1517,30 +1563,30 @@ namespace Micom_Inline
             try
             {
                 string[] config = File.ReadAllLines(path);
-                lbRomNameSite1.Invoke(new MethodInvoker(delegate
+                lbROM1checkSum.Invoke(new MethodInvoker(delegate
                 {
-                    lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
-                    lbROM1checkSum.Text = lbRomNameSite1.Text.Split('_')[1].Replace(" ", string.Empty);
+                    lbROM1checkSum.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
+                    lbRomNameSite1.Text = lbROM1checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
                     lbRomNameSite2.Text = config[2].Split('\\')[config[2].Split('\\').Length - 1];
                     lbROM2checkSum.Text = lbRomNameSite2.Text.Split('_')[1].Replace(" ", string.Empty);
-                    lbRomNameSite3.Text = config[3].Split('\\')[config[3].Split('\\').Length - 1];
-                    lbROM3checkSum.Text = lbRomNameSite3.Text.Split('_')[1].Replace(" ", string.Empty);
-                    lbRomNameSite4.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
-                    lbROM4checkSum.Text = lbRomNameSite4.Text.Split('_')[1].Replace(" ", string.Empty);
+                    lbROM3checkSum.Text = config[3].Split('\\')[config[3].Split('\\').Length - 1];
+                    lbROM3checkSum.Text = lbROM3checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
+                    lbROM4checkSum.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
+                    lbROM4checkSum.Text = lbROM4checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
 
-                    model.ModelName = lbRomNameSite1.Text.Remove(lbRomNameSite1.Text.Length - 5, 5);
+                    model.ModelName = lbROM1checkSum.Text.Remove(lbROM1checkSum.Text.Length - 5, 5);
 
-                    if (lbRomNameSite1.Text != lbRomNameSite2.Text)
+                    if (lbROM1checkSum.Text != lbRomNameSite2.Text)
                     {
                         model.ModelName += "/" + lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.Length - 5, 5);
                     }
-                    else if (lbRomNameSite1.Text != lbRomNameSite3.Text)
+                    else if (lbROM1checkSum.Text != lbROM3checkSum.Text)
                     {
-                        model.ModelName += "/" + lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.Length - 5, 5);
+                        model.ModelName += "/" + lbROM3checkSum.Text.Remove(lbROM3checkSum.Text.Length - 5, 5);
                     }
-                    else if (lbRomNameSite1.Text != lbRomNameSite4.Text)
+                    else if (lbROM1checkSum.Text != lbROM4checkSum.Text)
                     {
-                        model.ModelName += "/" + lbRomNameSite4.Text.Remove(lbRomNameSite4.Text.Length - 5, 5);
+                        model.ModelName += "/" + lbROM4checkSum.Text.Remove(lbROM4checkSum.Text.Length - 5, 5);
                     }
 
                     lbModelName.Text = model.ModelName;
@@ -1665,9 +1711,7 @@ namespace Micom_Inline
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
 
-                        lbROMsellected.Click -= lbROMsellected_Click;
-                        btRomSite1.Click -= btRomSite1_Click;
-                        btRomSite2.Click -= btRomSite2_Click;
+                        lbROM.Click -= lbROMsellected_Click;
 
                         lbSite1Sellect.Click -= lbSite1Sellect_Click;
                         lbSite2Sellect.Click -= lbSite2Sellect_Click;
@@ -1680,11 +1724,6 @@ namespace Micom_Inline
                         lbSiteName3.Click -= lbSiteName3_Click;
                         lbSiteName4.Click -= lbSiteName4_Click;
                         siteCheckSumRefrest.Click -= siteCheckSumRefrest_Click;
-
-                        lbROM1checkSum.ReadOnly = true;
-                        lbROM2checkSum.ReadOnly = true;
-                        lbROM3checkSum.ReadOnly = true;
-                        lbROM4checkSum.ReadOnly = true;
 
                         break;
                     }
@@ -1698,9 +1737,7 @@ namespace Micom_Inline
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
 
-                        lbROMsellected.Click -= lbROMsellected_Click;
-                        btRomSite1.Click -= btRomSite1_Click;
-                        btRomSite2.Click -= btRomSite2_Click;
+                        lbROM.Click -= lbROMsellected_Click;
 
                         lbSite1Sellect.Click -= lbSite1Sellect_Click;
                         lbSite2Sellect.Click -= lbSite2Sellect_Click;
@@ -1713,11 +1750,6 @@ namespace Micom_Inline
                         lbSiteName3.Click -= lbSiteName3_Click;
                         lbSiteName4.Click -= lbSiteName4_Click;
                         siteCheckSumRefrest.Click -= siteCheckSumRefrest_Click;
-
-                        lbROM1checkSum.ReadOnly = false;
-                        lbROM2checkSum.ReadOnly = false;
-                        lbROM3checkSum.ReadOnly = false;
-                        lbROM4checkSum.ReadOnly = false;
 
                         break;
                     }
@@ -1731,9 +1763,7 @@ namespace Micom_Inline
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
 
-                        lbROMsellected.Click -= lbROMsellected_Click;
-                        btRomSite1.Click -= btRomSite1_Click;
-                        btRomSite2.Click -= btRomSite2_Click;
+                        lbROM.Click -= lbROMsellected_Click;
 
                         lbSite1Sellect.Click -= lbSite1Sellect_Click;
                         lbSite2Sellect.Click -= lbSite2Sellect_Click;
@@ -1747,11 +1777,6 @@ namespace Micom_Inline
                         lbSiteName4.Click -= lbSiteName4_Click;
                         siteCheckSumRefrest.Click -= siteCheckSumRefrest_Click;
 
-                        lbROM1checkSum.ReadOnly = false;
-                        lbROM2checkSum.ReadOnly = false;
-                        lbROM3checkSum.ReadOnly = false;
-                        lbROM4checkSum.ReadOnly = false;
-
                         btManual.Click += BtManual_Click;
                         btReportFolder.Click += BtReportFolder_Click;
                         btSetting.Click += BtSetting_Click;
@@ -1760,9 +1785,7 @@ namespace Micom_Inline
                         btUserBarcode.Click += btUserBarcode_Click;
                         btSkipBarcode.Click += btSkipBarcode_Click;
 
-                        lbROMsellected.Click += lbROMsellected_Click;
-                        btRomSite1.Click += btRomSite1_Click;
-                        btRomSite2.Click += btRomSite2_Click;
+                        lbROM.Click += lbROMsellected_Click;
 
                         lbSite1Sellect.Click += lbSite1Sellect_Click;
                         lbSite2Sellect.Click += lbSite2Sellect_Click;
@@ -1831,17 +1854,15 @@ namespace Micom_Inline
                 highlinedgwTestMode(3);
                 if (Port.IsOpen)
                     Port.Write(ResultRespoonse);
-
                 tbHistory.AppendText("DONE\r\n");
-                lbMachineStatus.Text = "Waitting";
-                lbMachineStatus.BackColor = activeColor;
                 timerReleaseBoard.Stop();
             }
             else if (timerReleaseBoard.Interval == 2500)
             {
                 if (lbSiteName1.BackColor != activeColor || lbSiteName2.BackColor != activeColor || lbSiteName3.BackColor != activeColor || lbSiteName4.BackColor != activeColor)
                 {
-                    tbHistory.Text = "Openning Elnect";
+                    tbHistory.AppendText("Openning Elnect");
+
                     Site1.OpenSite("1180-" + (ElnecAddress).ToString("d5"), RemoteIP, RemotePort);
                     Site2.OpenSite("1180-" + (ElnecAddress + 1).ToString("d5"), RemoteIP, RemotePort + 1);
                     Site3.OpenSite("1180-" + (ElnecAddress + 2).ToString("d5"), RemoteIP, RemotePort + 2);
@@ -1863,12 +1884,12 @@ namespace Micom_Inline
             }
             else if (timerReleaseBoard.Interval == 749)
             {
-                if (lbRomNameSite1.BackColor == Color.Green && lbRomNameSite2.BackColor == Color.Green && lbRomNameSite3.BackColor == Color.Green && lbRomNameSite4.BackColor == Color.Green)
+                if (lbROM1checkSum.BackColor == Color.Green && lbRomNameSite2.BackColor == Color.Green && lbROM3checkSum.BackColor == Color.Green && lbROM4checkSum.BackColor == Color.Green)
                 {
                     tbHistory.AppendText("success." + Environment.NewLine);
                     timerReleaseBoard.Stop();
                 }
-                else if (lbRomNameSite1.BackColor == Color.Red && lbRomNameSite2.BackColor == Color.Red && lbRomNameSite3.BackColor == Color.Red && lbRomNameSite4.BackColor == Color.Red)
+                else if (lbROM1checkSum.BackColor == Color.Red && lbRomNameSite2.BackColor == Color.Red && lbROM3checkSum.BackColor == Color.Red && lbROM4checkSum.BackColor == Color.Red)
                 {
                     tbHistory.AppendText("fail. Please check Elnec connect or your program path and try again." + Environment.NewLine);
                     timerReleaseBoard.Stop();
@@ -2084,6 +2105,7 @@ namespace Micom_Inline
 
         private void button2_Click(object sender, EventArgs e)
         {
+
             if (model.Layout.PCB2 && model.Layout.PCB1)
             {
                 Port.Write(Mode_2Array);
@@ -2094,6 +2116,73 @@ namespace Micom_Inline
                 Port.Write(Mode_1Array);
                 tbLog.AppendText("1 array had set.");
             }
+            if (tbCS2.Text != "")
+            {
+                model.ModelName = tbQRname.Text + "_" + tbCS1.Text + "-" + tbCS2.Text + "_" + tbVersion.Text;
+            }
+            else
+            {
+                model.ModelName = tbQRname.Text + "_" + tbCS1.Text + "_" + tbVersion.Text;
+            }
+
+
+
+            model.ROMs[0].ROM_CHECKSUM = tbStRomCsSite1.Text;
+            model.ROMs[1].ROM_CHECKSUM = tbStRomCsSite2.Text;
+            model.ROMs[2].ROM_CHECKSUM = tbStRomCsSite3.Text;
+            model.ROMs[3].ROM_CHECKSUM = tbStRomCsSite4.Text;
+
+            model.saveFileDialog.InitialDirectory = _CONFIG.recentModelPath;
+            model.SaveAsNew();
+
+            
+
+
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            openFileDialogSite1.InitialDirectory = _CONFIG.recentWorkPath;
+            openFileDialogSite1.ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            openFileDialogSite2.InitialDirectory = _CONFIG.recentWorkPath;
+            openFileDialogSite2.ShowDialog();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            openFileDialogSite3.InitialDirectory = _CONFIG.recentWorkPath;
+            openFileDialogSite3.ShowDialog();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            openFileDialogSite4.InitialDirectory = _CONFIG.recentWorkPath;
+            openFileDialogSite4.ShowDialog();
+        }
+
+        private void ElnecEndAdd_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btApplyConnectSettup_Click(object sender, EventArgs e)
+        {
+            _CONFIG.defaulBaudrate = Convert.ToInt32(BaudRate[cbbComBaurate.SelectedIndex]);
+            _CONFIG.defaulComPort = cbbComName.Text;
+            _CONFIG.ElnecStrAddress = Convert.ToInt32(ElnecStartAdd.Text);
+            _CONFIG.ElnecAddress = Convert.ToInt32(ElnecEndAdd.Text);
+            _CONFIG.recentModelPath = model.ModelPath;
+            _CONFIG.SaveConfig();
+        }
+
+        private void gbLog_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 
@@ -2400,9 +2489,8 @@ namespace Micom_Inline
         public void SaveAsNew()
         {
             this.saveFileDialog.FileOk += new CancelEventHandler(save);
-            saveFileDialog.ShowDialog();
-            //if (!Directory.Exists(PROGRAM_PATH + this.PCBcode)) Directory.CreateDirectory(PROGRAM_PATH + this.PCBcode);
-            //File.WriteAllText(PROGRAM_PATH + this.PCBcode + @"\" + this.ModelName + ".a_ms", configModel);
+            this.saveFileDialog.FileName = this.ModelName;
+            this.saveFileDialog.ShowDialog();
         }
     }
 
@@ -2424,7 +2512,7 @@ namespace Micom_Inline
         public void drawPCBLayout(PictureBox pbPCBLayout)
         {
 
-            int x = pbPCBLayout.Size.Width - 10;
+            int x = pbPCBLayout.Size.Width;
             int y = pbPCBLayout.Size.Height;
 
             int x1 = 0, x2 = 0;
@@ -2453,7 +2541,12 @@ namespace Micom_Inline
 
                 SolidBrush[] brush = { new SolidBrush(Color.FromArgb(30, 136, 221)), new SolidBrush(Color.Green), new SolidBrush(Color.Red) };
                 SolidBrush brush_char = new SolidBrush(Color.White);
-                Font nameFont = new Font("Microsoft YaHei UI", y1 / 2, FontStyle.Bold);
+
+                int charHeight = y1 / 2;
+                if (x / (2 * this.XasixArrayCount) < y1)
+                    charHeight = x / (4 * this.XasixArrayCount);
+
+                Font nameFont = new Font("Microsoft YaHei UI", charHeight, FontStyle.Bold);
 
                 int nameCounter = 0;
                 if (PCB1 || PCB2)
@@ -2467,15 +2560,15 @@ namespace Micom_Inline
                     {
                         if (PCB2)
                         {
-                            g.FillRectangle(brush[1], (i - 1) * (x2 / this.XasixArrayCount) + 3, (j - 1) * y2 + 3, (x2 / this.XasixArrayCount) - 3, y2 - 3);
-                            g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, (x2 / (2 * this.XasixArrayCount)) + (i - 1) * (x2 / this.XasixArrayCount) - y2 / 3, (j - 1) * y2 + 3);
+                            g.FillRectangle(brush[0], (i - 1) * (x2 / this.XasixArrayCount), (j - 1) * y2, x2 / this.XasixArrayCount - 3, y2 - 3);
+                            g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, (x2 / (2 * this.XasixArrayCount)) + (i - 1) * (x2 / this.XasixArrayCount) - 3 - charHeight / (float)1.618, (2 * j - 1) * (y2 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
 
                         if (PCB1)
                         {
-                            g.FillRectangle(brush[2], (i - 1) * (x1 / this.XasixArrayCount) + x2 + 13, (j - 1) * y1 + 3, (x1 / this.XasixArrayCount) - 3, y1 - 3);
-                            g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - y1 / 3, (j - 1) * y1 + 3);
+                            g.FillRectangle(brush[0], (i - 1) * ( 3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
+                            g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - charHeight / (float)1.618, (2 * j - 1) * (y1 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
                     }
@@ -2499,8 +2592,6 @@ namespace Micom_Inline
         public string ROM_CHECKSUM = "";
         public string ROM_VERSTION = "";
 
-
-
         public ROM() { }
     }
 
@@ -2516,6 +2607,7 @@ namespace Micom_Inline
         public string defaulComPort = "COM 1";
         public int defaulBaudrate = 9600;
 
+        public int ElnecStrAddress = 1180;
         public int ElnecAddress = 11227;
 
         public string ADMIN_ACC = "admin";
@@ -2541,7 +2633,9 @@ namespace Micom_Inline
                   + "defaultADMIN_ACC@" + this.ADMIN_ACC + Environment.NewLine
                   + "defaultADMIN_PASS@" + this.ADMIN_PASS + Environment.NewLine
                   + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
-                  + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine;
+                  + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
+                  + "ElnecAddress@" + this.ElnecAddress + Environment.NewLine
+                  + "ElnecStrAddress@" + this.ElnecStrAddress + Environment.NewLine;
                 File.WriteAllText(configPath + "config.cfg", config);
             }
             else
@@ -2598,6 +2692,16 @@ namespace Micom_Inline
                                 this.MANAGER_PASS = configData[1];
                                 break;
                             }
+                        case "ElnecStrAddress":
+                            {
+                                this.ElnecStrAddress = Convert.ToInt32(configData[1]);
+                                break;
+                            }
+                        case "ElnecAddress":
+                            {
+                                this.ElnecAddress = Convert.ToInt32(configData[1]);
+                                break;
+                            }
                     }
                 }
             }
@@ -2615,7 +2719,10 @@ namespace Micom_Inline
                   + "defaultADMIN_ACC@" + this.ADMIN_ACC + Environment.NewLine
                   + "defaultADMIN_PASS@" + this.ADMIN_PASS + Environment.NewLine
                   + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
-                  + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine;
+                  + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
+                  + "ElnecAddress@" + this.ElnecAddress.ToString() + Environment.NewLine
+                  + "ElnecStrAddress@" + this.ElnecStrAddress.ToString() + Environment.NewLine;
+
             File.WriteAllText(configPath + "config.cfg", config);
         }
 
@@ -2633,17 +2740,16 @@ namespace Micom_Inline
                 int line = File.ReadAllLines(path + today_txt + ".txt").Length;
                 using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
                 {
-                    string reportData = "L" + line.ToString() + "|" + Result + "|" + model + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
+                    string reportData = "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
                     sw.WriteLine(reportData);
                 }
-
             }
             else
             {
                 using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
                 {
-                    string reportData = "STT|" + "Final result|" + "Model " + "|" + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
-                    reportData += "L" + "1" + "|" + Result + "|" + model + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
+                    string reportData = "STT|" + "Final result|" + "Model " + "|" + "Bar code " + "|" + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
+                    reportData += "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
                     sw.WriteLine(reportData);
                 }
             }
@@ -2665,7 +2771,6 @@ namespace Micom_Inline
 
         public int Statitis_OK;
         public int Statitis_NG;
-
 
         public int WorkingSite = 0;
 
@@ -2716,7 +2821,6 @@ namespace Micom_Inline
             else
                 return -1;
         }
-
         public void ClearCMDQueue()
         {
             for (int i = 0; i < this.ComandQueue.Length - 1; i++)
