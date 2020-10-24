@@ -51,7 +51,7 @@ namespace Micom_Inline
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
         public int ElnecAddress = 0;
-        public int TCP_TimeOut = 1000;
+        public int TCP_TimeOut = 3000;
 
         //arduino
         const int Cmd_startValue = 64;
