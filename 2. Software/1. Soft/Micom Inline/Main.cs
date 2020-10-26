@@ -579,9 +579,20 @@ namespace Micom_Inline
                     ResultRespoonse = Result_okPBA;
                 }
                 else if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
-                    ResultRespoonse = Result_okPBA1;
+                {
+                    if (model.Layout.PCB1 && model.Layout.PCB2)
+                        ResultRespoonse = Result_okPBA1;
+                    else
+                        ResultRespoonse = Result_ngPBA;
+                }
+                    
                 else if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                    ResultRespoonse = Result_okPBA2;
+                {
+                    if (model.Layout.PCB1 && model.Layout.PCB2)
+                        ResultRespoonse = Result_okPBA2;
+                    else
+                        ResultRespoonse = Result_ngPBA;
+                }
 
                 else if ((Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG) && (Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
                 {
@@ -590,16 +601,25 @@ namespace Micom_Inline
                     final = "FAIL";
                 }
 
+                if (model.Layout.PCB1 && model.Layout.PCB2)
+                {
+                    if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
+                        AMWsProcess.Statitis_OK += 1;
+                    else
+                        AMWsProcess.Statitis_NG += 1;
 
-                if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
-                    AMWsProcess.Statitis_OK += 1;
+                    if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                        AMWsProcess.Statitis_OK += 1;
+                    else
+                        AMWsProcess.Statitis_NG += 1;
+                }
                 else
-                    AMWsProcess.Statitis_NG += 1;
-
-                if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                    AMWsProcess.Statitis_OK += 1;
-                else
-                    AMWsProcess.Statitis_NG += 1;
+                {
+                    if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                        AMWsProcess.Statitis_OK += 1;
+                    else
+                        AMWsProcess.Statitis_NG += 1;
+                }
 
                 _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
 
@@ -2134,17 +2154,6 @@ namespace Micom_Inline
 
         private void button2_Click(object sender, EventArgs e)
         {
-
-            if (model.Layout.PCB2 && model.Layout.PCB1)
-            {
-                Port.Write(Mode_2Array);
-                tbLog.AppendText("2 array had set.");
-            }
-            else if (model.Layout.PCB2 && !model.Layout.PCB1 || !model.Layout.PCB2 && model.Layout.PCB1)
-            {
-                Port.Write(Mode_1Array);
-                tbLog.AppendText("1 array had set.");
-            }
             if (tbCS2.Text != "")
             {
                 model.ModelName = tbQRname.Text + "_" + tbCS1.Text + "-" + tbCS2.Text + "_" + tbVersion.Text;
@@ -2155,7 +2164,6 @@ namespace Micom_Inline
             }
 
 
-
             model.ROMs[0].ROM_CHECKSUM = tbStRomCsSite1.Text;
             model.ROMs[1].ROM_CHECKSUM = tbStRomCsSite2.Text;
             model.ROMs[2].ROM_CHECKSUM = tbStRomCsSite3.Text;
@@ -2163,11 +2171,6 @@ namespace Micom_Inline
 
             model.saveFileDialog.InitialDirectory = _CONFIG.recentModelPath;
             model.SaveAsNew();
-
-
-
-
-
         }
 
         private void button3_Click(object sender, EventArgs e)
