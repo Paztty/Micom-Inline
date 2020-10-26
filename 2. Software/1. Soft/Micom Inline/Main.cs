@@ -566,78 +566,161 @@ namespace Micom_Inline
         }
         public void FinalTestLabel()
         {
-            if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
+            if (model.Layout.PCB1 && !model.Layout.PCB2)
+                if (model.Layout.MicomNumber == 1)
+                {
+                    {
+                        if (Site1.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY)
+                        {
+                            string now = DateTime.Now.ToString();
+                            string final = "";
+                            if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
+                            {
+                                AMWsProcess.Statitis_OK += 1;
+                                lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
+                                final = "OK";
+                                ResultRespoonse = Result_okPBA;
+                            }
+                            else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG)
+                            {
+                                AMWsProcess.Statitis_NG += 1;
+                                ResultRespoonse = Result_ngPBA;
+                                lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
+                                final = "FAIL";
+                            }
+
+                            _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
+
+                            tbHistory.Invoke(new MethodInvoker(delegate
+                            {
+                                tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                                Console.WriteLine(ResultRespoonse);
+                                CharCircle = 1;
+                                timerUpdateChar.Start();
+                                lastWorkingTime = DateTime.Now;
+                                highlinedgwTestMode(2);
+                                timerReleaseBoard.Interval = 1000;
+                                timerReleaseBoard.Start();
+                                Site1.ClearSiteParam();
+                                Site2.ClearSiteParam();
+                                Site3.ClearSiteParam();
+                                Site4.ClearSiteParam();
+                            }));
+                        }
+                    }
+                }
+            else if(model.Layout.MicomNumber == 2)
+                {
+                    if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
+                    {
+                        string now = DateTime.Now.ToString();
+                        string final = "";
+                        //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                        if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                        {
+                            AMWsProcess.Statitis_OK += 1;
+                            lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
+                            final = "OK";
+                            ResultRespoonse = Result_okPBA;
+                        }
+                        else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG) 
+                        {
+                            AMWsProcess.Statitis_NG += 1;
+                            ResultRespoonse = Result_ngPBA;
+                            lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
+                            final = "FAIL";
+                        }
+
+                        _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
+
+                        tbHistory.Invoke(new MethodInvoker(delegate
+                        {
+                            tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                            Console.WriteLine(ResultRespoonse);
+                            CharCircle = 1;
+                            timerUpdateChar.Start();
+                            lastWorkingTime = DateTime.Now;
+                            highlinedgwTestMode(2);
+                            timerReleaseBoard.Interval = 1000;
+                            timerReleaseBoard.Start();
+                            Site1.ClearSiteParam();
+                            Site2.ClearSiteParam();
+                            Site3.ClearSiteParam();
+                            Site4.ClearSiteParam();
+                        }));
+                    }
+                }
+
+            if (model.Layout.PCB1 && model.Layout.PCB2)
             {
-                string now = DateTime.Now.ToString();
-                string final = "";
-                //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
                 {
-                    AMWsProcess.Statitis_OK += 2;
-                    lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
-                    final = "OK";
-                    ResultRespoonse = Result_okPBA;
-                }
-                else if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
-                {
-                    if (model.Layout.PCB1 && model.Layout.PCB2)
-                        ResultRespoonse = Result_okPBA1;
-                    else
-                        ResultRespoonse = Result_ngPBA;
-                }
-                    
-                else if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                {
-                    if (model.Layout.PCB1 && model.Layout.PCB2)
-                        ResultRespoonse = Result_okPBA2;
-                    else
-                        ResultRespoonse = Result_ngPBA;
-                }
-
-                else if ((Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG) && (Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
-                {
-                    ResultRespoonse = Result_ngPBA;
-                    lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
-                    final = "FAIL";
-                }
-
-                if (model.Layout.PCB1 && model.Layout.PCB2)
-                {
-                    if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
-                        AMWsProcess.Statitis_OK += 1;
-                    else
-                        AMWsProcess.Statitis_NG += 1;
-
-                    if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                        AMWsProcess.Statitis_OK += 1;
-                    else
-                        AMWsProcess.Statitis_NG += 1;
-                }
-                else
-                {
+                    string now = DateTime.Now.ToString();
+                    string final = "";
+                    //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                     if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
-                        AMWsProcess.Statitis_OK += 1;
+                    {
+                        AMWsProcess.Statitis_OK += 2;
+                        lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
+                        final = "OK";
+                        ResultRespoonse = Result_okPBA;
+                    }
+                    else if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
+                    {
+                        ResultRespoonse = Result_okPBA1;
+                    }
+
+                    else if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                    {
+                        ResultRespoonse = Result_okPBA2;
+                    }
+
+                    else if ((Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG) && (Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG))
+                    {
+                        ResultRespoonse = Result_ngPBA;
+                        lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
+                        final = "FAIL";
+                    }
+
+                    if (model.Layout.PCB1 && model.Layout.PCB2)
+                    {
+                        if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
+                            AMWsProcess.Statitis_OK += 1;
+                        else
+                            AMWsProcess.Statitis_NG += 1;
+
+                        if (Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                            AMWsProcess.Statitis_OK += 1;
+                        else
+                            AMWsProcess.Statitis_NG += 1;
+                    }
                     else
-                        AMWsProcess.Statitis_NG += 1;
+                    {
+                        if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                            AMWsProcess.Statitis_OK += 1;
+                        else
+                            AMWsProcess.Statitis_NG += 1;
+                    }
+
+                    _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
+
+                    tbHistory.Invoke(new MethodInvoker(delegate
+                    {
+                        tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                        Console.WriteLine(ResultRespoonse);
+                        CharCircle = 1;
+                        timerUpdateChar.Start();
+                        lastWorkingTime = DateTime.Now;
+                        highlinedgwTestMode(2);
+                        timerReleaseBoard.Interval = 1000;
+                        timerReleaseBoard.Start();
+                        Site1.ClearSiteParam();
+                        Site2.ClearSiteParam();
+                        Site3.ClearSiteParam();
+                        Site4.ClearSiteParam();
+                    }));
                 }
 
-                _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-
-                tbHistory.Invoke(new MethodInvoker(delegate
-                {
-                    tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
-                    Console.WriteLine(ResultRespoonse);
-                    CharCircle = 1;
-                    timerUpdateChar.Start();
-                    lastWorkingTime = DateTime.Now;
-                    highlinedgwTestMode(2);
-                    timerReleaseBoard.Interval = 2000;
-                    timerReleaseBoard.Start();
-                    Site1.ClearSiteParam();
-                    Site2.ClearSiteParam();
-                    Site3.ClearSiteParam();
-                    Site4.ClearSiteParam();
-                }));
             }
         }
 
@@ -1531,14 +1614,16 @@ namespace Micom_Inline
             lbModelName.Text = Path.GetFileNameWithoutExtension(openFileModel.FileName);
 
             model.ModelName = lbModelName.Text;
-            if (config[5] == "true") model.Layout.PCB1 = true; else if (config[5] == "false") model.Layout.PCB1 = false;
-            if (config[6] == "true") model.Layout.PCB2 = true; else if (config[6] == "false") model.Layout.PCB2 = false;
+            if (config[5] == "True") model.Layout.PCB1 = true; else if (config[5] == "False") model.Layout.PCB1 = false;
+            if (config[6] == "True") model.Layout.PCB2 = true; else if (config[6] == "False") model.Layout.PCB2 = false;
 
             model.Layout.ArrayCount = Convert.ToInt32(config[7]);
             model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
+            model.Layout.MicomNumber = Convert.ToInt32(config[9]);
 
             model.Layout.drawPCBLayout(pbLayout);
 
+            tbHistory.AppendText("Load model config: PCB 1: " + model.Layout.PCB1.ToString() + "    PCB 2: " + model.Layout.PCB2.ToString() + "   Micom count: " + model.Layout.MicomNumber.ToString() + Environment.NewLine);
             tbHistory.AppendText("Load project to Elnect site..");
 
             if (Port.IsOpen)
@@ -2142,7 +2227,7 @@ namespace Micom_Inline
 
             if (model.Layout.ArrayCount > PCBarrayCount.Maximum)
                 model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Maximum);
-
+            model.Layout.MicomNumber = Convert.ToInt32(MicomArray.Value);
             model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
             model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
             model.Layout.drawPCBLayout(pbPCBLayout);
@@ -2538,7 +2623,9 @@ namespace Micom_Inline
                                 new ROM(),
                                 new ROM()};
 
-        public PCB_Model() { }
+        public PCB_Model() {
+            this.saveFileDialog.DefaultExt = "a_ms";
+        }
         public void save(object sender, System.EventArgs e)
         {
             string configModel =
@@ -2550,8 +2637,9 @@ namespace Micom_Inline
                 + this.Layout.PCB1.ToString() + Environment.NewLine
                 + this.Layout.PCB2.ToString() + Environment.NewLine
                 + this.Layout.ArrayCount.ToString() + Environment.NewLine
-                + this.Layout.XasixArrayCount.ToString() + Environment.NewLine;
-            saveFileDialog.DefaultExt = "a_ms";
+                + this.Layout.XasixArrayCount.ToString() + Environment.NewLine
+                + this.Layout.MicomNumber.ToString() + Environment.NewLine;
+            
             File.WriteAllText(saveFileDialog.FileName, configModel);
         }
 
@@ -2568,8 +2656,9 @@ namespace Micom_Inline
         public bool PCB1;
         public bool PCB2;
         public int ArrayCount, XasixArrayCount;
+        public int MicomNumber = 1;
 
-        public char[] Name = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+        public string[] Name = new string[] { "A", "B", "C", "D", "E", "F", "G", "H" };
 
         public Layout()
         {
@@ -2577,6 +2666,7 @@ namespace Micom_Inline
             this.PCB2 = true;
             this.ArrayCount = 2;
             this.XasixArrayCount = 1;
+            this.MicomNumber = 1;
         }
         public void drawPCBLayout(PictureBox pbPCBLayout)
         {
@@ -2605,6 +2695,19 @@ namespace Micom_Inline
             }
             if (x > 50 && y > 50)
             {
+                if (this.MicomNumber == 2)
+                {
+                    this.Name[0] = "A/B";
+                    this.Name[1] = "C/D";
+                }
+                else
+                if (this.MicomNumber == 1)
+                {
+                    this.Name[0] = "A";
+                    this.Name[1] = "C";
+                }
+
+
                 Bitmap custormChart = new Bitmap(x, y);
                 Graphics g = Graphics.FromImage(custormChart);
 
@@ -2630,14 +2733,14 @@ namespace Micom_Inline
                         if (PCB2)
                         {
                             g.FillRectangle(brush[0], (i - 1) * (x2 / this.XasixArrayCount), (j - 1) * y2, x2 / this.XasixArrayCount - 3, y2 - 3);
-                            g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, (x2 / (2 * this.XasixArrayCount)) + (i - 1) * (x2 / this.XasixArrayCount) - 3 - charHeight / (float)1.618, (2 * j - 1) * (y2 / 2) - charHeight);
+                            g.DrawString(this.Name[nameCounter], nameFont, brush_char, (x2 / (2 * this.XasixArrayCount)) + (i - 1) * (x2 / this.XasixArrayCount) - 3 - this.Name[nameCounter].Length * charHeight / (float)1.8, (2 * j - 1) * (y2 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
 
                         if (PCB1)
                         {
                             g.FillRectangle(brush[0], (i - 1) * (3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
-                            g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - charHeight / (float)1.618, (2 * j - 1) * (y1 / 2) - charHeight);
+                            g.DrawString(this.Name[nameCounter], nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - this.Name[nameCounter].Length * charHeight / (float)1.8, (2 * j - 1) * (y1 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
                     }
