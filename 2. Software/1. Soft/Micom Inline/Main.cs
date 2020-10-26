@@ -152,6 +152,7 @@ namespace Micom_Inline
 
             lastWorkingTime = DateTime.Now;
             timerUpdateChar.Start();
+            timerCheckCom.Start();
             checkPermision();
             SkipBarCode();
 
@@ -174,8 +175,7 @@ namespace Micom_Inline
             }
             catch (Exception)
             {
-                MessageBox.Show("Not find any machine. Check again.");
-                tsslbCOM.Text = "Com not found               ";
+                tsslbCOM.Text = "COM ERROR               ";
             }
         }
 
@@ -400,9 +400,7 @@ namespace Micom_Inline
                     if (queryObj["Caption"].ToString().Contains("CH340") || queryObj["Caption"].ToString().Contains("Arduino") || queryObj["Caption"].ToString().Contains("Serial"))
                     {
                         ComName = queryObj["Caption"].ToString();
-                        Console.WriteLine(ComName);
                         ComName = ComName.Substring(ComName.LastIndexOf('(') + 1, ComName.LastIndexOf(')') - 1 - ComName.LastIndexOf('('));
-                        Console.WriteLine(ComName);
                         break;
                     }
                 }
@@ -422,31 +420,25 @@ namespace Micom_Inline
             if (lbAutoManual.Text == "Auto mode")
             {
                 lbAutoManual.Text = "IDE";
-                lbAutoManual.ForeColor = Color.Black;
+                lbAutoManual.ForeColor = Color.White;
             }
             else
             {
                 try
                 {
-                    Port.PortName = SearchCom();
                     tsslbCOM.Text = Port.PortName + "                ";
                     if (!Port.IsOpen) Port.Open();
                 }
-                catch (Exception) { }
+                catch (Exception) {
+                    tsslbCOM.Text = "COM ERROR                     ";
+                }
 
                 lbAutoManual.Text = "Auto mode";
                 lbAutoManual.ForeColor = activeColor;
-                try
-                {
-
-
-                    btSite1Open.Text = "not used";
-                    btSite2Open.Text = "not used";
-                    btSite3Open.Text = "not used";
-                    btSite4Open.Text = "not used";
-
-                }
-                catch (Exception) { }
+                btSite1Open.Text = "not used";
+                btSite2Open.Text = "not used";
+                btSite3Open.Text = "not used";
+                btSite4Open.Text = "not used";
             }
 
 
@@ -2200,6 +2192,31 @@ namespace Micom_Inline
 
         private void gbLog_Enter(object sender, EventArgs e)
         {
+
+        }
+
+        private void timerCheckCom_Tick(object sender, EventArgs e)
+        {
+            if (Port.IsOpen)
+            {
+                tsslbCOM.ForeColor = Color.White;
+                tsslbCOM.Text = Port.PortName + "                        ";
+            }
+            else
+            {
+                try
+                {
+                    tsslbCOM.ForeColor = Color.White;
+                    Port.PortName = SearchCom();
+                    tsslbCOM.Text = Port.PortName + "                        ";
+                }
+                catch (Exception)
+                {
+                    tsslbCOM.ForeColor = Color.Red;
+                    tsslbCOM.Text = "COM ERROR               ";
+                }
+
+            }
 
         }
     }
