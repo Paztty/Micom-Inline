@@ -579,12 +579,12 @@ namespace Micom_Inline
                                 AMWsProcess.Statitis_OK += 1;
                                 lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
                                 final = "OK";
-                                ResultRespoonse = Result_okPBA;
+                                ResultRespoonse = Result_okPBA1;
                             }
                             else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG)
                             {
                                 AMWsProcess.Statitis_NG += 1;
-                                ResultRespoonse = Result_ngPBA;
+                                ResultRespoonse = Result_okPBA2;
                                 lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
                                 final = "FAIL";
                             }
@@ -621,12 +621,12 @@ namespace Micom_Inline
                             AMWsProcess.Statitis_OK += 1;
                             lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
                             final = "OK";
-                            ResultRespoonse = Result_okPBA;
+                            ResultRespoonse = Result_okPBA1;
                         }
                         else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG) 
                         {
                             AMWsProcess.Statitis_NG += 1;
-                            ResultRespoonse = Result_ngPBA;
+                            ResultRespoonse = Result_okPBA2;
                             lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
                             final = "FAIL";
                         }
