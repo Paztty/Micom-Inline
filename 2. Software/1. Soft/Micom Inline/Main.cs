@@ -144,11 +144,10 @@ namespace Micom_Inline
 
             pnLogin.Visible = false;
             tbHistory.AppendText("<<<<<< AUTO MICOM WRITING SYSTEM >>>>>>" + Environment.NewLine);
-            //Permissions = OP;
             tsslPermissions.Text = "User: " + Permissions;
 
-            gbLog.Visible = true;
-            gbTestHistory.Visible = false;
+            gbLog.Visible = false;
+            gbTestHistory.Visible = true;
             gbSetting.Visible = false;
 
             lastWorkingTime = DateTime.Now;
@@ -769,7 +768,7 @@ namespace Micom_Inline
                         Site1.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
-                else if (Site1.WorkProcess.Process == WorkProcess.Interrup)
+                if (Site1.WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate
@@ -777,7 +776,7 @@ namespace Micom_Inline
                         if (tbLog.TextLength > 1000000) tbLog.Clear();
                         tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site1: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine);
                     }));
-
+                    Site1.WorkProcess.Interrup = false;
                 }
 
                 while (true)
@@ -834,11 +833,11 @@ namespace Micom_Inline
                     }
                 }
 
-                if (Site2.WorkProcess.Process == WorkProcess.Interrup)
+                if (Site2.WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
-     
+                    Site2.WorkProcess.Interrup = false;
                 }
 
                 while (true)
@@ -895,10 +894,11 @@ namespace Micom_Inline
                     }
                 }
 
-                if (Site3.WorkProcess.Process == WorkProcess.Interrup)
+                if (Site3.WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
+                    Site3.WorkProcess.Interrup = false;
                 }
 
                 while (true)
@@ -954,11 +954,11 @@ namespace Micom_Inline
                         Site4.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
-
-                if (Site4.WorkProcess.Process == WorkProcess.Interrup)
+                if (Site4.WorkProcess.Interrup)
                 {
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
+                    Site4.WorkProcess.Interrup = false;
                 }
                 while (true)
                 {
@@ -982,9 +982,6 @@ namespace Micom_Inline
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
                             tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         }));
-
-
-
                     }
                 }
                 socket.Close();
@@ -1089,7 +1086,7 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRESS == "99" || Site.SITE_PROGRESS == "100")
                     {
-                        Site.WorkProcess.Process = WorkProcess.Interrup;
+                        Site.WorkProcess.Interrup = true;
                         Site.SITE_PROGRESS = "";
                     }
                 }
@@ -1104,12 +1101,11 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_OK)
                     {
-                        Site.WorkProcess.Process = WorkProcess.Interrup;
                         Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
                         Site.Result = ElnecSite.RESULT_OK;
                     }
                     OK_label(lbResult);
-                    Site.WorkProcess.Process = WorkProcess.Interrup;
+                    Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
 
@@ -1117,12 +1113,11 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_NG)
                     {
-                        Site.WorkProcess.Process = WorkProcess.Interrup;
                         Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
                         Site.Result = ElnecSite.RESULT_NG;
                     }
                     NG_label(lbResult);
-                    Site.WorkProcess.Process = WorkProcess.Interrup;
+                    Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
 
@@ -1508,14 +1503,22 @@ namespace Micom_Inline
             if (config[5] == "true") model.Layout.PCB1 = true; else if (config[5] == "false") model.Layout.PCB1 = false;
             if (config[6] == "true") model.Layout.PCB2 = true; else if (config[6] == "false") model.Layout.PCB2 = false;
 
-            if (model.Layout.PCB1 == true && model.Layout.PCB2 == false)
+            if (Port.IsOpen)
             {
-                Port.Write(Mode_1Array);
+                if (model.Layout.PCB1 == true && model.Layout.PCB2 == false)
+                {
+                    Port.Write(Mode_1Array);
+                }
+                else if (model.Layout.PCB1 == true && model.Layout.PCB2 == true)
+                {
+                    Port.Write(Mode_2Array);
+                }
             }
-            else if (model.Layout.PCB1 == true && model.Layout.PCB2 == true)
+            else
             {
-                Port.Write(Mode_2Array);
+                MessageBox.Show("Com not connect, Array setting maybe not apply.");
             }
+
 
             model.Layout.ArrayCount = Convert.ToInt32(config[7]);
             model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
@@ -1562,6 +1565,10 @@ namespace Micom_Inline
             Site3.WorkProcess.ClearCMDQueue();
             Site4.WorkProcess.ClearCMDQueue();
 
+            Site1.WorkProcess.Interrup = true;
+            Site2.WorkProcess.Interrup = true;
+            Site3.WorkProcess.Interrup = true;
+            Site4.WorkProcess.Interrup = true;
 
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[0].ROM_PATH);
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[1].ROM_PATH);
@@ -1602,10 +1609,10 @@ namespace Micom_Inline
 
                     lbModelName.Text = model.ModelName;
                 }));
-                Site1.WorkProcess.Process = WorkProcess.Interrup;
-                Site2.WorkProcess.Process = WorkProcess.Interrup;
-                Site3.WorkProcess.Process = WorkProcess.Interrup;
-                Site4.WorkProcess.Process = WorkProcess.Interrup;
+                Site1.WorkProcess.Interrup = true;
+                Site2.WorkProcess.Interrup = true;
+                Site3.WorkProcess.Interrup = true;
+                Site4.WorkProcess.Interrup = true;
 
                 Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[1]);
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[2]);
@@ -2778,7 +2785,6 @@ namespace Micom_Inline
         public const int Start = 1;
         public const int Stop = 2;
         public const int Processing = 3;
-        public const int Interrup = 4;
 
         public int Statitis_OK;
         public int Statitis_NG;
@@ -2786,6 +2792,7 @@ namespace Micom_Inline
         public int WorkingSite = 0;
 
         public int Process = 0;
+        public bool Interrup = false;
 
         public string[] ComandQueue = new string[100];
 
