@@ -93,6 +93,11 @@ void serialEvent(){
       Serial.println(String_getOK);
       State_sendStart = 0;
       State_sendQR = 0;
+
+
+
+
+      
     }
     else if (compareString(Data_com, String_getNG)) {
       if (State_sendStart == 1) Serial.println(Data_sendTest);
