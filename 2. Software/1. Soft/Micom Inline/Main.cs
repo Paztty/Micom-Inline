@@ -193,7 +193,6 @@ namespace Micom_Inline
                 }));
                 Thread.Sleep(1000);
             }
-
         }
 
 
@@ -452,8 +451,6 @@ namespace Micom_Inline
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
             btDataLog.BackColor = Color.FromArgb(30, 30, 30);
-
-            Port.Close();
 
             lbAutoManual.Text = "Manual mode";
             lbAutoManual.ForeColor = deactiveColor;
@@ -1862,9 +1859,9 @@ namespace Micom_Inline
             if (timerReleaseBoard.Interval == 2000)
             {
                 highlinedgwTestMode(3);
-                if (Port.IsOpen)
+                if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
                     Port.Write(ResultRespoonse);
-                tbHistory.AppendText(ResultRespoonse + "DONE\r\n");
+                tbHistory.AppendText(ResultRespoonse + "           DONE\r\n");
                 timerReleaseBoard.Stop();
             }
             else if (timerReleaseBoard.Interval == 2500)
@@ -2209,6 +2206,7 @@ namespace Micom_Inline
                     tsslbCOM.ForeColor = Color.White;
                     Port.PortName = SearchCom();
                     tsslbCOM.Text = Port.PortName + "                        ";
+                    Port.Open();
                 }
                 catch (Exception)
                 {
