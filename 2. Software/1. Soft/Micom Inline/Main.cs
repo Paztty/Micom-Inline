@@ -269,7 +269,7 @@ namespace Micom_Inline
                     Port.Write(String_getOK);
                     Thread senQRresult = new Thread(SendOKQR);
                     senQRresult.Start();
-                    
+
                 }
                 else if (Frame.Contains(String_getNG))
                 {
@@ -609,7 +609,7 @@ namespace Micom_Inline
                         }
                     }
                 }
-            else if(model.Layout.MicomNumber == 2)
+                else if (model.Layout.MicomNumber == 2)
                 {
                     if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
                     {
@@ -623,7 +623,7 @@ namespace Micom_Inline
                             final = "OK";
                             ResultRespoonse = Result_okPBA1;
                         }
-                        else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG) 
+                        else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG)
                         {
                             AMWsProcess.Statitis_NG += 1;
                             ResultRespoonse = Result_okPBA2;
@@ -2351,7 +2351,7 @@ namespace Micom_Inline
 
             _CONFIG.ElnecAddress = Convert.ToInt32(ElnecEndAdd.Text);
 
-            lbAdressSite1.Text = _CONFIG.ElnecStrAddress.ToString() + "-" +  _CONFIG.ElnecAddress.ToString("d5");
+            lbAdressSite1.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + _CONFIG.ElnecAddress.ToString("d5");
             lbAdressSite2.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 1).ToString("d5");
             lbAdressSite3.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 2).ToString("d5");
             lbAdressSite4.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 3).ToString("d5");
@@ -2641,7 +2641,8 @@ namespace Micom_Inline
                                 new ROM(),
                                 new ROM()};
 
-        public PCB_Model() {
+        public PCB_Model()
+        {
             this.saveFileDialog.DefaultExt = "a_ms";
         }
         public void save(object sender, System.EventArgs e)
@@ -2657,7 +2658,7 @@ namespace Micom_Inline
                 + this.Layout.ArrayCount.ToString() + Environment.NewLine
                 + this.Layout.XasixArrayCount.ToString() + Environment.NewLine
                 + this.Layout.MicomNumber.ToString() + Environment.NewLine;
-            
+
             File.WriteAllText(saveFileDialog.FileName, configModel);
         }
 
@@ -2676,7 +2677,7 @@ namespace Micom_Inline
         public int ArrayCount, XasixArrayCount;
         public int MicomNumber = 1;
 
-        public string[] Name = new string[] { "A", "B", "C", "D", "E", "F", "G", "H" };
+        public string[] Name = new string[] { "A", "C", "B", "D" };
 
         public Layout()
         {
@@ -2713,18 +2714,16 @@ namespace Micom_Inline
             }
             if (x > 50 && y > 50)
             {
-                if (this.MicomNumber == 2)
+                int nameCounter = 0;
+                if (PCB1 || PCB2)
                 {
-                    this.Name[0] = "A/B";
-                    this.Name[1] = "C/D";
-                }
-                else
-                if (this.MicomNumber == 1)
-                {
-                    this.Name[0] = "A";
-                    this.Name[1] = "C";
+                    nameCounter = this.ArrayCount - 1;
                 }
 
+                if (PCB1 && PCB2)
+                {
+                    nameCounter = 2 * this.ArrayCount - 1;
+                }
 
                 Bitmap custormChart = new Bitmap(x, y);
                 Graphics g = Graphics.FromImage(custormChart);
@@ -2738,12 +2737,6 @@ namespace Micom_Inline
 
                 Font nameFont = new Font("Microsoft YaHei UI", charHeight, FontStyle.Bold);
 
-                int nameCounter = 0;
-                if (PCB1 || PCB2)
-                    nameCounter = this.ArrayCount - 1;
-                if (PCB1 && PCB2)
-                    nameCounter = 2 * this.ArrayCount - 1;
-
                 for (int j = this.ArrayCount / this.XasixArrayCount; j >= 1; j--)
                 {
                     for (int i = 1; i <= this.XasixArrayCount; ++i)
@@ -2754,278 +2747,280 @@ namespace Micom_Inline
                             g.DrawString(this.Name[nameCounter], nameFont, brush_char, (x2 / (2 * this.XasixArrayCount)) + (i - 1) * (x2 / this.XasixArrayCount) - 3 - this.Name[nameCounter].Length * charHeight / (float)1.8, (2 * j - 1) * (y2 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
-
+                    }
+                    for (int k = 1; k <= this.XasixArrayCount; ++k)
+                    {
                         if (PCB1)
                         {
-                            g.FillRectangle(brush[0], (i - 1) * (3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
-                            g.DrawString(this.Name[nameCounter], nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - this.Name[nameCounter].Length * charHeight / (float)1.8, (2 * j - 1) * (y1 / 2) - charHeight);
+                            g.FillRectangle(brush[0], (k - 1) * (3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
+                            g.DrawString(this.Name[nameCounter], nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (k - 1) * (x1 / this.XasixArrayCount) - this.Name[nameCounter].Length * charHeight / (float)1.8, (2 * j - 1) * (y1 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
                     }
                 }
 
-                if (pbPCBLayout.Image != null)
-                    pbPCBLayout.Image.Dispose();
+                    if (pbPCBLayout.Image != null)
+                        pbPCBLayout.Image.Dispose();
 
-                pbPCBLayout.Image = custormChart;
-                brush[0].Dispose();
-                brush[1].Dispose();
-                brush[2].Dispose();
-                g.Dispose();
+                    pbPCBLayout.Image = custormChart;
+                    brush[0].Dispose();
+                    brush[1].Dispose();
+                    brush[2].Dispose();
+                    g.Dispose();
+                }
             }
         }
-    }
 
-    class ROM
-    {
-        public string ROM_PATH = "";
-        public string ROM_CHECKSUM = "";
-        public string ROM_VERSTION = "";
-
-        public ROM() { }
-    }
-
-
-    public class AMW_CONFIG
-    {
-        public string recentModelPath = @"C:\Auto Micom Writing\AMW Programs\";
-        public string recentWorkPath = @"C:\Auto Micom Writing\AMW Programs\";
-        public string reportPath = @"C:\Auto Micom Writing\AMW Report\";
-        public string configPath = @"C:\Auto Micom Writing\AMW\";
-        public string modelPath = @"C:\Auto Micom Writing\AMW Programs\";
-
-        public string defaulComPort = "COM 1";
-        public int defaulBaudrate = 9600;
-
-        public int ElnecStrAddress = 1180;
-        public int ElnecAddress = 11227;
-
-        public string ADMIN_ACC = "admin";
-        public string ADMIN_PASS = "123456";
-
-        public string MANAGER_ACC = "manager";
-        public string MANAGER_PASS = "123654789";
-
-        public AMW_CONFIG()
+        class ROM
         {
-            if (!Directory.Exists(modelPath)) Directory.CreateDirectory(modelPath);
-            if (!Directory.Exists(reportPath)) Directory.CreateDirectory(reportPath);
-            if (!Directory.Exists(configPath)) Directory.CreateDirectory(configPath);
+            public string ROM_PATH = "";
+            public string ROM_CHECKSUM = "";
+            public string ROM_VERSTION = "";
 
-            if (!File.Exists(configPath + "config.cfg"))
+            public ROM() { }
+        }
+
+
+        public class AMW_CONFIG
+        {
+            public string recentModelPath = @"C:\Auto Micom Writing\AMW Programs\";
+            public string recentWorkPath = @"C:\Auto Micom Writing\AMW Programs\";
+            public string reportPath = @"C:\Auto Micom Writing\AMW Report\";
+            public string configPath = @"C:\Auto Micom Writing\AMW\";
+            public string modelPath = @"C:\Auto Micom Writing\AMW Programs\";
+
+            public string defaulComPort = "COM 1";
+            public int defaulBaudrate = 9600;
+
+            public int ElnecStrAddress = 1180;
+            public int ElnecAddress = 11227;
+
+            public string ADMIN_ACC = "admin";
+            public string ADMIN_PASS = "123456";
+
+            public string MANAGER_ACC = "manager";
+            public string MANAGER_PASS = "123654789";
+
+            public AMW_CONFIG()
             {
+                if (!Directory.Exists(modelPath)) Directory.CreateDirectory(modelPath);
+                if (!Directory.Exists(reportPath)) Directory.CreateDirectory(reportPath);
+                if (!Directory.Exists(configPath)) Directory.CreateDirectory(configPath);
+
+                if (!File.Exists(configPath + "config.cfg"))
+                {
+                    string config =
+                        "recentModePath@" + this.recentModelPath + Environment.NewLine
+                      + "recentWorkPath@" + this.recentWorkPath + Environment.NewLine
+                      + "reportPath@" + this.reportPath + Environment.NewLine
+                      + "defautComPort@" + this.defaulComPort + Environment.NewLine
+                      + "defaultBaudrate@" + this.defaulBaudrate.ToString() + Environment.NewLine
+                      + "defaultADMIN_ACC@" + this.ADMIN_ACC + Environment.NewLine
+                      + "defaultADMIN_PASS@" + this.ADMIN_PASS + Environment.NewLine
+                      + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
+                      + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
+                      + "ElnecAddress@" + this.ElnecAddress + Environment.NewLine
+                      + "ElnecStrAddress@" + this.ElnecStrAddress + Environment.NewLine;
+                    File.WriteAllText(configPath + "config.cfg", config);
+                }
+                else
+                {
+                    string[] config = File.ReadAllLines(configPath + "config.cfg");
+                    for (int i = 0; i < config.Length; i++)
+                    {
+                        string[] configData = config[i].Split('@');
+                        Console.WriteLine(configData[1]);
+                        switch (configData[0])
+                        {
+                            case "recentModePath":
+                                {
+                                    this.recentModelPath = configData[1];
+                                    break;
+                                }
+                            case "recentWorkPath":
+                                {
+                                    this.recentWorkPath = configData[1];
+                                    break;
+                                }
+                            case "reportPath":
+                                {
+                                    this.reportPath = configData[1];
+                                    break;
+                                }
+                            case "defaultComPort":
+                                {
+                                    this.defaulComPort = configData[1];
+                                    break;
+                                }
+                            case "defaultBaudrate":
+                                {
+                                    this.defaulBaudrate = Convert.ToInt32(configData[1]);
+                                    break;
+                                }
+                            case "defaultADMIN_ACC":
+                                {
+                                    this.ADMIN_ACC = configData[1];
+                                    break;
+                                }
+                            case "defaultADMIN_PASS":
+                                {
+                                    this.ADMIN_PASS = configData[1];
+                                    break;
+                                }
+                            case "defaultMANAGER_ACC":
+                                {
+                                    this.MANAGER_ACC = configData[1];
+                                    break;
+                                }
+                            case "defaultMANAGER_PASS":
+                                {
+                                    this.MANAGER_PASS = configData[1];
+                                    break;
+                                }
+                            case "ElnecStrAddress":
+                                {
+                                    this.ElnecStrAddress = Convert.ToInt32(configData[1]);
+                                    break;
+                                }
+                            case "ElnecAddress":
+                                {
+                                    this.ElnecAddress = Convert.ToInt32(configData[1]);
+                                    break;
+                                }
+                        }
+                    }
+                }
+            }
+
+            public void SaveConfig()
+            {
+                if (!Directory.Exists(configPath)) Directory.CreateDirectory(configPath);
                 string config =
-                    "recentModePath@" + this.recentModelPath + Environment.NewLine
-                  + "recentWorkPath@" + this.recentWorkPath + Environment.NewLine
-                  + "reportPath@" + this.reportPath + Environment.NewLine
-                  + "defautComPort@" + this.defaulComPort + Environment.NewLine
-                  + "defaultBaudrate@" + this.defaulBaudrate.ToString() + Environment.NewLine
-                  + "defaultADMIN_ACC@" + this.ADMIN_ACC + Environment.NewLine
-                  + "defaultADMIN_PASS@" + this.ADMIN_PASS + Environment.NewLine
-                  + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
-                  + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
-                  + "ElnecAddress@" + this.ElnecAddress + Environment.NewLine
-                  + "ElnecStrAddress@" + this.ElnecStrAddress + Environment.NewLine;
+                        "recentModePath@" + this.recentModelPath + Environment.NewLine
+                      + "recentWorkPath@" + this.recentWorkPath + Environment.NewLine
+                      + "reportPath@" + this.reportPath + Environment.NewLine
+                      + "defautComPort@" + this.defaulComPort + Environment.NewLine
+                      + "defaultBaudrate@" + this.defaulBaudrate.ToString() + Environment.NewLine
+                      + "defaultADMIN_ACC@" + this.ADMIN_ACC + Environment.NewLine
+                      + "defaultADMIN_PASS@" + this.ADMIN_PASS + Environment.NewLine
+                      + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
+                      + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
+                      + "ElnecAddress@" + this.ElnecAddress.ToString() + Environment.NewLine
+                      + "ElnecStrAddress@" + this.ElnecStrAddress.ToString() + Environment.NewLine;
+
                 File.WriteAllText(configPath + "config.cfg", config);
             }
-            else
+
+
+            public void reportWrite(string now, string model, string Result, string site1Result, string site2Result, string site3Result, string site4Result)
             {
-                string[] config = File.ReadAllLines(configPath + "config.cfg");
-                for (int i = 0; i < config.Length; i++)
+                string path = this.reportPath;
+                string moment = now;
+                string today_txt = "Report-" + DateTime.Now.ToString("yyyy-MM-dd");
+
+                if (site1Result == ElnecSite.RESULT_OK && site2Result == ElnecSite.RESULT_OK && site3Result == ElnecSite.RESULT_OK && site4Result == ElnecSite.RESULT_OK)
                 {
-                    string[] configData = config[i].Split('@');
-                    Console.WriteLine(configData[1]);
-                    switch (configData[0])
+                    Result = "OK";
+                }
+                else
+                {
+                    Result = "FAIL";
+                }
+
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+                if (File.Exists(path + today_txt + ".txt")) // Nếu file lịch sử tồn tại thì lưu thông tin vào
+                {
+                    int line = File.ReadAllLines(path + today_txt + ".txt").Length;
+                    using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
                     {
-                        case "recentModePath":
-                            {
-                                this.recentModelPath = configData[1];
-                                break;
-                            }
-                        case "recentWorkPath":
-                            {
-                                this.recentWorkPath = configData[1];
-                                break;
-                            }
-                        case "reportPath":
-                            {
-                                this.reportPath = configData[1];
-                                break;
-                            }
-                        case "defaultComPort":
-                            {
-                                this.defaulComPort = configData[1];
-                                break;
-                            }
-                        case "defaultBaudrate":
-                            {
-                                this.defaulBaudrate = Convert.ToInt32(configData[1]);
-                                break;
-                            }
-                        case "defaultADMIN_ACC":
-                            {
-                                this.ADMIN_ACC = configData[1];
-                                break;
-                            }
-                        case "defaultADMIN_PASS":
-                            {
-                                this.ADMIN_PASS = configData[1];
-                                break;
-                            }
-                        case "defaultMANAGER_ACC":
-                            {
-                                this.MANAGER_ACC = configData[1];
-                                break;
-                            }
-                        case "defaultMANAGER_PASS":
-                            {
-                                this.MANAGER_PASS = configData[1];
-                                break;
-                            }
-                        case "ElnecStrAddress":
-                            {
-                                this.ElnecStrAddress = Convert.ToInt32(configData[1]);
-                                break;
-                            }
-                        case "ElnecAddress":
-                            {
-                                this.ElnecAddress = Convert.ToInt32(configData[1]);
-                                break;
-                            }
+                        string reportData = "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
+                        sw.WriteLine(reportData);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
+                    {
+                        string reportData = "STT|" + "Final result|" + "Model " + "|" + "Bar code " + "|" + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
+                        reportData += "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
+                        sw.WriteLine(reportData);
                     }
                 }
             }
         }
 
-        public void SaveConfig()
+        public class WorkProcess
         {
-            if (!Directory.Exists(configPath)) Directory.CreateDirectory(configPath);
-            string config =
-                    "recentModePath@" + this.recentModelPath + Environment.NewLine
-                  + "recentWorkPath@" + this.recentWorkPath + Environment.NewLine
-                  + "reportPath@" + this.reportPath + Environment.NewLine
-                  + "defautComPort@" + this.defaulComPort + Environment.NewLine
-                  + "defaultBaudrate@" + this.defaulBaudrate.ToString() + Environment.NewLine
-                  + "defaultADMIN_ACC@" + this.ADMIN_ACC + Environment.NewLine
-                  + "defaultADMIN_PASS@" + this.ADMIN_PASS + Environment.NewLine
-                  + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
-                  + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
-                  + "ElnecAddress@" + this.ElnecAddress.ToString() + Environment.NewLine
-                  + "ElnecStrAddress@" + this.ElnecStrAddress.ToString() + Environment.NewLine;
+            public const int Site1_OK = 1;
+            public const int Site2_OK = 1;
+            public const int Site3_OK = 1;
+            public const int Site4_OK = 1;
 
-            File.WriteAllText(configPath + "config.cfg", config);
-        }
+            public const int Ready = 0;
+            public const int Start = 1;
+            public const int Stop = 2;
+            public const int Processing = 3;
 
+            public int Statitis_OK;
+            public int Statitis_NG;
 
-        public void reportWrite(string now, string model, string Result, string site1Result, string site2Result, string site3Result, string site4Result)
-        {
-            string path = this.reportPath;
-            string moment = now;
-            string today_txt = "Report-" + DateTime.Now.ToString("yyyy-MM-dd");
+            public int WorkingSite = 0;
 
-            if (site1Result == ElnecSite.RESULT_OK && site2Result == ElnecSite.RESULT_OK && site3Result == ElnecSite.RESULT_OK && site4Result == ElnecSite.RESULT_OK)
+            public int Process = 0;
+            public bool Interrup = false;
+
+            public string[] ComandQueue = new string[100];
+
+            public WorkProcess()
             {
-                Result = "OK";
-            }
-            else
-            {
-                Result = "FAIL";
-            }
-
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-
-            if (File.Exists(path + today_txt + ".txt")) // Nếu file lịch sử tồn tại thì lưu thông tin vào
-            {
-                int line = File.ReadAllLines(path + today_txt + ".txt").Length;
-                using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
+                for (int i = 0; i < this.ComandQueue.Length; i++)
                 {
-                    string reportData = "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
-                    sw.WriteLine(reportData);
+                    this.ComandQueue[i] = "null";
                 }
             }
-            else
+
+            public string GetCommandFIFO()
             {
-                using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
+                string comandOldest = this.ComandQueue[0];
+
+                for (int i = 0; i < this.ComandQueue.Length - 1; i++)
                 {
-                    string reportData = "STT|" + "Final result|" + "Model " + "|" + "Bar code " + "|" + "Time" + "|" + "Site 1" + "|" + "Site 2" + "|" + "Site 3" + "|" + "Site 4" + "\n";
-                    reportData += "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
-                    sw.WriteLine(reportData);
+                    this.ComandQueue[i] = this.ComandQueue[i + 1];
+                }
+                this.ComandQueue[ComandQueue.Length - 1] = "null";
+                return comandOldest;
+            }
+
+            public int GetSlotCommandAvailble()
+            {
+                int slotAvailble = 0;
+                for (int i = 0; i < this.ComandQueue.Length - 1; i++)
+                {
+                    if (this.ComandQueue[i] == "null")
+                    {
+                        slotAvailble = this.ComandQueue.Length - i - 1;
+                        break;
+                    }
+                }
+                return slotAvailble;
+            }
+            public int PutComandToFIFO(string Comand)
+            {
+                if (this.GetSlotCommandAvailble() > 0)
+                {
+                    this.ComandQueue[this.ComandQueue.Length - this.GetSlotCommandAvailble() - 1] = Comand;
+                    return this.GetSlotCommandAvailble();
+                }
+                else
+                    return -1;
+            }
+            public void ClearCMDQueue()
+            {
+                for (int i = 0; i < this.ComandQueue.Length - 1; i++)
+                {
+                    this.ComandQueue[i] = "null";
                 }
             }
         }
     }
-
-    public class WorkProcess
-    {
-        public const int Site1_OK = 1;
-        public const int Site2_OK = 1;
-        public const int Site3_OK = 1;
-        public const int Site4_OK = 1;
-
-        public const int Ready = 0;
-        public const int Start = 1;
-        public const int Stop = 2;
-        public const int Processing = 3;
-
-        public int Statitis_OK;
-        public int Statitis_NG;
-
-        public int WorkingSite = 0;
-
-        public int Process = 0;
-        public bool Interrup = false;
-
-        public string[] ComandQueue = new string[100];
-
-        public WorkProcess()
-        {
-            for (int i = 0; i < this.ComandQueue.Length; i++)
-            {
-                this.ComandQueue[i] = "null";
-            }
-        }
-
-        public string GetCommandFIFO()
-        {
-            string comandOldest = this.ComandQueue[0];
-
-            for (int i = 0; i < this.ComandQueue.Length - 1; i++)
-            {
-                this.ComandQueue[i] = this.ComandQueue[i + 1];
-            }
-            this.ComandQueue[ComandQueue.Length - 1] = "null";
-            return comandOldest;
-        }
-
-        public int GetSlotCommandAvailble()
-        {
-            int slotAvailble = 0;
-            for (int i = 0; i < this.ComandQueue.Length - 1; i++)
-            {
-                if (this.ComandQueue[i] == "null")
-                {
-                    slotAvailble = this.ComandQueue.Length - i - 1;
-                    break;
-                }
-            }
-            return slotAvailble;
-        }
-        public int PutComandToFIFO(string Comand)
-        {
-            if (this.GetSlotCommandAvailble() > 0)
-            {
-                this.ComandQueue[this.ComandQueue.Length - this.GetSlotCommandAvailble() - 1] = Comand;
-                return this.GetSlotCommandAvailble();
-            }
-            else
-                return -1;
-        }
-        public void ClearCMDQueue()
-        {
-            for (int i = 0; i < this.ComandQueue.Length - 1; i++)
-            {
-                this.ComandQueue[i] = "null";
-            }
-        }
-    }
-}
