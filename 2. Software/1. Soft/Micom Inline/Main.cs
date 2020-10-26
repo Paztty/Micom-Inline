@@ -1985,7 +1985,7 @@ namespace Micom_Inline
 
         private void timerReleaseBoard_Tick(object sender, EventArgs e)
         {
-            if (timerReleaseBoard.Interval == 2000)
+            if (timerReleaseBoard.Interval == 1000)
             {
                 highlinedgwTestMode(3);
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
