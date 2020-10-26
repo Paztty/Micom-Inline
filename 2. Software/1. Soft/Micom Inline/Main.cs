@@ -267,8 +267,9 @@ namespace Micom_Inline
                 else if (Frame.Contains(Data_sendQR))
                 {
                     Port.Write(String_getOK);
-                    Thread.Sleep(500);
-                    Port.Write(Result_okQR);
+                    Thread senQRresult = new Thread(SendOKQR);
+                    senQRresult.Start();
+                    
                 }
                 else if (Frame.Contains(String_getNG))
                 {
@@ -281,8 +282,32 @@ namespace Micom_Inline
                 }
             }
             catch (Exception) { }
-
         }
+
+        public void SendOKQR()
+        {
+            Thread.Sleep(1000);
+            Port.Write(Result_okQR);
+            ResultRespoonse = Result_okQR;
+        }
+
+        public int retry_loop = 3;
+        public const int retry_loop_counter = 0;
+        public void MachineProcess(string data)
+        {
+            if (data.StartsWith("@") && data.Length == 10)
+            {
+
+            }
+            else
+            {
+                if (retry_loop_counter < retry_loop)
+                {
+                    Port.Write(String_getNG);
+                }
+            }
+        }
+
 
         //get QR code from scaner 
         DateTime _lastKeystroke = new DateTime(0);
@@ -321,7 +346,7 @@ namespace Micom_Inline
         {
             _CONFIG.SaveConfig();
 
-            CloseElnec();
+            //CloseElnec();
             Environment.Exit(0);
             this.Close();
             Application.Exit();
@@ -428,7 +453,8 @@ namespace Micom_Inline
                     tsslbCOM.Text = Port.PortName + "                ";
                     if (!Port.IsOpen) Port.Open();
                 }
-                catch (Exception) {
+                catch (Exception)
+                {
                     tsslbCOM.Text = "COM ERROR                     ";
                 }
 
@@ -579,7 +605,7 @@ namespace Micom_Inline
 
                 tbHistory.Invoke(new MethodInvoker(delegate
                 {
-                    tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine); 
+                    tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                     Console.WriteLine(ResultRespoonse);
                     CharCircle = 1;
                     timerUpdateChar.Start();
@@ -661,7 +687,6 @@ namespace Micom_Inline
                 g.Dispose();
                 //custormChart.Dispose();
             }
-
         }
 
         public void DgwTestMode_Init()
@@ -684,10 +709,6 @@ namespace Micom_Inline
             if (line >= 0 && line < dgtTestMode.Rows.Count)
                 dgtTestMode.Rows[line].Selected = true;
         }
-
-
-
-
         private void TbLog_TextChanged(object sender, EventArgs e)
         {
             tbLog.SelectionStart = tbLog.Text.Length;
@@ -1906,6 +1927,7 @@ namespace Micom_Inline
                     tbHistory.AppendText(". ");
                 }
             }
+
         }
 
         private void btUserBarcode_Click(object sender, EventArgs e)
@@ -2142,7 +2164,7 @@ namespace Micom_Inline
             model.saveFileDialog.InitialDirectory = _CONFIG.recentModelPath;
             model.SaveAsNew();
 
-            
+
 
 
 
@@ -2216,6 +2238,14 @@ namespace Micom_Inline
 
             }
 
+        }
+
+        private void timerQR_Tick(object sender, EventArgs e)
+        {
+            Console.WriteLine("OK QR");
+            if (Port.IsOpen)
+                Port.Write(Result_okQR);
+            timerQR.Stop();
         }
     }
 
@@ -2600,7 +2630,7 @@ namespace Micom_Inline
 
                         if (PCB1)
                         {
-                            g.FillRectangle(brush[0], (i - 1) * ( 3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
+                            g.FillRectangle(brush[0], (i - 1) * (3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
                             g.DrawString(this.Name[nameCounter].ToString(), nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - charHeight / (float)1.618, (2 * j - 1) * (y1 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
                         }
