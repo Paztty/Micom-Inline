@@ -346,7 +346,7 @@ namespace Micom_Inline
         {
             _CONFIG.SaveConfig();
 
-            //CloseElnec();
+            CloseElnec();
             Environment.Exit(0);
             this.Close();
             Application.Exit();
