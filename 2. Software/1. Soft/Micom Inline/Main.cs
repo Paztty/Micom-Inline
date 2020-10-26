@@ -522,7 +522,7 @@ namespace Micom_Inline
             else
                 gbSetting.Visible = false;
 
-
+            ElnecEndAdd.Text = ElnecAddress.ToString("d5");
 
 
 
@@ -2337,6 +2337,24 @@ namespace Micom_Inline
             if (Port.IsOpen)
                 Port.Write(Result_okQR);
             timerQR.Stop();
+        }
+
+        private void btReloadElnec_Click(object sender, EventArgs e)
+        {
+            CloseElnec();
+            tbHistory.AppendText("Restart Elnec.");
+
+            Site1.OpenSite("1180-" + (Convert.ToInt32(ElnecEndAdd.Text)).ToString("D5"), RemoteIP, RemotePort);
+            Site2.OpenSite("1180-" + (Convert.ToInt32(ElnecEndAdd.Text) + 1).ToString("D5"), RemoteIP, RemotePort + 1);
+            Site3.OpenSite("1180-" + (Convert.ToInt32(ElnecEndAdd.Text) + 2).ToString("D5"), RemoteIP, RemotePort + 2);
+            Site4.OpenSite("1180-" + (Convert.ToInt32(ElnecEndAdd.Text) + 3).ToString("D5"), RemoteIP, RemotePort + 3);
+
+            _CONFIG.ElnecAddress = Convert.ToInt32(ElnecEndAdd.Text);
+
+            lbAdressSite1.Text = _CONFIG.ElnecStrAddress.ToString() + "-" +  _CONFIG.ElnecAddress.ToString("d5");
+            lbAdressSite2.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 1).ToString("d5");
+            lbAdressSite3.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 2).ToString("d5");
+            lbAdressSite4.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 3).ToString("d5");
         }
     }
 
