@@ -1529,26 +1529,10 @@ namespace Micom_Inline
             string[] config = File.ReadAllLines(openFileModel.FileName);
 
             lbModelName.Text = Path.GetFileNameWithoutExtension(openFileModel.FileName);
+
             model.ModelName = lbModelName.Text;
             if (config[5] == "true") model.Layout.PCB1 = true; else if (config[5] == "false") model.Layout.PCB1 = false;
             if (config[6] == "true") model.Layout.PCB2 = true; else if (config[6] == "false") model.Layout.PCB2 = false;
-
-            if (Port.IsOpen)
-            {
-                if (model.Layout.PCB1 == true && model.Layout.PCB2 == false)
-                {
-                    Port.Write(Mode_1Array);
-                }
-                else if (model.Layout.PCB1 == true && model.Layout.PCB2 == true)
-                {
-                    Port.Write(Mode_2Array);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Com not connect, Array setting maybe not apply.");
-            }
-
 
             model.Layout.ArrayCount = Convert.ToInt32(config[7]);
             model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
@@ -1556,6 +1540,25 @@ namespace Micom_Inline
             model.Layout.drawPCBLayout(pbLayout);
 
             tbHistory.AppendText("Load project to Elnect site..");
+
+            if (Port.IsOpen)
+            {
+                if (model.Layout.PCB1 && !model.Layout.PCB2)
+                {
+                    Port.Write(Mode_1Array);
+                    tbHistory.AppendText("Mode 1 array had set.\r\n");
+                }
+                else if (model.Layout.PCB1 && model.Layout.PCB2)
+                {
+                    Port.Write(Mode_2Array);
+                    tbHistory.AppendText("Mode 2 array had set.\r\n");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Com not connect, Array setting maybe not apply.");
+            }
+
 
             model.ROMs[0].ROM_PATH = config[1].Remove(config[1].IndexOf('@'), config[1].Length - config[1].IndexOf('@'));
             lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
