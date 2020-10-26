@@ -2796,6 +2796,15 @@ namespace Micom_Inline
             string moment = now;
             string today_txt = "Report-" + DateTime.Now.ToString("yyyy-MM-dd");
 
+            if (site1Result == ElnecSite.RESULT_OK && site2Result == ElnecSite.RESULT_OK && site3Result == ElnecSite.RESULT_OK && site4Result == ElnecSite.RESULT_OK)
+            {
+                Result = "OK";
+            }
+            else
+            {
+                Result = "FAIL";
+            }
+
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
             if (File.Exists(path + today_txt + ".txt")) // Nếu file lịch sử tồn tại thì lưu thông tin vào
