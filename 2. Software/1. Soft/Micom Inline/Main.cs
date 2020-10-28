@@ -256,6 +256,7 @@ namespace Micom_Inline
                         ActiveLabel(lbResultD);
 
                         lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "WRITTING"; lbMachineStatus.BackColor = activeColor; }));
+                        lastWorkingTime = DateTime.Now;
 
                         Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                         Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
@@ -566,6 +567,7 @@ namespace Micom_Inline
         }
         public void FinalTestLabel()
         {
+            string final = "";
             if (model.Layout.PCB1 && !model.Layout.PCB2)
                 if (model.Layout.MicomNumber == 1)
                 {
@@ -573,12 +575,11 @@ namespace Micom_Inline
                         if (Site1.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY)
                         {
                             string now = DateTime.Now.ToString();
-                            string final = "";
+                            
                             if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
                             {
                                 AMWsProcess.Statitis_OK += 1;
                                 lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
-                                final = "OK";
                                 ResultRespoonse = Result_okPBA1;
                             }
                             else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG)
@@ -586,10 +587,14 @@ namespace Micom_Inline
                                 AMWsProcess.Statitis_NG += 1;
                                 ResultRespoonse = Result_okPBA2;
                                 lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
-                                final = "FAIL";
                             }
 
-                            _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
+                            if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
+                                final = "OK";
+                            else
+                                final = "FAIL";
+
+                                _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
 
                             tbHistory.Invoke(new MethodInvoker(delegate
                             {
@@ -597,7 +602,6 @@ namespace Micom_Inline
                                 Console.WriteLine(ResultRespoonse);
                                 CharCircle = 1;
                                 timerUpdateChar.Start();
-                                lastWorkingTime = DateTime.Now;
                                 highlinedgwTestMode(2);
                                 timerReleaseBoard.Interval = 1000;
                                 timerReleaseBoard.Start();
@@ -614,7 +618,6 @@ namespace Micom_Inline
                     if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
                     {
                         string now = DateTime.Now.ToString();
-                        string final = "";
                         //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                         if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                         {
@@ -623,13 +626,18 @@ namespace Micom_Inline
                             final = "OK";
                             ResultRespoonse = Result_okPBA1;
                         }
-                        else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG || Site2.Result == ElnecSite.RESULT_NG || Site4.Result == ElnecSite.RESULT_NG)
+                        else
                         {
                             AMWsProcess.Statitis_NG += 1;
                             ResultRespoonse = Result_okPBA2;
                             lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
                             final = "FAIL";
                         }
+
+                        if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                            final = "OK";
+                        else
+                            final = "FAIL";
 
                         _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
 
@@ -639,7 +647,6 @@ namespace Micom_Inline
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
                             timerUpdateChar.Start();
-                            lastWorkingTime = DateTime.Now;
                             highlinedgwTestMode(2);
                             timerReleaseBoard.Interval = 1000;
                             timerReleaseBoard.Start();
@@ -656,13 +663,11 @@ namespace Micom_Inline
                 if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
                 {
                     string now = DateTime.Now.ToString();
-                    string final = "";
                     //if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                     if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
                     {
                         AMWsProcess.Statitis_OK += 2;
                         lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
-                        final = "OK";
                         ResultRespoonse = Result_okPBA;
                     }
                     else if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
@@ -679,7 +684,6 @@ namespace Micom_Inline
                     {
                         ResultRespoonse = Result_ngPBA;
                         lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
-                        final = "FAIL";
                     }
 
                     if (model.Layout.PCB1 && model.Layout.PCB2)
@@ -702,6 +706,11 @@ namespace Micom_Inline
                             AMWsProcess.Statitis_NG += 1;
                     }
 
+                    if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                        final = "OK";
+                    else
+                        final = "FAIL";
+
                     _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
 
                     tbHistory.Invoke(new MethodInvoker(delegate
@@ -710,7 +719,6 @@ namespace Micom_Inline
                         Console.WriteLine(ResultRespoonse);
                         CharCircle = 1;
                         timerUpdateChar.Start();
-                        lastWorkingTime = DateTime.Now;
                         highlinedgwTestMode(2);
                         timerReleaseBoard.Interval = 1000;
                         timerReleaseBoard.Start();
@@ -1151,11 +1159,20 @@ namespace Micom_Inline
                                 lbSiteName.BackColor = activeColor;
                                 break;
                             }
+                        case ElnecSite.CLIENT_READY_ANSWER + ElnecSite.KEY_CLIENT_READY_NO:
+                            {
+                                lbSiteName.BackColor = Color.Black;
+                                break;
+                            }
                         case ElnecSite.PROGRAMMER_READY_STATUS:
                             {
                                 if (data[1] == ElnecSite.KEY_PROGRAMMER_READY)
                                 {
                                     lbSiteName.BackColor = activeColor;
+                                }
+                                else if(data[1] == ElnecSite.KEY_PROGRAMMER_NOTFOUND)
+                                {
+                                    lbSiteName.BackColor = Color.Black;
                                 }
                                 break;
                             }
@@ -1865,6 +1882,9 @@ namespace Micom_Inline
                     }
                 case TECH:
                     {
+                        btManual.Click -= BtManual_Click;
+                        btReportFolder.Click -= BtReportFolder_Click;
+
                         btManual.Click += BtManual_Click;
                         btReportFolder.Click += BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
@@ -1991,6 +2011,7 @@ namespace Micom_Inline
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
                     Port.Write(ResultRespoonse);
                 tbHistory.AppendText(ResultRespoonse + "           DONE\r\n");
+                lastWorkingTime = DateTime.Now;
                 timerReleaseBoard.Stop();
             }
             else if (timerReleaseBoard.Interval == 2500)
@@ -1998,7 +2019,6 @@ namespace Micom_Inline
                 if (lbSiteName1.BackColor != activeColor || lbSiteName2.BackColor != activeColor || lbSiteName3.BackColor != activeColor || lbSiteName4.BackColor != activeColor)
                 {
                     tbHistory.AppendText("Openning Elnect");
-
                     Site1.OpenSite("1180-" + (ElnecAddress).ToString("d5"), RemoteIP, RemotePort);
                     Site2.OpenSite("1180-" + (ElnecAddress + 1).ToString("d5"), RemoteIP, RemotePort + 1);
                     Site3.OpenSite("1180-" + (ElnecAddress + 2).ToString("d5"), RemoteIP, RemotePort + 2);
@@ -2011,6 +2031,11 @@ namespace Micom_Inline
                 if (lbSiteName1.BackColor == activeColor && lbSiteName2.BackColor == activeColor && lbSiteName3.BackColor == activeColor && lbSiteName4.BackColor == activeColor)
                 {
                     tbHistory.AppendText(" success." + Environment.NewLine);
+                    timerReleaseBoard.Stop();
+                }
+                else if (lbSiteName1.BackColor == Color.Black && lbSiteName2.BackColor == Color.Black && lbSiteName3.BackColor == Color.Black && lbSiteName4.BackColor == Color.Black)
+                {
+                    tbHistory.AppendText(" Not find any programer." + Environment.NewLine);
                     timerReleaseBoard.Stop();
                 }
                 else
@@ -2677,7 +2702,7 @@ namespace Micom_Inline
         public int ArrayCount, XasixArrayCount;
         public int MicomNumber = 1;
 
-        public string[] Name = new string[] { "A", "C", "B", "D" };
+        public string[] Name = new string[] { "A", "B", "C", "D" };
 
         public Layout()
         {
@@ -2918,15 +2943,6 @@ namespace Micom_Inline
             string path = this.reportPath;
             string moment = now;
             string today_txt = "Report-" + DateTime.Now.ToString("yyyy-MM-dd");
-
-            if (site1Result == ElnecSite.RESULT_OK && site2Result == ElnecSite.RESULT_OK && site3Result == ElnecSite.RESULT_OK && site4Result == ElnecSite.RESULT_OK)
-            {
-                Result = "OK";
-            }
-            else
-            {
-                Result = "FAIL";
-            }
 
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
