@@ -93,17 +93,18 @@ namespace Micom_Inline
                         {
                             Total++;
                             dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2] ,dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7], dataInLine[8]);
+                            if (dataInLine[1].Contains("OK")) Ok++;
+                            if (dataInLine[1].Contains("FAIL")) NG++;
                         }
                         if (dataInLine[0].Contains("L") && dataInLine[2] == cbbPCBcode.SelectedValue.ToString())
                         {
                             Total++;
                             dgReport.Rows.Add(Total.ToString(), dataInLine[1], dataInLine[2], dataInLine[3], dataInLine[4], dataInLine[5], dataInLine[6], dataInLine[7], dataInLine[8]);
+                            if (dataInLine[1].Contains("OK")) Ok++;
+                            if (dataInLine[1].Contains("FAIL")) NG++;
                         }
 
-                        if (dataInLine[1].Contains("OK")) Ok++;
-                        if (dataInLine[1].Contains("FAIL")) NG++;
                     }
-
                 }
                 dayFrom = dayFrom.AddDays(1);
             }
@@ -163,7 +164,6 @@ namespace Micom_Inline
             }
             modelCode = ModelList.ToArray();
             cbbPCBcode.DataSource = modelCode;
-
         }
 
         private void Report_Load(object sender, EventArgs e)
