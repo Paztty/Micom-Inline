@@ -179,6 +179,7 @@ namespace Micom_Inline
             }
         }
 
+        public bool LosingTime = true;
         public void DateTimeShow()
         {
             while (true)
@@ -188,7 +189,7 @@ namespace Micom_Inline
                 lbClock.Invoke(new MethodInvoker(delegate
                 {
                     lbClock.Text = t;
-                    if ((Site1.WorkProcess.Process == WorkProcess.Ready && Site2.WorkProcess.Process == WorkProcess.Ready) || (Site3.WorkProcess.Process == WorkProcess.Ready && Site4.WorkProcess.Process == WorkProcess.Ready))
+                    if (LosingTime)
                         lbFreeTime.Text = "Lost time: " + lostTime.TotalSeconds.ToString("f0") + " S";
                 }));
                 Thread.Sleep(1000);
@@ -257,6 +258,7 @@ namespace Micom_Inline
 
                         lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "WRITTING"; lbMachineStatus.BackColor = activeColor; }));
                         lastWorkingTime = DateTime.Now;
+                        LosingTime = false;
 
                         Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                         Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
@@ -403,7 +405,6 @@ namespace Micom_Inline
             btManual.BackColor = Color.FromArgb(30, 30, 30);
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
-            btDataLog.BackColor = Color.FromArgb(30, 30, 30);
 
             OPForm form = new OPForm();
             form.ShowDialog();
@@ -435,12 +436,12 @@ namespace Micom_Inline
         private void BtAuto_Click(object sender,
                                   EventArgs e)
         {
+            gbSetting.Visible = false;
             btAuto.BackColor = Color.FromArgb(50, 50, 50);
             btLoadModel.BackColor = Color.FromArgb(30, 30, 30);
             btManual.BackColor = Color.FromArgb(30, 30, 30);
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
-            btDataLog.BackColor = Color.FromArgb(30, 30, 30);
 
             if (lbAutoManual.Text == "Auto mode")
             {
@@ -472,12 +473,12 @@ namespace Micom_Inline
 
         private void BtManual_Click(object sender, EventArgs e)
         {
+            gbSetting.Visible = false;
             btManual.BackColor = Color.FromArgb(50, 50, 50);
             btLoadModel.BackColor = Color.FromArgb(30, 30, 30);
             btAuto.BackColor = Color.FromArgb(30, 30, 30);
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
-            btDataLog.BackColor = Color.FromArgb(30, 30, 30);
 
             lbAutoManual.Text = "Manual mode";
             lbAutoManual.ForeColor = deactiveColor;
@@ -495,12 +496,12 @@ namespace Micom_Inline
 
         private void BtReportFolder_Click(object sender, EventArgs e)
         {
+            gbSetting.Visible = false;
             btReportFolder.BackColor = Color.FromArgb(50, 50, 50);
             btLoadModel.BackColor = Color.FromArgb(30, 30, 30);
             btAuto.BackColor = Color.FromArgb(30, 30, 30);
             btManual.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
-            btDataLog.BackColor = Color.FromArgb(30, 30, 30);
 
             Form form = new Report();
             form.ShowDialog();
@@ -515,8 +516,6 @@ namespace Micom_Inline
             btAuto.BackColor = Color.FromArgb(30, 30, 30);
             btManual.BackColor = Color.FromArgb(30, 30, 30);
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
-            btDataLog.BackColor = Color.FromArgb(30, 30, 30);
-
 
             if (gbSetting.Visible == false)
                 gbSetting.Visible = true;
@@ -525,26 +524,11 @@ namespace Micom_Inline
 
             ElnecEndAdd.Text = ElnecAddress.ToString("d5");
 
-
-
             PCBarrayCount.Value = model.Layout.ArrayCount;
             nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
             radioButton1.Checked = model.Layout.PCB1;
             radioButton2.Checked = model.Layout.PCB2;
             model.Layout.drawPCBLayout(pbPCBLayout);
-
-        }
-
-        private void BtDataLog_Click(object sender, EventArgs e)
-        {
-            btDataLog.BackColor = Color.FromArgb(50, 50, 50);
-            btLoadModel.BackColor = Color.FromArgb(30, 30, 30);
-            btAuto.BackColor = Color.FromArgb(30, 30, 30);
-            btManual.BackColor = Color.FromArgb(30, 30, 30);
-            btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
-            btSetting.BackColor = Color.FromArgb(30, 30, 30);
-
-
 
         }
 
@@ -1858,7 +1842,7 @@ namespace Micom_Inline
                         btManual.Click -= BtManual_Click;
                         btReportFolder.Click -= BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
-                        btDataLog.Click -= BtDataLog_Click;
+                         
 
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
@@ -1887,7 +1871,7 @@ namespace Micom_Inline
                         btManual.Click += BtManual_Click;
                         btReportFolder.Click += BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
-                        btDataLog.Click -= BtDataLog_Click;
+                         
 
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
@@ -1913,7 +1897,7 @@ namespace Micom_Inline
                         btManual.Click -= BtManual_Click;
                         btReportFolder.Click -= BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
-                        btDataLog.Click -= BtDataLog_Click;
+                         
 
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
@@ -1935,7 +1919,6 @@ namespace Micom_Inline
                         btManual.Click += BtManual_Click;
                         btReportFolder.Click += BtReportFolder_Click;
                         btSetting.Click += BtSetting_Click;
-                        btDataLog.Click += BtDataLog_Click;
 
                         btUserBarcode.Click += btUserBarcode_Click;
                         btSkipBarcode.Click += btSkipBarcode_Click;
@@ -2011,6 +1994,7 @@ namespace Micom_Inline
                     Port.Write(ResultRespoonse);
                 tbHistory.AppendText(ResultRespoonse + "           DONE\r\n");
                 lastWorkingTime = DateTime.Now;
+                LosingTime = true;
                 timerReleaseBoard.Stop();
             }
             else if (timerReleaseBoard.Interval == 2500)
