@@ -51,7 +51,7 @@ namespace Micom_Inline
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
         public int ElnecAddress = 0;
-        public int TCP_TimeOut = 3000;
+        public int TCP_TimeOut = 500;
 
         //arduino
         const int Cmd_startValue = 64;
@@ -587,7 +587,7 @@ namespace Micom_Inline
                             CharCircle = 1;
                             timerUpdateChar.Start();
                             highlinedgwTestMode(2);
-                            timerReleaseBoard.Interval = 1000;
+                            timerReleaseBoard.Interval = 500;
                             timerReleaseBoard.Start();
                             Site1.ClearSiteParam();
                             Site2.ClearSiteParam();
@@ -1987,7 +1987,7 @@ namespace Micom_Inline
 
         private void timerReleaseBoard_Tick(object sender, EventArgs e)
         {
-            if (timerReleaseBoard.Interval == 1000)
+            if (timerReleaseBoard.Interval == 500)
             {
                 highlinedgwTestMode(3);
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
