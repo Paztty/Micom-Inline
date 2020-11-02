@@ -237,7 +237,7 @@ namespace Micom_Inline
 
                     if (lbAutoManual.Text == "Auto mode")
                     {
-                        pnResultFinal.Visible = false;
+                        FinalTestBigLabel(false);
 
                         resetdgwTestMode();
 
@@ -586,9 +586,11 @@ namespace Micom_Inline
                             final = "FAIL";
 
                         _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-                        pnResultFinal.Visible = true;
+                        
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
+                            FinalTestBigLabel(true);
+
                             tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
@@ -630,9 +632,11 @@ namespace Micom_Inline
                             final = "FAIL";
 
                         _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-                        pnResultFinal.Visible = true;
+
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
+                            FinalTestBigLabel(true);
+
                             tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
@@ -702,9 +706,10 @@ namespace Micom_Inline
                         final = "FAIL";
 
                     _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-                    pnResultFinal.Visible = true;
+
                     tbHistory.Invoke(new MethodInvoker(delegate
                     {
+                        FinalTestBigLabel(true);
                         tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                         Console.WriteLine(ResultRespoonse);
                         CharCircle = 1;
@@ -718,10 +723,29 @@ namespace Micom_Inline
                         Site4.ClearSiteParam();
                     }));
                 }
-
             }
         }
 
+        public void FinalTestBigLabel(bool show)
+        {
+            pnResultFinal.Visible = false;
+            lbResultAbig.Visible = false;
+            lbResultBbig.Visible = false;
+            lbResultCbig.Visible = false;
+            lbResultDbig.Visible = false;
+
+            lbResultAbig.Text = Site1.Result;
+            lbResultBbig.Text = Site2.Result;
+            lbResultCbig.Text = Site3.Result;
+            lbResultDbig.Text = Site4.Result;
+
+            pnResultFinal.Visible = show;
+            lbResultAbig.Visible = show;
+            lbResultBbig.Visible = show;
+            lbResultCbig.Visible = show;
+            lbResultDbig.Visible = show;
+
+        }
 
 
         private void DrawChart(int okNumber, int ngNumber, int charCicle)
@@ -1277,8 +1301,10 @@ namespace Micom_Inline
             }
             FinalTestLabel();
         }
+
+
         private void btSite1Open_Click(object sender, EventArgs e)
-        {
+        { 
             if (btSite1Open.Text == "OPEN")
             {
                 Site1.OpenSite("1180-11227", "127.0.0.1", 8881);
@@ -1969,8 +1995,7 @@ namespace Micom_Inline
         {
             Permissions = OP;
             checkPermision();
-            pnResultFinal.Visible = true;
-            pnResultFinal.BringToFront();
+            //FinalTestBigLabel(false);
         }
 
         private void logoDEV_Click(object sender, EventArgs e)
@@ -2408,15 +2433,11 @@ namespace Micom_Inline
             lbAdressSite4.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 3).ToString("d5");
         }
 
-        private void pnResultFinal_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void pnResultFinal_Click(object sender, EventArgs e)
         {
-            pnResultFinal.Visible = false;
+            FinalTestBigLabel(false);
         }
+
     }
 
 
