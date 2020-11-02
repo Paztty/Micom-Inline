@@ -51,7 +51,6 @@ namespace Micom_Inline
         public string RemoteIP = "127.0.0.1";
         public int RemotePort = 8881;
         public int ElnecAddress = 0;
-        public int TCP_TimeOut = 500;
 
         //arduino
         const int Cmd_startValue = 64;
@@ -149,6 +148,7 @@ namespace Micom_Inline
             gbLog.Visible = false;
             gbTestHistory.Visible = true;
             gbSetting.Visible = false;
+            pnResultFinal.Visible = false;
 
             lastWorkingTime = DateTime.Now;
             timerUpdateChar.Start();
@@ -237,12 +237,19 @@ namespace Micom_Inline
 
                     if (lbAutoManual.Text == "Auto mode")
                     {
+                        pnResultFinal.Visible = false;
+
                         resetdgwTestMode();
 
                         Site1.WorkProcess.ClearCMDQueue();
                         Site2.WorkProcess.ClearCMDQueue();
                         Site3.WorkProcess.ClearCMDQueue();
                         Site4.WorkProcess.ClearCMDQueue();
+
+                        Site1.TCP_TimeOut = 1000;
+                        Site2.TCP_TimeOut = 1000;
+                        Site3.TCP_TimeOut = 1000;
+                        Site4.TCP_TimeOut = 1000;
 
                         Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                         Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
@@ -556,7 +563,7 @@ namespace Micom_Inline
             {
                 if (model.Layout.MicomNumber == 1)
                 {
-                    if (Site1.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY)
+                    if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
                     {
                         string now = DateTime.Now.ToString();
 
@@ -579,7 +586,7 @@ namespace Micom_Inline
                             final = "FAIL";
 
                         _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-
+                        pnResultFinal.Visible = true;
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
                             tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
@@ -587,7 +594,7 @@ namespace Micom_Inline
                             CharCircle = 1;
                             timerUpdateChar.Start();
                             highlinedgwTestMode(2);
-                            timerReleaseBoard.Interval = 500;
+                            timerReleaseBoard.Interval = 5;
                             timerReleaseBoard.Start();
                             Site1.ClearSiteParam();
                             Site2.ClearSiteParam();
@@ -623,7 +630,7 @@ namespace Micom_Inline
                             final = "FAIL";
 
                         _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-
+                        pnResultFinal.Visible = true;
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
                             tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
@@ -631,7 +638,7 @@ namespace Micom_Inline
                             CharCircle = 1;
                             timerUpdateChar.Start();
                             highlinedgwTestMode(2);
-                            timerReleaseBoard.Interval = 1000;
+                            timerReleaseBoard.Interval = 5;
                             timerReleaseBoard.Start();
                             Site1.ClearSiteParam();
                             Site2.ClearSiteParam();
@@ -695,7 +702,7 @@ namespace Micom_Inline
                         final = "FAIL";
 
                     _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-
+                    pnResultFinal.Visible = true;
                     tbHistory.Invoke(new MethodInvoker(delegate
                     {
                         tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
@@ -703,7 +710,7 @@ namespace Micom_Inline
                         CharCircle = 1;
                         timerUpdateChar.Start();
                         highlinedgwTestMode(2);
-                        timerReleaseBoard.Interval = 1000;
+                        timerReleaseBoard.Interval = 5;
                         timerReleaseBoard.Start();
                         Site1.ClearSiteParam();
                         Site2.ClearSiteParam();
@@ -856,7 +863,7 @@ namespace Micom_Inline
                 if (ServerStatus == SERVER_OFF)
                     break;
                 Socket socket = listener.AcceptSocket();
-                socket.ReceiveTimeout = TCP_TimeOut;
+                socket.ReceiveTimeout = Site1.TCP_TimeOut;
 
                 if (Site1.WorkProcess.Process == WorkProcess.Ready)
                 {
@@ -899,7 +906,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site1, lbSiteName1, lbSite1Checksum, lbROM1checkSum, lbRomNameSite1, lbResultA, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site1, lbSiteName1, lbSite1Checksum, lbROM1checkSum, lbRomNameSite1, lbResultA, lbResultAbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -925,7 +932,7 @@ namespace Micom_Inline
                 if (ServerStatus == SERVER_OFF)
                     break;
                 Socket socket = listener.AcceptSocket();
-                socket.ReceiveTimeout = TCP_TimeOut;
+                socket.ReceiveTimeout = Site2.TCP_TimeOut;
                 if (Site2.WorkProcess.Process == WorkProcess.Ready)
                 {
                     Site2.Command = Site2.WorkProcess.GetCommandFIFO();
@@ -960,7 +967,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, lbResultBbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -986,7 +993,7 @@ namespace Micom_Inline
                 if (ServerStatus == SERVER_OFF)
                     break;
                 Socket socket = listener.AcceptSocket();
-                socket.ReceiveTimeout = TCP_TimeOut;
+                socket.ReceiveTimeout = Site3.TCP_TimeOut;
                 if (Site3.WorkProcess.Process == WorkProcess.Ready)
                 {
                     Site3.Command = Site3.WorkProcess.GetCommandFIFO();
@@ -1021,7 +1028,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, lbResultCbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1047,7 +1054,7 @@ namespace Micom_Inline
                 if (ServerStatus == SERVER_OFF)
                     break;
                 Socket socket = listener.AcceptSocket();
-                socket.ReceiveTimeout = TCP_TimeOut;
+                socket.ReceiveTimeout = Site4.TCP_TimeOut;
                 if (Site4.WorkProcess.Process == WorkProcess.Ready)
                 {
                     Site4.Command = Site4.WorkProcess.GetCommandFIFO();
@@ -1080,7 +1087,7 @@ namespace Micom_Inline
                     if (d > 0)
                     {
                         string recive = encoding.GetString(data, 0, d);
-                        ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                        ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, lbResultDbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1094,7 +1101,7 @@ namespace Micom_Inline
             Console.WriteLine("Thread 4 break");
         }
         // Site1 process
-        public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, string Response)
+        public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, Label lbResultBig, string Response)
         {
             // get infor from site 
             Response = Response.Replace("\r\n", "\n").Replace("\r", "\n");
@@ -1199,6 +1206,7 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRESS == "99" || Site.SITE_PROGRESS == "100")
                     {
+                        Site.TCP_TimeOut = 500;
                         Site.WorkProcess.Interrup = true;
                         Site.SITE_PROGRESS = "";
                     }
@@ -1218,6 +1226,8 @@ namespace Micom_Inline
                         Site.Result = ElnecSite.RESULT_OK;
                     }
                     OK_label(lbResult);
+                    OK_label(lbResultBig);
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
@@ -1230,6 +1240,8 @@ namespace Micom_Inline
                         Site.Result = ElnecSite.RESULT_NG;
                     }
                     NG_label(lbResult);
+                    NG_label(lbResultBig);
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
@@ -1250,6 +1262,7 @@ namespace Micom_Inline
                         lbSiteChecksum.BackColor = Color.Red;
                     }
                     Site.SITE_LOADPRJRESULT = "";
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1257,6 +1270,7 @@ namespace Micom_Inline
                 {
                     NG_label(lbRomNameSite);
                     Site.SITE_LOADPRJRESULT = "";
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1688,6 +1702,11 @@ namespace Micom_Inline
             Site3.WorkProcess.Interrup = true;
             Site4.WorkProcess.Interrup = true;
 
+            Site1.TCP_TimeOut = 3000;
+            Site2.TCP_TimeOut = 3000;
+            Site3.TCP_TimeOut = 3000;
+            Site4.TCP_TimeOut = 3000;
+
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[0].ROM_PATH);
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[1].ROM_PATH);
             Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[2].ROM_PATH);
@@ -1950,6 +1969,8 @@ namespace Micom_Inline
         {
             Permissions = OP;
             checkPermision();
+            pnResultFinal.Visible = true;
+            pnResultFinal.BringToFront();
         }
 
         private void logoDEV_Click(object sender, EventArgs e)
@@ -1987,7 +2008,7 @@ namespace Micom_Inline
 
         private void timerReleaseBoard_Tick(object sender, EventArgs e)
         {
-            if (timerReleaseBoard.Interval == 500)
+            if (timerReleaseBoard.Interval == 5)
             {
                 highlinedgwTestMode(3);
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
@@ -2077,10 +2098,10 @@ namespace Micom_Inline
             lbBarCode3.BackColor = deactiveColor;
             lbBarCode4.BackColor = deactiveColor;
 
-            lbBarCode1Value.BackColor = activeColor;
-            lbBarCode2Value.BackColor = activeColor;
-            lbBarCode3Value.BackColor = activeColor;
-            lbBarCode4Value.BackColor = activeColor;
+            lbBarcodeWaiting1.BackColor = activeColor;
+            lbBarcodeWaiting2.BackColor = activeColor;
+            lbBarcodeWaiting3.BackColor = activeColor;
+            lbBarcodeWaiting4.BackColor = activeColor;
             Port.Write(Data_enaQR);
         }
 
@@ -2104,15 +2125,26 @@ namespace Micom_Inline
             lbBarcodeTesting3.BackColor = nonactiveColor;
             lbBarcodeTesting4.BackColor = nonactiveColor;
 
+            lbBarcodeTesting1.Text = "Skip";
+            lbBarcodeTesting2.Text = "Skip";
+            lbBarcodeTesting3.Text = "Skip";
+            lbBarcodeTesting4.Text = "Skip";
+
+
             lbBarCode1.BackColor = nonactiveColor;
             lbBarCode2.BackColor = nonactiveColor;
             lbBarCode3.BackColor = nonactiveColor;
             lbBarCode4.BackColor = nonactiveColor;
 
-            lbBarCode1Value.BackColor = nonactiveColor;
-            lbBarCode2Value.BackColor = nonactiveColor;
-            lbBarCode3Value.BackColor = nonactiveColor;
-            lbBarCode4Value.BackColor = nonactiveColor;
+            lbBarcodeWaiting1.BackColor = nonactiveColor;
+            lbBarcodeWaiting2.BackColor = nonactiveColor;
+            lbBarcodeWaiting3.BackColor = nonactiveColor;
+            lbBarcodeWaiting4.BackColor = nonactiveColor;
+
+            lbBarcodeWaiting1.Text = "Skip";
+            lbBarcodeWaiting2.Text = "Skip";
+            lbBarcodeWaiting3.Text = "Skip";
+            lbBarcodeWaiting4.Text = "Skip";
 
         }
         private void siteCheckSumRefrest_Click(object sender, EventArgs e)
@@ -2376,14 +2408,14 @@ namespace Micom_Inline
             lbAdressSite4.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + (_CONFIG.ElnecAddress + 3).ToString("d5");
         }
 
-        private void label23_Click(object sender, EventArgs e)
+        private void pnResultFinal_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void label17_Click(object sender, EventArgs e)
+        private void pnResultFinal_Click(object sender, EventArgs e)
         {
-
+            pnResultFinal.Visible = false;
         }
     }
 
@@ -2595,7 +2627,7 @@ namespace Micom_Inline
         public string SITE_LOADPRJRESULT { get; set; }
         public string SITE_PROGRAMRESULT { get; set; }
 
-
+        public int TCP_TimeOut = 1000;
 
         public WorkProcess WorkProcess = new WorkProcess();
 
