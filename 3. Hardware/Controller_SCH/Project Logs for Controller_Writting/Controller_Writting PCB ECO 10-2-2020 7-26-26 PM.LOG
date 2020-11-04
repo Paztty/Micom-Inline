@@ -1,0 +1,16 @@
+Change Component DesignItemId : Designator=D1 Old DesignItemId=1N5822 New DesignItemId=Diode SMD
+Change Component Comment : Designator=D1 Old Comment=SS26S New Comment=1N4007
+Change Component Description : Designator=D1 Old Description=Schottky Rectifiers New Description=Default Diode
+Change component parameters: Designator = "D1" ("D1"); Footprint = "SMB - duplicate"; UniqueID = "\OYSMQNKX" ("\OYSMQNKX")
+Change component parameters (AddParameter): Name = "Code - JEDEC"; Value = "DO-214-AB"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Revision"; Value = "July-2002: Re-released for DXP Platform."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1N5007"; VariantName = "[No Variations]"
+Added Component: Designator=D3(DIO-SMD-214AA)
+Add component (AddParameter): Name = "Code - JEDEC"; Value = "DO-214-AB"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Revision"; Value = "July-2002: Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1N5007"; VariantName = "[No Variations]"
+Added Member To Class: ClassName=Controller_Writting Member=Component D3 1N4007

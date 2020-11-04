@@ -1,0 +1,121 @@
+Removed Pin From Net: NetName=5V Pin=MEGA-5V@3
+Removed Pin From Net: NetName=GND Pin=MEGA-GND@1
+Removed Pin From Net: NetName=GND Pin=MEGA-GND@5
+Removed Member From Class: ClassName=Controller_Writting Member=MEGA
+Added Component: Designator=?(ARDUINO_CUSTOM)
+Add component (AddParameter): Name = "DeviceName"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "DeviceSetName"; Value = "MEGA_DEVICE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "GateName_1"; Value = "G$1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LibraryName"; Value = "ArduinoMegaOutline"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "MEGAOUTLINE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SymbolName_1"; Value = "MEGA_SYMBOL"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=5V Pin=?-5V_3
+Added Pin To Net: NetName=GND Pin=?-GND_1
+Added Pin To Net: NetName=GND Pin=?-GND_5
+Added Pin To Net: NetName=Net?_2 Pin=?-2
+Added Pin To Net: NetName=Net?_2 Pin=JP3-5
+Added Pin To Net: NetName=Net?_2 Pin=JP3-5
+Added Net: Name=Net?_2
+Added Pin To Net: NetName=Net?_3 Pin=?-3
+Added Pin To Net: NetName=Net?_3 Pin=JP3-6
+Added Pin To Net: NetName=Net?_3 Pin=JP3-6
+Added Net: Name=Net?_3
+Added Pin To Net: NetName=Net?_4 Pin=?-4
+Added Pin To Net: NetName=Net?_4 Pin=R28-1
+Added Pin To Net: NetName=Net?_4 Pin=X09-4
+Added Net: Name=Net?_4
+Added Pin To Net: NetName=Net?_5 Pin=?-5
+Added Pin To Net: NetName=Net?_5 Pin=R24-1
+Added Pin To Net: NetName=Net?_5 Pin=X08-4
+Added Net: Name=Net?_5
+Added Pin To Net: NetName=Net?_6 Pin=?-6
+Added Pin To Net: NetName=Net?_6 Pin=R20-1
+Added Pin To Net: NetName=Net?_6 Pin=X07-4
+Added Net: Name=Net?_6
+Added Pin To Net: NetName=Net?_7 Pin=?-7
+Added Pin To Net: NetName=Net?_7 Pin=R16-1
+Added Pin To Net: NetName=Net?_7 Pin=X06-4
+Added Net: Name=Net?_7
+Added Pin To Net: NetName=Net?_8 Pin=?-8
+Added Pin To Net: NetName=Net?_8 Pin=R31-1
+Added Pin To Net: NetName=Net?_8 Pin=X05-4
+Added Net: Name=Net?_8
+Added Pin To Net: NetName=Net?_9 Pin=?-9
+Added Pin To Net: NetName=Net?_9 Pin=R27-1
+Added Pin To Net: NetName=Net?_9 Pin=X04-4
+Added Net: Name=Net?_9
+Added Pin To Net: NetName=Net?_10 Pin=?-10
+Added Pin To Net: NetName=Net?_10 Pin=R23-1
+Added Pin To Net: NetName=Net?_10 Pin=X03-4
+Added Net: Name=Net?_10
+Added Pin To Net: NetName=Net?_11 Pin=?-11
+Added Pin To Net: NetName=Net?_11 Pin=R19-1
+Added Pin To Net: NetName=Net?_11 Pin=X02-4
+Added Net: Name=Net?_11
+Added Pin To Net: NetName=Net?_12 Pin=?-12
+Added Pin To Net: NetName=Net?_12 Pin=R15-1
+Added Pin To Net: NetName=Net?_12 Pin=X01-4
+Added Net: Name=Net?_12
+Added Pin To Net: NetName=Net?_22 Pin=?-22
+Added Pin To Net: NetName=Net?_22 Pin=R32-1
+Added Pin To Net: NetName=Net?_22 Pin=X10-4
+Added Net: Name=Net?_22
+Added Pin To Net: NetName=Net?_36 Pin=?-36
+Added Pin To Net: NetName=Net?_36 Pin=IC1-7
+Added Net: Name=Net?_36
+Added Pin To Net: NetName=Net?_37 Pin=?-37
+Added Pin To Net: NetName=Net?_37 Pin=IC2-7
+Added Net: Name=Net?_37
+Added Pin To Net: NetName=Net?_38 Pin=?-38
+Added Pin To Net: NetName=Net?_38 Pin=IC1-6
+Added Net: Name=Net?_38
+Added Pin To Net: NetName=Net?_39 Pin=?-39
+Added Pin To Net: NetName=Net?_39 Pin=IC2-6
+Added Net: Name=Net?_39
+Added Pin To Net: NetName=Net?_40 Pin=?-40
+Added Pin To Net: NetName=Net?_40 Pin=IC1-5
+Added Net: Name=Net?_40
+Added Pin To Net: NetName=Net?_41 Pin=?-41
+Added Pin To Net: NetName=Net?_41 Pin=IC2-5
+Added Net: Name=Net?_41
+Added Pin To Net: NetName=Net?_42 Pin=?-42
+Added Pin To Net: NetName=Net?_42 Pin=IC1-4
+Added Net: Name=Net?_42
+Added Pin To Net: NetName=Net?_43 Pin=?-43
+Added Pin To Net: NetName=Net?_43 Pin=IC2-4
+Added Net: Name=Net?_43
+Added Pin To Net: NetName=Net?_44 Pin=?-44
+Added Pin To Net: NetName=Net?_44 Pin=IC1-3
+Added Net: Name=Net?_44
+Added Pin To Net: NetName=Net?_45 Pin=?-45
+Added Pin To Net: NetName=Net?_45 Pin=IC2-3
+Added Net: Name=Net?_45
+Added Pin To Net: NetName=Net?_46 Pin=?-46
+Added Pin To Net: NetName=Net?_46 Pin=IC1-2
+Added Net: Name=Net?_46
+Added Pin To Net: NetName=Net?_47 Pin=?-47
+Added Pin To Net: NetName=Net?_47 Pin=IC2-2
+Added Net: Name=Net?_47
+Added Pin To Net: NetName=Net?_48 Pin=?-48
+Added Pin To Net: NetName=Net?_48 Pin=IC1-1
+Added Net: Name=Net?_48
+Added Pin To Net: NetName=Net?_49 Pin=?-49
+Added Pin To Net: NetName=Net?_49 Pin=IC2-1
+Added Net: Name=Net?_49
+Added Pin To Net: NetName=Net?_A0 Pin=?-A0
+Added Pin To Net: NetName=Net?_A0 Pin=JP3-1
+Added Pin To Net: NetName=Net?_A0 Pin=JP3-1
+Added Net: Name=Net?_A0
+Added Pin To Net: NetName=Net?_A1 Pin=?-A1
+Added Pin To Net: NetName=Net?_A1 Pin=JP3-2
+Added Pin To Net: NetName=Net?_A1 Pin=JP3-2
+Added Net: Name=Net?_A1
+Added Pin To Net: NetName=Net?_A2 Pin=?-A2
+Added Pin To Net: NetName=Net?_A2 Pin=JP3-3
+Added Pin To Net: NetName=Net?_A2 Pin=JP3-3
+Added Net: Name=Net?_A2
+Added Pin To Net: NetName=Net?_A3 Pin=?-A3
+Added Pin To Net: NetName=Net?_A3 Pin=JP3-4
+Added Pin To Net: NetName=Net?_A3 Pin=JP3-4
+Added Net: Name=Net?_A3
+Added Member To Class: ClassName=Controller_Writting Member=Component ? mega card as device

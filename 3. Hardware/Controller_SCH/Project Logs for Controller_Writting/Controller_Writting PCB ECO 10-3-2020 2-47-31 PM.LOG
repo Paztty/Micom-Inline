@@ -1,0 +1,3 @@
+Change Component Footprint: Designator=C2 Old Footprint=C0805 New Footprint=Tu-pico
+Added Pin To Net: NetName=GND Pin=C2-1
+Added Pin To Net: NetName=NetC2_2 Pin=C2-2

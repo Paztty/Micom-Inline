@@ -1,0 +1,41 @@
+Added Component: Designator=MEGA(ARDUINO_CUSTOM)
+Add component (AddParameter): Name = "DeviceName"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "DeviceSetName"; Value = "MEGA_DEVICE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "GateName_1"; Value = "G$1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LibraryName"; Value = "ArduinoMegaOutline"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "MEGAOUTLINE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SymbolName_1"; Value = "MEGA_SYMBOL"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetJP3_5 Pin=MEGA-2
+Added Pin To Net: NetName=NetJP3_6 Pin=MEGA-3
+Added Pin To Net: NetName=NetMEGA_4 Pin=MEGA-4
+Added Pin To Net: NetName=NetMEGA_5 Pin=MEGA-5
+Added Pin To Net: NetName=NetMEGA_5V@2 Pin=MEGA-5V@2
+Added Pin To Net: NetName=5V Pin=MEGA-5V@3
+Added Pin To Net: NetName=NetMEGA_6 Pin=MEGA-6
+Added Pin To Net: NetName=NetMEGA_7 Pin=MEGA-7
+Added Pin To Net: NetName=NetMEGA_8 Pin=MEGA-8
+Added Pin To Net: NetName=NetMEGA_9 Pin=MEGA-9
+Added Pin To Net: NetName=NetMEGA_10 Pin=MEGA-10
+Added Pin To Net: NetName=NetMEGA_11 Pin=MEGA-11
+Added Pin To Net: NetName=NetMEGA_12 Pin=MEGA-12
+Added Pin To Net: NetName=NetIC1_7 Pin=MEGA-22
+Added Pin To Net: NetName=NetIC1_6 Pin=MEGA-24
+Added Pin To Net: NetName=NetIC1_5 Pin=MEGA-26
+Added Pin To Net: NetName=NetIC1_4 Pin=MEGA-28
+Added Pin To Net: NetName=NetIC1_3 Pin=MEGA-30
+Added Pin To Net: NetName=NetIC1_2 Pin=MEGA-32
+Added Pin To Net: NetName=NetIC1_1 Pin=MEGA-34
+Added Pin To Net: NetName=NetIC2_7 Pin=MEGA-36
+Added Pin To Net: NetName=NetIC2_6 Pin=MEGA-38
+Added Pin To Net: NetName=NetIC2_5 Pin=MEGA-40
+Added Pin To Net: NetName=NetIC2_4 Pin=MEGA-42
+Added Pin To Net: NetName=NetIC2_3 Pin=MEGA-44
+Added Pin To Net: NetName=NetIC2_2 Pin=MEGA-46
+Added Pin To Net: NetName=NetIC2_1 Pin=MEGA-48
+Added Pin To Net: NetName=NetJP3_1 Pin=MEGA-A0
+Added Pin To Net: NetName=NetJP3_2 Pin=MEGA-A1
+Added Pin To Net: NetName=NetJP3_3 Pin=MEGA-A2
+Added Pin To Net: NetName=NetJP3_4 Pin=MEGA-A3
+Added Pin To Net: NetName=GND Pin=MEGA-GND@1
+Added Pin To Net: NetName=GND Pin=MEGA-GND@5
+Added Member To Class: ClassName=Controller_Writting Member=Component MEGA mega card as device

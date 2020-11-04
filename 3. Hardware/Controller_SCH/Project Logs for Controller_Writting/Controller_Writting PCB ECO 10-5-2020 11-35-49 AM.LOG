@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=NetJP3_1 Pin=MEGA-2
+Removed Pin From Net: NetName=NetJP3_2 Pin=MEGA-3
+Added Pin To Net: NetName=NetJP3_2 Pin=MEGA-2
+Added Pin To Net: NetName=NetJP3_1 Pin=MEGA-3

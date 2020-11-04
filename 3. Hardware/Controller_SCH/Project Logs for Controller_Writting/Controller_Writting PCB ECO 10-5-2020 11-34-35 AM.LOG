@@ -1,0 +1,19 @@
+Removed Pin From Net: NetName=NetJP3_5 Pin=MEGA-2
+Removed Pin From Net: NetName=NetJP3_6 Pin=MEGA-3
+Removed Pin From Net: NetName=NetJP3_1 Pin=MEGA-A0
+Removed Pin From Net: NetName=NetJP3_2 Pin=MEGA-A1
+Removed Pin From Net: NetName=NetJP3_3 Pin=MEGA-A2
+Removed Pin From Net: NetName=NetJP3_4 Pin=MEGA-A3
+Added Pin To Net: NetName=NetJP3_1 Pin=MEGA-2
+Added Pin To Net: NetName=NetJP3_2 Pin=MEGA-3
+Added Pin To Net: NetName=NetJP3_3 Pin=MEGA-A0
+Added Pin To Net: NetName=NetJP3_4 Pin=MEGA-A1
+Added Pin To Net: NetName=NetJP3_5 Pin=MEGA-A2
+Added Pin To Net: NetName=NetJP3_6 Pin=MEGA-A3
+Added Member To Class: ClassName=Controller_Writting Member=Component R1 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R2 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R3 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R4 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R5 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R6 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R7 1K

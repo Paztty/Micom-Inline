@@ -1,0 +1,37 @@
+Change Component Footprint: Designator=D3 Old Footprint=SMB - DUPLICATE New Footprint=DIO-SMD-214AA
+Change Component Comment : Designator=JUMP_0V Old Comment= New Comment=SWITCH 20P
+Change Component Comment : Designator=JUMP_24V Old Comment= New Comment=SWITCH 20P
+Change Component Comment : Designator=R15 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R16 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R19 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R20 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R23 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R24 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R27 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R28 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R31 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=R32 Old Comment=0805 New Comment=10K
+Change Component Comment : Designator=C4 Old Comment=1000uF/35V New Comment=1000uF
+Change Component Comment : Designator=C2 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=D3 Old Comment=SS26S New Comment=SS24
+Change Component Description : Designator=L1 Old Description= New Description=Inductor 12x12
+Change Component Description : Designator=C4 Old Description=12mm New Description=Capacitor Electric 12mm, 35V
+Change Component Description : Designator=C2 Old Description=Capacitor New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C6 Old Description=Capacitor New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C5 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+
+Change Component Description : Designator=C7 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C8 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C9 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C10 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C12 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C13 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C14 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C15 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=C16 Old Description=Capacitor Ceramic New Description=Capacitor Ceramic 0805, 50V
+Change Component Description : Designator=D3 Old Description=Schottky Rectifiers New Description=Schottky Rectifiers, 40V/2A, DO-214AA
+Change Component Description : Designator=JUMP_0V Old Description=WS-DITV 2.54 mm small compact THT flat actuator with top tape New Description=SWITCH 5.08mm
+Change Component Description : Designator=JUMP_24V Old Description=WS-DITV 2.54 mm small compact THT flat actuator with top tape New Description=SWITCH 5.08mm
+Added Member To Class: ClassName=Controller_Writting Member=Component CN3 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component JP7 Terminal KF142-5.08-10-R
+Added Room: Name=Controller_Writting

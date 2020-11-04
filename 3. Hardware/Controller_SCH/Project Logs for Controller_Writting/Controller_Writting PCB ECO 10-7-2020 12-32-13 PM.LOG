@@ -1,0 +1,15 @@
+Change Component Designator: OldDesignator=JP7 NewDesignator=CN7
+Change Net Name : Old Net Name=NetJP7_3 New Net Name=NetCN7_3
+Change Net Name : Old Net Name=NetJP7_4 New Net Name=NetCN7_4
+Change Net Name : Old Net Name=NetJP7_5 New Net Name=NetCN7_5
+Change Net Name : Old Net Name=NetJP7_6 New Net Name=NetCN7_6
+Change Net Name : Old Net Name=NetJP7_7 New Net Name=NetCN7_7
+Change Net Name : Old Net Name=NetJP7_8 New Net Name=NetCN7_8
+Change Net Name : Old Net Name=NetJP7_9 New Net Name=NetCN7_9
+Change Net Name : Old Net Name=NetJP7_10 New Net Name=NetCN7_10
+Added Member To Class: ClassName=Controller_Writting Member=Component CN2 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN3 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN6 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN7 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component JUMP_0V SWITCH 20P
+Added Room: Name=Controller_Writting

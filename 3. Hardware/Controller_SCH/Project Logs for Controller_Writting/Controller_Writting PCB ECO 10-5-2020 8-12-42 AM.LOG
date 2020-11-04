@@ -1,0 +1,13 @@
+Removed Pin From Net: NetName=NetIC1_7 Pin=MEGA-37
+Removed Pin From Net: NetName=NetIC1_6 Pin=MEGA-39
+Removed Pin From Net: NetName=NetIC1_5 Pin=MEGA-41
+Removed Pin From Net: NetName=NetIC1_3 Pin=MEGA-45
+Removed Pin From Net: NetName=NetIC1_2 Pin=MEGA-47
+Removed Pin From Net: NetName=NetIC1_1 Pin=MEGA-49
+Added Pin To Net: NetName=NetIC1_1 Pin=MEGA-37
+Added Pin To Net: NetName=NetIC1_2 Pin=MEGA-39
+Added Pin To Net: NetName=NetIC1_3 Pin=MEGA-41
+Added Pin To Net: NetName=NetIC1_5 Pin=MEGA-45
+Added Pin To Net: NetName=NetIC1_6 Pin=MEGA-47
+Added Pin To Net: NetName=NetIC1_7 Pin=MEGA-49
+Added Member To Class: ClassName=Controller_Writting Member=Component MEGA mega card as device

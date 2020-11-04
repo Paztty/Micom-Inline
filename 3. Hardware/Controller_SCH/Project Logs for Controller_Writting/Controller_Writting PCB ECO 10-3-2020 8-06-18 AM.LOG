@@ -1,0 +1,49 @@
+Added Component: Designator=X04(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X05(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X06(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X07(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X08(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X09(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X10(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetLX04_2 Pin=X04-1
+Added Pin To Net: NetName=NetJP2_4 Pin=X04-2
+Added Pin To Net: NetName=GND Pin=X04-3
+Added Pin To Net: NetName=NetMEGA_9 Pin=X04-4
+Added Pin To Net: NetName=NetLX05_2 Pin=X05-1
+Added Pin To Net: NetName=NetJP2_5 Pin=X05-2
+Added Pin To Net: NetName=GND Pin=X05-3
+Added Pin To Net: NetName=NetMEGA_8 Pin=X05-4
+Added Pin To Net: NetName=NetLX06_2 Pin=X06-1
+Added Pin To Net: NetName=NetJP2_6 Pin=X06-2
+Added Pin To Net: NetName=GND Pin=X06-3
+Added Pin To Net: NetName=NetMEGA_7 Pin=X06-4
+Added Pin To Net: NetName=NetLX07_2 Pin=X07-1
+Added Pin To Net: NetName=NetJP2_7 Pin=X07-2
+Added Pin To Net: NetName=GND Pin=X07-3
+Added Pin To Net: NetName=NetMEGA_6 Pin=X07-4
+Added Pin To Net: NetName=NetLX08_2 Pin=X08-1
+Added Pin To Net: NetName=NetJP2_8 Pin=X08-2
+Added Pin To Net: NetName=GND Pin=X08-3
+Added Pin To Net: NetName=NetMEGA_5 Pin=X08-4
+Added Pin To Net: NetName=NetLX09_2 Pin=X09-1
+Added Pin To Net: NetName=NetJP2_9 Pin=X09-2
+Added Pin To Net: NetName=GND Pin=X09-3
+Added Pin To Net: NetName=NetMEGA_4 Pin=X09-4
+Added Pin To Net: NetName=NetLX10_2 Pin=X10-1
+Added Pin To Net: NetName=NetJP2_10 Pin=X10-2
+Added Pin To Net: NetName=GND Pin=X10-3
+Added Pin To Net: NetName=NetMEGA_5V@2 Pin=X10-4
+Added Member To Class: ClassName=Controller_Writting Member=Component X04 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X05 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X06 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X07 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X08 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X09 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X10 PC817

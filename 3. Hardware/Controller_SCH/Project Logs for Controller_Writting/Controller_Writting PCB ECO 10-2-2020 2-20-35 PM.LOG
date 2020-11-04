@@ -1,0 +1,15 @@
+Change Component Designator: OldDesignator=U1 NewDesignator=X01
+Change Component Designator: OldDesignator=U2 NewDesignator=X02
+Change Component Designator: OldDesignator=U3 NewDesignator=X03
+Change Component Designator: OldDesignator=U4 NewDesignator=X04
+Change Component Designator: OldDesignator=U5 NewDesignator=X05
+Change Component Designator: OldDesignator=U6 NewDesignator=X06
+Change Component Designator: OldDesignator=U7 NewDesignator=X07
+Change Component Designator: OldDesignator=U8 NewDesignator=X08
+Change Component Designator: OldDesignator=U9 NewDesignator=X09
+Change Component Designator: OldDesignator=U10 NewDesignator=X10
+Added Member To Class: ClassName=Controller_Writting Member=Component X02 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X04 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X06 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X08 PC817
+Added Room: Name=Controller_Writting

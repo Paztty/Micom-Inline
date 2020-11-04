@@ -1,0 +1,7 @@
+Added Component: Designator=X01(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetLX01_2 Pin=X01-1
+Added Pin To Net: NetName=NetJP2_1 Pin=X01-2
+Added Pin To Net: NetName=GND Pin=X01-3
+Added Pin To Net: NetName=NetP?_12 Pin=X01-4
+Added Member To Class: ClassName=Controller_Writting Member=Component X01 PC817

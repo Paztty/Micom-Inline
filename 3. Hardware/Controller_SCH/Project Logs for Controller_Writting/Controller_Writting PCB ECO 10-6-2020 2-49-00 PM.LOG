@@ -1,0 +1,48 @@
+Change Component Comment : Designator=MEGA Old Comment=mega card as device New Comment=Mega 2560
+Change Component Description : Designator=U6 Old Description= New Description=Buck Switching Regulator IC
+Change Component Description : Designator=L_PWR Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY01 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY02 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY03 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY04 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY05 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY06 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY07 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY08 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY09 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY10 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY11 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY12 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY13 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LY14 Old Description= New Description=LED BLUE 0805
+Change Component Description : Designator=LX01 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX02 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX03 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX04 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX05 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX06 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX07 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX08 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX09 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=LX10 Old Description= New Description=LED RED 0805
+Change Component Description : Designator=MEGA Old Description= New Description=Mega 2560
+Change Component Description : Designator=RL1 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL2 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL3 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL4 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL5 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL6 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL7 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL8 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL9 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL10 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL11 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL12 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL13 Old Description= New Description=Relay dual 24VDC Omron
+Change Component Description : Designator=RL14 Old Description= New Description=Relay dual 24VDC Omron
+Added Member To Class: ClassName=Controller_Writting Member=Component CN1 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN2 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN3 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN4 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN5 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component CN6 Terminal KF142-5.08-10-R

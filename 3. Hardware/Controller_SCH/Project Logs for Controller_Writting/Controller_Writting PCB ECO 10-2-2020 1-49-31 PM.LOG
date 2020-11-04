@@ -1,0 +1,14 @@
+Change Component Designator: OldDesignator=U2 NewDesignator=U6
+Change Component Designator: OldDesignator=U3 NewDesignator=U2
+Change Component Designator: OldDesignator=U4 NewDesignator=U7
+Change Component Designator: OldDesignator=U5 NewDesignator=U3
+Change Component Designator: OldDesignator=U6 NewDesignator=U8
+Change Component Designator: OldDesignator=U7 NewDesignator=U4
+Change Component Designator: OldDesignator=U8 NewDesignator=U9
+Change Component Designator: OldDesignator=U9 NewDesignator=U5
+Added Member To Class: ClassName=Controller_Writting Member=Component K6 G6S-2-DC24
+Added Member To Class: ClassName=Controller_Writting Member=Component K7 G6S-2-DC24
+Added Member To Class: ClassName=Controller_Writting Member=Component K10 G6S-2-DC24
+Added Member To Class: ClassName=Controller_Writting Member=Component K11 G6S-2-DC24
+Added Member To Class: ClassName=Controller_Writting Member=Component K12 G6S-2-DC24
+Added Member To Class: ClassName=Controller_Writting Member=Component K13 G6S-2-DC24

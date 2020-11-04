@@ -1,0 +1,13 @@
+Removed Pin From Net: NetName=24V Pin=D2-1
+Removed Pin From Net: NetName=NetC1_1 Pin=D2-2
+Removed Member From Class: ClassName=Controller_Writting Member=D2
+Change Component Footprint: Designator=D1 Old Footprint=DIO-SMD-214AA New Footprint=DIO-SMD-A
+Change Component Comment : Designator=D1 Old Comment=1N4007 New Comment=ES3D
+Change Component Description : Designator=D1 Old Description=Default Diode New Description=Default Diode 
+Change component parameters: Designator = "D1" ("D1"); Footprint = "DIO-SMD-214AA"; UniqueID = "\SNQERVJA" ("\SNQERVJA")
+Change component parameters (AddParameter): Name = "Code - JEDEC"; Value = "DO-214-AB"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Revision"; Value = "July-2002: Re-released for DXP Platform."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "ES3D"; VariantName = "[No Variations]"
+Added Room: Name=Controller_Writting

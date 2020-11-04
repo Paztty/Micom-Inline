@@ -1,0 +1,220 @@
+Removed Pin From Net: NetName=NetIC1_1 Pin=LY01-1
+Removed Pin From Net: NetName=NetIC1_2 Pin=LY02-1
+Removed Pin From Net: NetName=NetIC1_3 Pin=LY03-1
+Removed Pin From Net: NetName=NetIC1_4 Pin=LY04-1
+Removed Pin From Net: NetName=NetIC1_5 Pin=LY05-1
+Removed Pin From Net: NetName=NetIC1_6 Pin=LY06-1
+Removed Pin From Net: NetName=NetIC1_7 Pin=LY07-1
+Removed Pin From Net: NetName=NetIC2_1 Pin=LY08-1
+Removed Pin From Net: NetName=NetIC2_2 Pin=LY09-1
+Removed Pin From Net: NetName=NetIC2_3 Pin=LY10-1
+Removed Pin From Net: NetName=NetIC2_4 Pin=LY11-1
+Removed Pin From Net: NetName=NetIC2_5 Pin=LY12-1
+Removed Pin From Net: NetName=NetIC2_6 Pin=LY13-1
+Removed Pin From Net: NetName=NetIC2_7 Pin=LY14-1
+Removed Pin From Net: NetName=GND Pin=R1-2
+Removed Pin From Net: NetName=GND Pin=R2-2
+Removed Pin From Net: NetName=GND Pin=R3-2
+Removed Pin From Net: NetName=GND Pin=R4-2
+Removed Pin From Net: NetName=GND Pin=R5-2
+Removed Pin From Net: NetName=GND Pin=R6-2
+Removed Pin From Net: NetName=GND Pin=R7-2
+Removed Pin From Net: NetName=GND Pin=R8-2
+Removed Pin From Net: NetName=GND Pin=R9-2
+Removed Pin From Net: NetName=GND Pin=R10-2
+Removed Pin From Net: NetName=GND Pin=R11-2
+Removed Pin From Net: NetName=GND Pin=R14-2
+Removed Pin From Net: NetName=GND Pin=R17-2
+Removed Pin From Net: NetName=NetJP1_1 Pin=R18-1
+Removed Pin From Net: NetName=NetLX01_1 Pin=R18-2
+Removed Pin From Net: NetName=NetJP1_6 Pin=R19-1
+Removed Pin From Net: NetName=NetLX06_1 Pin=R19-2
+Removed Pin From Net: NetName=GND Pin=R20-2
+Removed Pin From Net: NetName=NetJP1_1 Pin=R21-1
+Removed Pin From Net: NetName=NetLX01_1 Pin=R21-2
+Removed Pin From Net: NetName=NetJP1_6 Pin=R22-1
+Removed Pin From Net: NetName=NetLX06_1 Pin=R22-2
+Removed Pin From Net: NetName=NetJP1_2 Pin=R25-1
+Removed Pin From Net: NetName=NetLX02_1 Pin=R25-2
+Removed Pin From Net: NetName=NetJP1_7 Pin=R26-1
+Removed Pin From Net: NetName=NetLX07_1 Pin=R26-2
+Removed Pin From Net: NetName=NetJP1_2 Pin=R27-1
+Removed Pin From Net: NetName=NetLX02_1 Pin=R27-2
+Removed Pin From Net: NetName=NetJP1_7 Pin=R28-1
+Removed Pin From Net: NetName=NetLX07_1 Pin=R28-2
+Removed Pin From Net: NetName=NetJP1_2 Pin=R29-1
+Removed Pin From Net: NetName=NetLX02_1 Pin=R29-2
+Removed Pin From Net: NetName=NetJP1_7 Pin=R30-1
+Removed Pin From Net: NetName=NetLX07_1 Pin=R30-2
+Removed Pin From Net: NetName=NetJP1_3 Pin=R33-1
+Removed Pin From Net: NetName=NetLX03_1 Pin=R33-2
+Removed Pin From Net: NetName=NetJP1_8 Pin=R34-1
+Removed Pin From Net: NetName=NetLX08_1 Pin=R34-2
+Removed Pin From Net: NetName=NetJP1_3 Pin=R35-1
+Removed Pin From Net: NetName=NetLX03_1 Pin=R35-2
+Removed Pin From Net: NetName=NetJP1_8 Pin=R36-1
+Removed Pin From Net: NetName=NetLX08_1 Pin=R36-2
+Removed Pin From Net: NetName=NetJP1_3 Pin=R37-1
+Removed Pin From Net: NetName=NetLX03_1 Pin=R37-2
+Removed Pin From Net: NetName=NetJP1_8 Pin=R38-1
+Removed Pin From Net: NetName=NetLX08_1 Pin=R38-2
+Removed Pin From Net: NetName=NetJP1_4 Pin=R41-1
+Removed Pin From Net: NetName=NetLX04_1 Pin=R41-2
+Removed Pin From Net: NetName=NetJP1_9 Pin=R42-1
+Removed Pin From Net: NetName=NetLX09_1 Pin=R42-2
+Removed Pin From Net: NetName=NetJP1_4 Pin=R43-1
+Removed Pin From Net: NetName=NetLX04_1 Pin=R43-2
+Removed Pin From Net: NetName=NetJP1_9 Pin=R44-1
+Removed Pin From Net: NetName=NetLX09_1 Pin=R44-2
+Removed Pin From Net: NetName=NetJP1_4 Pin=R45-1
+Removed Pin From Net: NetName=NetLX04_1 Pin=R45-2
+Removed Pin From Net: NetName=NetJP1_9 Pin=R46-1
+Removed Pin From Net: NetName=NetLX09_1 Pin=R46-2
+Removed Pin From Net: NetName=NetJP1_5 Pin=R49-1
+Removed Pin From Net: NetName=NetLX05_1 Pin=R49-2
+Removed Pin From Net: NetName=NetJP1_10 Pin=R50-1
+Removed Pin From Net: NetName=NetLX10_1 Pin=R50-2
+Removed Pin From Net: NetName=NetJP1_5 Pin=R51-1
+Removed Pin From Net: NetName=NetLX05_1 Pin=R51-2
+Removed Pin From Net: NetName=NetJP1_10 Pin=R52-1
+Removed Pin From Net: NetName=NetLX10_1 Pin=R52-2
+Removed Pin From Net: NetName=NetJP1_5 Pin=R53-1
+Removed Pin From Net: NetName=NetLX05_1 Pin=R53-2
+Removed Pin From Net: NetName=NetJP1_10 Pin=R54-1
+Removed Pin From Net: NetName=NetLX10_1 Pin=R54-2
+Removed Member From Class: ClassName=Controller_Writting Member=R29
+Removed Member From Class: ClassName=Controller_Writting Member=R30
+Removed Member From Class: ClassName=Controller_Writting Member=R33
+Removed Member From Class: ClassName=Controller_Writting Member=R34
+Removed Member From Class: ClassName=Controller_Writting Member=R35
+Removed Member From Class: ClassName=Controller_Writting Member=R36
+Removed Member From Class: ClassName=Controller_Writting Member=R37
+Removed Member From Class: ClassName=Controller_Writting Member=R38
+Removed Member From Class: ClassName=Controller_Writting Member=R41
+Removed Member From Class: ClassName=Controller_Writting Member=R42
+Removed Member From Class: ClassName=Controller_Writting Member=R43
+Removed Member From Class: ClassName=Controller_Writting Member=R44
+Removed Member From Class: ClassName=Controller_Writting Member=R45
+Removed Member From Class: ClassName=Controller_Writting Member=R46
+Removed Member From Class: ClassName=Controller_Writting Member=R49
+Removed Member From Class: ClassName=Controller_Writting Member=R50
+Removed Member From Class: ClassName=Controller_Writting Member=R51
+Removed Member From Class: ClassName=Controller_Writting Member=R52
+Removed Member From Class: ClassName=Controller_Writting Member=R53
+Removed Member From Class: ClassName=Controller_Writting Member=R54
+Change Component Footprint: Designator=R1 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R2 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R3 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R4 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R5 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R6 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R7 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R8 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R9 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R10 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R11 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R14 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R17 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R20 Old Footprint=DIEN TRO 0805 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R15 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R16 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R18 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R19 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R21 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R22 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R25 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R26 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R27 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Footprint: Designator=R28 Old Footprint=DIEN TRO 1206 New Footprint=DIEN TRO 2512
+Change Component Comment : Designator=R15 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R16 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R18 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R19 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R21 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R22 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R25 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R26 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R27 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R28 Old Comment=0805 New Comment=1K
+Change Component Comment : Designator=R1 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R2 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R3 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R4 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R5 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R6 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R7 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R8 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R9 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R10 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R11 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R14 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R17 Old Comment=0805 1/8W New Comment=1K
+Change Component Comment : Designator=R20 Old Comment=0805 1/8W New Comment=1K
+Change component parameters: Designator = "R1" ("R1"); Footprint = "DIEN TRO 0805"; UniqueID = "\TENWOCKR" ("\TENWOCKR")
+Change component parameters: Designator = "R2" ("R2"); Footprint = "DIEN TRO 0805"; UniqueID = "\WIFSYJQN" ("\WIFSYJQN")
+Change component parameters: Designator = "R3" ("R3"); Footprint = "DIEN TRO 0805"; UniqueID = "\DJLBLUFO" ("\DJLBLUFO")
+Change component parameters: Designator = "R4" ("R4"); Footprint = "DIEN TRO 0805"; UniqueID = "\NNRSKHPL" ("\NNRSKHPL")
+Change component parameters: Designator = "R5" ("R5"); Footprint = "DIEN TRO 0805"; UniqueID = "\FPVIXTYB" ("\FPVIXTYB")
+Change component parameters: Designator = "R6" ("R6"); Footprint = "DIEN TRO 0805"; UniqueID = "\MLERJPNS" ("\MLERJPNS")
+Change component parameters: Designator = "R7" ("R7"); Footprint = "DIEN TRO 0805"; UniqueID = "\KGMJJSXD" ("\KGMJJSXD")
+Change component parameters: Designator = "R8" ("R8"); Footprint = "DIEN TRO 0805"; UniqueID = "\SHOZSMPW" ("\SHOZSMPW")
+Change component parameters: Designator = "R9" ("R9"); Footprint = "DIEN TRO 0805"; UniqueID = "\EMCUNMJL" ("\EMCUNMJL")
+Change component parameters: Designator = "R10" ("R10"); Footprint = "DIEN TRO 0805"; UniqueID = "\YLENRNYQ" ("\YLENRNYQ")
+Change component parameters: Designator = "R11" ("R11"); Footprint = "DIEN TRO 0805"; UniqueID = "\OOZLENMK" ("\OOZLENMK")
+Change component parameters: Designator = "R14" ("R14"); Footprint = "DIEN TRO 0805"; UniqueID = "\RNWVXRHR" ("\RNWVXRHR")
+Change component parameters: Designator = "R15" ("R15"); Footprint = "DIEN TRO 1206"; UniqueID = "\WDWXDBWY" ("\WDWXDBWY")
+Change component parameters: Designator = "R16" ("R16"); Footprint = "DIEN TRO 1206"; UniqueID = "\PUMBBTBR" ("\PUMBBTBR")
+Change component parameters: Designator = "R17" ("R17"); Footprint = "DIEN TRO 0805"; UniqueID = "\NGTAUCSG" ("\NGTAUCSG")
+Change component parameters: Designator = "R18" ("R18"); Footprint = "DIEN TRO 1206"; UniqueID = "\IWYDQPNK" ("\IWYDQPNK")
+Change component parameters: Designator = "R19" ("R19"); Footprint = "DIEN TRO 1206"; UniqueID = "\IGEALXOH" ("\IGEALXOH")
+Change component parameters: Designator = "R20" ("R20"); Footprint = "DIEN TRO 0805"; UniqueID = "\OUYUQNLY" ("\OUYUQNLY")
+Change component parameters: Designator = "R21" ("R21"); Footprint = "DIEN TRO 1206"; UniqueID = "\CHGWLXSQ" ("\CHGWLXSQ")
+Change component parameters: Designator = "R22" ("R22"); Footprint = "DIEN TRO 1206"; UniqueID = "\GLLTECQD" ("\GLLTECQD")
+Change component parameters: Designator = "R25" ("R25"); Footprint = "DIEN TRO 1206"; UniqueID = "\SZEYGXBF" ("\SZEYGXBF")
+Change component parameters: Designator = "R26" ("R26"); Footprint = "DIEN TRO 1206"; UniqueID = "\ODKIRERD" ("\ODKIRERD")
+Change component parameters: Designator = "R27" ("R27"); Footprint = "DIEN TRO 1206"; UniqueID = "\OOIZYWZT" ("\OOIZYWZT")
+Change component parameters: Designator = "R28" ("R28"); Footprint = "DIEN TRO 1206"; UniqueID = "\ADXKHDVS" ("\ADXKHDVS")
+Added Pin To Net: NetName=24V Pin=LY01-1
+Added Pin To Net: NetName=24V Pin=LY02-1
+Added Pin To Net: NetName=24V Pin=LY03-1
+Added Pin To Net: NetName=24V Pin=LY04-1
+Added Pin To Net: NetName=24V Pin=LY05-1
+Added Pin To Net: NetName=24V Pin=LY06-1
+Added Pin To Net: NetName=24V Pin=LY07-1
+Added Pin To Net: NetName=24V Pin=LY08-1
+Added Pin To Net: NetName=24V Pin=LY09-1
+Added Pin To Net: NetName=24V Pin=LY10-1
+Added Pin To Net: NetName=24V Pin=LY11-1
+Added Pin To Net: NetName=24V Pin=LY12-1
+Added Pin To Net: NetName=24V Pin=LY13-1
+Added Pin To Net: NetName=24V Pin=LY14-1
+Added Pin To Net: NetName=NetIC1_16 Pin=R1-2
+Added Pin To Net: NetName=NetIC1_15 Pin=R2-2
+Added Pin To Net: NetName=NetIC1_14 Pin=R3-2
+Added Pin To Net: NetName=NetIC1_13 Pin=R4-2
+Added Pin To Net: NetName=NetIC1_12 Pin=R5-2
+Added Pin To Net: NetName=NetIC1_11 Pin=R6-2
+Added Pin To Net: NetName=NetIC1_10 Pin=R7-2
+Added Pin To Net: NetName=NetIC2_16 Pin=R8-2
+Added Pin To Net: NetName=NetIC2_15 Pin=R9-2
+Added Pin To Net: NetName=NetIC2_14 Pin=R10-2
+Added Pin To Net: NetName=NetIC2_13 Pin=R11-2
+Added Pin To Net: NetName=NetIC2_12 Pin=R14-2
+Added Pin To Net: NetName=NetIC2_11 Pin=R17-2
+Added Pin To Net: NetName=NetJP1_2 Pin=R18-1
+Added Pin To Net: NetName=NetLX02_1 Pin=R18-2
+Added Pin To Net: NetName=NetJP1_7 Pin=R19-1
+Added Pin To Net: NetName=NetLX07_1 Pin=R19-2
+Added Pin To Net: NetName=NetIC2_10 Pin=R20-2
+Added Pin To Net: NetName=NetJP1_3 Pin=R21-1
+Added Pin To Net: NetName=NetLX03_1 Pin=R21-2
+Added Pin To Net: NetName=NetJP1_8 Pin=R22-1
+Added Pin To Net: NetName=NetLX08_1 Pin=R22-2
+Added Pin To Net: NetName=NetJP1_4 Pin=R25-1
+Added Pin To Net: NetName=NetLX04_1 Pin=R25-2
+Added Pin To Net: NetName=NetJP1_9 Pin=R26-1
+Added Pin To Net: NetName=NetLX09_1 Pin=R26-2
+Added Pin To Net: NetName=NetJP1_5 Pin=R27-1
+Added Pin To Net: NetName=NetLX05_1 Pin=R27-2
+Added Pin To Net: NetName=NetJP1_10 Pin=R28-1
+Added Pin To Net: NetName=NetLX10_1 Pin=R28-2

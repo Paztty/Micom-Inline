@@ -1,0 +1,30 @@
+Change Component Designator: OldDesignator=LED14 NewDesignator=LX01
+Change Component Designator: OldDesignator=LED15 NewDesignator=LX06
+Change Component Designator: OldDesignator=LED17 NewDesignator=LX02
+Change Component Designator: OldDesignator=LED18 NewDesignator=LX07
+Change Component Designator: OldDesignator=LED19 NewDesignator=LX03
+Change Component Designator: OldDesignator=LED20 NewDesignator=LX08
+Change Component Designator: OldDesignator=LED21 NewDesignator=LX04
+Change Component Designator: OldDesignator=LED22 NewDesignator=LX09
+Change Component Designator: OldDesignator=LED23 NewDesignator=LX05
+Change Component Designator: OldDesignator=LED24 NewDesignator=LX10
+Change Net Name : Old Net Name=NetLED14_1 New Net Name=NetLX01_1
+Change Net Name : Old Net Name=NetLED14_2 New Net Name=NetLX01_2
+Change Net Name : Old Net Name=NetLED15_1 New Net Name=NetLX06_1
+Change Net Name : Old Net Name=NetLED15_2 New Net Name=NetLX06_2
+Change Net Name : Old Net Name=NetLED17_1 New Net Name=NetLX02_1
+Change Net Name : Old Net Name=NetLED17_2 New Net Name=NetLX02_2
+Change Net Name : Old Net Name=NetLED18_1 New Net Name=NetLX07_1
+Change Net Name : Old Net Name=NetLED18_2 New Net Name=NetLX07_2
+Change Net Name : Old Net Name=NetLED19_1 New Net Name=NetLX03_1
+Change Net Name : Old Net Name=NetLED19_2 New Net Name=NetLX03_2
+Change Net Name : Old Net Name=NetLED20_1 New Net Name=NetLX08_1
+Change Net Name : Old Net Name=NetLED20_2 New Net Name=NetLX08_2
+Change Net Name : Old Net Name=NetLED21_1 New Net Name=NetLX04_1
+Change Net Name : Old Net Name=NetLED21_2 New Net Name=NetLX04_2
+Change Net Name : Old Net Name=NetLED22_1 New Net Name=NetLX09_1
+Change Net Name : Old Net Name=NetLED22_2 New Net Name=NetLX09_2
+Change Net Name : Old Net Name=NetLED23_1 New Net Name=NetLX05_1
+Change Net Name : Old Net Name=NetLED23_2 New Net Name=NetLX05_2
+Change Net Name : Old Net Name=NetLED24_1 New Net Name=NetLX10_1
+Change Net Name : Old Net Name=NetLED24_2 New Net Name=NetLX10_2

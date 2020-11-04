@@ -1,0 +1,2 @@
+Change Component Designator: OldDesignator=LED_PWR NewDesignator=L_PWR
+Change Net Name : Old Net Name=NetLED_PWR_2 New Net Name=NetL_PWR_2

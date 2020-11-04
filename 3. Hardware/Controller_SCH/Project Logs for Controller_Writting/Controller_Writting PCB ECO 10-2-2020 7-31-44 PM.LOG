@@ -1,0 +1,10 @@
+Added Component: Designator=D3(DIO-SMD-214AA)
+Add component (AddParameter): Name = "Code - JEDEC"; Value = "DO-214-AB"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Revision"; Value = "July-2002: Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1N5007"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=24V Pin=D3-1
+Added Pin To Net: NetName=NetC4_1 Pin=D3-2
+Added Member To Class: ClassName=Controller_Writting Member=Component D3 1N4007
+Added Room: Name=Controller_Writting

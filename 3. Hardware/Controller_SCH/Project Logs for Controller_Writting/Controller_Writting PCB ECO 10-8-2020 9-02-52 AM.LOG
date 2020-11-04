@@ -1,0 +1,31 @@
+Change Component Footprint: Designator=C1 Old Footprint=CAP-ALU-SMD-8.0X8.0X1.0 New Footprint=CAP-ALU-SMD-pi10x10.5L
+Change Component Footprint: Designator=C3 Old Footprint=CAP-ALU-SMD-8.0X8.0X1.0 New Footprint=CAP-ALU-SMD-pi10x10.5L
+Change Component Comment : Designator=C1 Old Comment=100uF, 50V New Comment=100uF
+Change Component Comment : Designator=C3 Old Comment=100uF, 50V New Comment=100uF
+Change Component Comment : Designator=MEGA Old Comment=Mega 2560 New Comment=Arduino
+Change Component Comment : Designator=CN1 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Comment : Designator=CN2 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Comment : Designator=CN3 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Comment : Designator=CN4 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Comment : Designator=CN5 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Comment : Designator=CN6 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Comment : Designator=CN7 Old Comment=Terminal KF142-5.08-10-R New Comment=Terminal 20P
+Change Component Description : Designator=CN7 Old Description= New Description=Terminal KF142-5.08-10-R
+Change Component Description : Designator=U6 Old Description=Buck Switching Regulator IC New Description=Buck Switching Regulator IC, TO252-5
+Change Component Description : Designator=D1 Old Description=Diode New Description=Diode Rectifier, 200V/3A, DO-214AB
+Change Component Description : Designator=IC1 Old Description=High-Voltage, High-Current Darlington Array New Description=High-Voltage, High-Current Darlington Array, SO16
+Change Component Description : Designator=IC2 Old Description=High-Voltage, High-Current Darlington Array New Description=High-Voltage, High-Current Darlington Array, SO16
+Change Component Description : Designator=MEGA Old Description=Mega 2560 New Description=Arduino Mega 2560
+Change Component Description : Designator=C1 Old Description=Polarized Capacitor (Axial) New Description=ALU Capacitor, 50V,10x10.3mm
+Change Component Description : Designator=C3 Old Description=Polarized Capacitor (Axial) New Description=ALU Capacitor, 50V,10x10.3mm
+Change Component Description : Designator=X01 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X02 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X03 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X04 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X05 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X06 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X07 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X08 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X09 Old Description=Single Opto New Description=Single Opto, SOP-4
+Change Component Description : Designator=X10 Old Description=Single Opto New Description=Single Opto, SOP-4
+Added Room: Name=Controller_Writting

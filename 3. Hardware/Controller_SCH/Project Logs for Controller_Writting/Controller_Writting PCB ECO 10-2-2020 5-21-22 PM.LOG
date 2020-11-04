@@ -1,0 +1,40 @@
+Removed Pin From Net: NetName=NetJP4_3 Pin=JP5-1
+Removed Pin From Net: NetName=NetJP4_3 Pin=JP5-1
+Removed Pin From Net: NetName=NetJP4_4 Pin=JP5-2
+Removed Pin From Net: NetName=NetJP4_4 Pin=JP5-2
+Removed Pin From Net: NetName=NetJP4_1 Pin=JP5-3
+Removed Pin From Net: NetName=NetJP4_1 Pin=JP5-3
+Removed Pin From Net: NetName=NetJP4_2 Pin=JP5-4
+Removed Pin From Net: NetName=NetJP4_2 Pin=JP5-4
+Removed Pin From Net: NetName=NetJP5_5 Pin=JP5-9
+Removed Pin From Net: NetName=NetJP5_5 Pin=JP5-9
+Removed Pin From Net: NetName=NetJP5_6 Pin=JP5-10
+Removed Pin From Net: NetName=NetJP5_6 Pin=JP5-10
+Removed Pin From Net: NetName=NetJP5_6 Pin=K6-4
+Removed Pin From Net: NetName=NetJP5_5 Pin=K6-9
+Added Pin To Net: NetName=NetJP5_6 Pin=K8-4
+Added Pin To Net: NetName=NetJP5_5 Pin=K8-9
+Added Pin To Net: NetName=NetJP5_1 Pin=JP5-1
+Added Pin To Net: NetName=NetJP5_1 Pin=JP5-1
+Added Pin To Net: NetName=NetJP5_1 Pin=K10-9
+Added Net: Name=NetJP5_1
+Added Pin To Net: NetName=NetJP5_2 Pin=JP5-2
+Added Pin To Net: NetName=NetJP5_2 Pin=JP5-2
+Added Pin To Net: NetName=NetJP5_2 Pin=K10-4
+Added Net: Name=NetJP5_2
+Added Pin To Net: NetName=NetJP5_3 Pin=JP5-3
+Added Pin To Net: NetName=NetJP5_3 Pin=JP5-3
+Added Pin To Net: NetName=NetJP5_3 Pin=K9-9
+Added Net: Name=NetJP5_3
+Added Pin To Net: NetName=NetJP5_4 Pin=JP5-4
+Added Pin To Net: NetName=NetJP5_4 Pin=JP5-4
+Added Pin To Net: NetName=NetJP5_4 Pin=K9-4
+Added Net: Name=NetJP5_4
+Added Pin To Net: NetName=NetJP5_9 Pin=JP5-9
+Added Pin To Net: NetName=NetJP5_9 Pin=JP5-9
+Added Pin To Net: NetName=NetJP5_9 Pin=K6-9
+Added Net: Name=NetJP5_9
+Added Pin To Net: NetName=NetJP5_10 Pin=JP5-10
+Added Pin To Net: NetName=NetJP5_10 Pin=JP5-10
+Added Pin To Net: NetName=NetJP5_10 Pin=K6-4
+Added Net: Name=NetJP5_10

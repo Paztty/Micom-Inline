@@ -1,0 +1,15 @@
+Change Component Footprint: Designator=MEGA Old Footprint=Arduino New Footprint=ARDUINO_CUSTOM
+Added Member To Class: ClassName=Controller_Writting Member=Component R13 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R14 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R15 0805
+Added Member To Class: ClassName=Controller_Writting Member=Component R16 0805
+Added Member To Class: ClassName=Controller_Writting Member=Component R17 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R18 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R19 0805
+Added Member To Class: ClassName=Controller_Writting Member=Component R21 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R25 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R26 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R27 0805
+Added Member To Class: ClassName=Controller_Writting Member=Component R28 0805
+Added Member To Class: ClassName=Controller_Writting Member=Component R31 0805
+Added Member To Class: ClassName=Controller_Writting Member=Component R32 0805

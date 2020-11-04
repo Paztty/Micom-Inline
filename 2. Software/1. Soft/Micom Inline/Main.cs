@@ -272,7 +272,11 @@ namespace Micom_Inline
                         Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                         Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     }
-
+                    if (lbAutoManual.Text == "IDE")
+                    {
+                        timerReleaseBoard.Interval = 499;
+                        timerReleaseBoard.Start();
+                    }
                 }
                 else if (Frame.Contains(Data_sendQR))
                 {
@@ -469,13 +473,12 @@ namespace Micom_Inline
 
                 lbAutoManual.Text = "Auto mode";
                 lbAutoManual.ForeColor = activeColor;
-                btSite1Open.Text = "not used";
-                btSite2Open.Text = "not used";
-                btSite3Open.Text = "not used";
-                btSite4Open.Text = "not used";
+                btSite1Open.Text = "Auto mode";
+                btSite2Open.Text = "Auto mode";
+                btSite3Open.Text = "Auto mode";
+                btSite4Open.Text = "Auto mode";
             }
-
-
+            
         }
 
         private void BtManual_Click(object sender, EventArgs e)
@@ -1995,6 +1998,7 @@ namespace Micom_Inline
         {
             Permissions = OP;
             checkPermision();
+            gbSetting.Visible = false;
             //FinalTestBigLabel(false);
         }
 
@@ -2033,6 +2037,22 @@ namespace Micom_Inline
 
         private void timerReleaseBoard_Tick(object sender, EventArgs e)
         {
+            if (timerReleaseBoard.Interval == 499)
+            {
+                if (Port.IsOpen)
+                {
+                    if (model.Layout.PCB1 && model.Layout.PCB2)
+                    {
+                        Port.Write(Result_okPBA);
+                    }
+                    else if (model.Layout.PCB1 && !model.Layout.PCB2)
+                    {
+                        Port.Write(Result_okPBA1);
+                    }
+                }
+                timerReleaseBoard.Stop();
+            }
+
             if (timerReleaseBoard.Interval == 5)
             {
                 highlinedgwTestMode(3);

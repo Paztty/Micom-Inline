@@ -1,0 +1,6 @@
+Change Component Designator: OldDesignator=* NewDesignator=U6
+Change Net Name : Old Net Name=Net*_1 New Net Name=NetC4_1
+Change Net Name : Old Net Name=Net*_2 New Net Name=NetD2_2
+Change Net Name : Old Net Name=Net*_4 New Net Name=NetC3_2
+Change Net Name : Old Net Name=Net*_5 New Net Name=NetC5_2
+Added Room: Name=Controller_Writting

@@ -1,0 +1,4 @@
+Change Component Designator: OldDesignator=R? NewDesignator=R17
+Change Component Designator: OldDesignator=R? NewDesignator=R21
+Change Net Name : Old Net Name=NetR?_2 New Net Name=NetR21_2
+Added Member To Class: ClassName=Controller_Writting Member=Component R17 1K

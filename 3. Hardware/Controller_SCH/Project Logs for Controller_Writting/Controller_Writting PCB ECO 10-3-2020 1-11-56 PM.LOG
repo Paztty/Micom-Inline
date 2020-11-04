@@ -1,0 +1,73 @@
+Removed Pin From Net: NetName=NetJP1_1 Pin=R17-1
+Removed Pin From Net: NetName=NetJP1_6 Pin=R18-1
+Removed Pin From Net: NetName=NetJP1_2 Pin=R21-1
+Removed Pin From Net: NetName=NetJP1_7 Pin=R22-1
+Removed Pin From Net: NetName=NetJP1_3 Pin=R25-1
+Removed Pin From Net: NetName=NetJP1_8 Pin=R26-1
+Removed Pin From Net: NetName=NetJP1_4 Pin=R29-1
+Removed Pin From Net: NetName=NetJP1_9 Pin=R30-1
+Removed Pin From Net: NetName=NetJP1_5 Pin=R33-1
+Removed Pin From Net: NetName=NetJP1_10 Pin=R34-1
+Removed Pin From Net: NetName=NetLX01_2 Pin=X01-1
+Removed Pin From Net: NetName=NetLX02_2 Pin=X02-1
+Removed Pin From Net: NetName=NetLX03_2 Pin=X03-1
+Removed Pin From Net: NetName=NetLX04_2 Pin=X04-1
+Removed Pin From Net: NetName=NetLX05_2 Pin=X05-1
+Removed Pin From Net: NetName=NetLX06_2 Pin=X06-1
+Removed Pin From Net: NetName=NetLX07_2 Pin=X07-1
+Removed Pin From Net: NetName=NetLX08_2 Pin=X08-1
+Removed Pin From Net: NetName=NetLX09_2 Pin=X09-1
+Removed Pin From Net: NetName=NetLX10_2 Pin=X10-1
+Removed Member From Class: ClassName=Controller_Writting Member=R17
+Removed Member From Class: ClassName=Controller_Writting Member=R21
+Added Component: Designator=R?(DIEN TRO 2512)
+Added Component: Designator=R?(DIEN TRO 2512)
+Added Pin To Net: NetName=NetJP1_1 Pin=LX01-1
+Added Pin To Net: NetName=NetJP1_2 Pin=LX02-1
+Added Pin To Net: NetName=NetJP1_3 Pin=LX03-1
+Added Pin To Net: NetName=NetJP1_4 Pin=LX04-1
+Added Pin To Net: NetName=NetJP1_5 Pin=LX05-1
+Added Pin To Net: NetName=NetJP1_6 Pin=LX06-1
+Added Pin To Net: NetName=NetJP1_7 Pin=LX07-1
+Added Pin To Net: NetName=NetJP1_8 Pin=LX08-1
+Added Pin To Net: NetName=NetJP1_9 Pin=LX09-1
+Added Pin To Net: NetName=NetJP1_10 Pin=LX10-1
+Added Pin To Net: NetName=NetLX06_2 Pin=R18-1
+Added Pin To Net: NetName=NetLX07_2 Pin=R22-1
+Added Pin To Net: NetName=NetLX03_2 Pin=R25-1
+Added Pin To Net: NetName=NetLX08_2 Pin=R26-1
+Added Pin To Net: NetName=NetLX04_2 Pin=R29-1
+Added Pin To Net: NetName=NetLX09_2 Pin=R30-1
+Added Pin To Net: NetName=NetLX05_2 Pin=R33-1
+Added Pin To Net: NetName=NetLX10_2 Pin=R34-1
+Added Pin To Net: NetName=NetLX01_2 Pin=R?-1
+Added Pin To Net: NetName=NetLX02_2 Pin=R?-1
+Added Pin To Net: NetName=NetR18_2 Pin=R18-2
+Added Pin To Net: NetName=NetR18_2 Pin=X06-1
+Added Net: Name=NetR18_2
+Added Pin To Net: NetName=NetR22_2 Pin=R22-2
+Added Pin To Net: NetName=NetR22_2 Pin=X07-1
+Added Net: Name=NetR22_2
+Added Pin To Net: NetName=NetR25_2 Pin=R25-2
+Added Pin To Net: NetName=NetR25_2 Pin=X03-1
+Added Net: Name=NetR25_2
+Added Pin To Net: NetName=NetR26_2 Pin=R26-2
+Added Pin To Net: NetName=NetR26_2 Pin=X08-1
+Added Net: Name=NetR26_2
+Added Pin To Net: NetName=NetR29_2 Pin=R29-2
+Added Pin To Net: NetName=NetR29_2 Pin=X04-1
+Added Net: Name=NetR29_2
+Added Pin To Net: NetName=NetR30_2 Pin=R30-2
+Added Pin To Net: NetName=NetR30_2 Pin=X09-1
+Added Net: Name=NetR30_2
+Added Pin To Net: NetName=NetR33_2 Pin=R33-2
+Added Pin To Net: NetName=NetR33_2 Pin=X05-1
+Added Net: Name=NetR33_2
+Added Pin To Net: NetName=NetR34_2 Pin=R34-2
+Added Pin To Net: NetName=NetR34_2 Pin=X10-1
+Added Net: Name=NetR34_2
+Added Pin To Net: NetName=NetR?_2 Pin=R?-2
+Added Pin To Net: NetName=NetR?_2 Pin=X02-1
+Added Net: Name=NetR?_2
+Added Member To Class: ClassName=Controller_Writting Member=Component R? 1K
+Added Member To Class: ClassName=Controller_Writting Member=Component R? 1K

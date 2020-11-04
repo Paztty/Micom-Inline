@@ -1,0 +1,14 @@
+Added Component: Designator=X02(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Component: Designator=X03(SOP-4)
+Add component (AddParameter): Name = "Value"; Value = "PC817"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetLX02_2 Pin=X02-1
+Added Pin To Net: NetName=NetJP2_2 Pin=X02-2
+Added Pin To Net: NetName=GND Pin=X02-3
+Added Pin To Net: NetName=NetMEGA_11 Pin=X02-4
+Added Pin To Net: NetName=NetLX03_2 Pin=X03-1
+Added Pin To Net: NetName=NetJP2_3 Pin=X03-2
+Added Pin To Net: NetName=GND Pin=X03-3
+Added Pin To Net: NetName=NetMEGA_10 Pin=X03-4
+Added Member To Class: ClassName=Controller_Writting Member=Component X02 PC817
+Added Member To Class: ClassName=Controller_Writting Member=Component X03 PC817

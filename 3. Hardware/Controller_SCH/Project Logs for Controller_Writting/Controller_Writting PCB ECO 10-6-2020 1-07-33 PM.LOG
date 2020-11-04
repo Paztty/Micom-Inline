@@ -1,0 +1,36 @@
+Change Component Comment : Designator=C5 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C6 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C7 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C8 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C9 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C10 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C11 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C12 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C13 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C14 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C15 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Comment : Designator=C16 Old Comment=Capacitor Ceramic New Comment=100nF
+Change Component Description : Designator=C5 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C7 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C8 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C9 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C10 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C11 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C12 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C13 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C14 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C15 Old Description=Capacitor New Description=Capacitor Ceramic
+Change Component Description : Designator=C16 Old Description=Capacitor New Description=Capacitor Ceramic
+Added Component: Designator=C17(CAP_0805)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "RAD-0.3"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=C17-1
+Added Pin To Net: NetName=5V Pin=C17-2
+Added Member To Class: ClassName=Controller_Writting Member=Component C17 100nF
+Added Member To Class: ClassName=Controller_Writting Member=Component JP4 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component JP5 Terminal KF142-5.08-10-R
+Added Member To Class: ClassName=Controller_Writting Member=Component JP6 Terminal KF142-5.08-10-R
