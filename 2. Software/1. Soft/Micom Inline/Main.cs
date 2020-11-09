@@ -272,10 +272,18 @@ namespace Micom_Inline
                         Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                         Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     }
-                    if (lbAutoManual.Text == "IDE")
-                    {
-                        timerReleaseBoard.Interval = 499;
-                        timerReleaseBoard.Start();
+                    else if(Permissions == MANAGER && lbAutoManual.Text == "IDE") 
+                    {               
+                        lbMachineStatus.Invoke(new MethodInvoker(delegate {
+                            highlinedgwTestMode(0);
+                            resetdgwTestMode();
+                            FinalTestBigLabel(false);
+                            lbMachineStatus.Text = "Test"; lbMachineStatus.BackColor = activeColor;
+                            timerTest.Start();
+                            lastWorkingTime = DateTime.Now;
+                            LosingTime = false;
+                        }));
+
                     }
                 }
                 else if (Frame.Contains(Data_sendQR))
@@ -333,7 +341,6 @@ namespace Micom_Inline
             if (elapsed.TotalMilliseconds > 100)
             {
                 _barcode.Clear();
-
                 // process barcode
             }
 
@@ -347,6 +354,7 @@ namespace Micom_Inline
             {
                 _barcode.Add(e.KeyChar);
                 _lastKeystroke = DateTime.Now;
+
             }
         }
 
@@ -461,6 +469,7 @@ namespace Micom_Inline
             }
             else
             {
+                resetdgwTestMode();
                 try
                 {
                     tsslbCOM.Text = Port.PortName + "                ";
@@ -478,7 +487,7 @@ namespace Micom_Inline
                 btSite3Open.Text = "Auto mode";
                 btSite4Open.Text = "Auto mode";
             }
-            
+
         }
 
         private void BtManual_Click(object sender, EventArgs e)
@@ -589,7 +598,7 @@ namespace Micom_Inline
                             final = "FAIL";
 
                         _CONFIG.reportWrite(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-                        
+
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
                             FinalTestBigLabel(true);
@@ -1187,7 +1196,7 @@ namespace Micom_Inline
                                 {
                                     lbSiteName.BackColor = activeColor;
                                 }
-                                else if(data[1] == ElnecSite.KEY_PROGRAMMER_NOTFOUND)
+                                else if (data[1] == ElnecSite.KEY_PROGRAMMER_NOTFOUND)
                                 {
                                     lbSiteName.BackColor = Color.Black;
                                 }
@@ -1307,7 +1316,7 @@ namespace Micom_Inline
 
 
         private void btSite1Open_Click(object sender, EventArgs e)
-        { 
+        {
             if (btSite1Open.Text == "OPEN")
             {
                 Site1.OpenSite("1180-11227", "127.0.0.1", 8881);
@@ -1315,9 +1324,11 @@ namespace Micom_Inline
             }
             else
             {
-                //Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                 Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                 lbResultA.BackColor = activeColor;
+                Site1.WorkProcess.ClearCMDQueue();
+                Site1.TCP_TimeOut = 1000;
+                Site1.WorkProcess.Interrup = true;
                 Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
 
@@ -1332,7 +1343,11 @@ namespace Micom_Inline
             }
             else
             {
-                //Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                lbResultB.BackColor = activeColor;
+                Site2.WorkProcess.ClearCMDQueue();
+                Site2.TCP_TimeOut = 1000;
+                Site2.WorkProcess.Interrup = true;
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
         }
@@ -1346,7 +1361,11 @@ namespace Micom_Inline
             }
             else
             {
-                //Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                lbResultC.BackColor = activeColor;
+                Site3.WorkProcess.ClearCMDQueue();
+                Site3.TCP_TimeOut = 1000;
+                Site3.WorkProcess.Interrup = true;
                 Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
         }
@@ -1360,7 +1379,11 @@ namespace Micom_Inline
             }
             else
             {
-                //Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                lbResultD.BackColor = activeColor;
+                Site4.WorkProcess.ClearCMDQueue();
+                Site4.TCP_TimeOut = 1000;
+                Site4.WorkProcess.Interrup = true;
                 Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
         }
@@ -1890,7 +1913,7 @@ namespace Micom_Inline
                         btManual.Click -= BtManual_Click;
                         btReportFolder.Click -= BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
-                         
+
 
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
@@ -1919,7 +1942,7 @@ namespace Micom_Inline
                         btManual.Click += BtManual_Click;
                         btReportFolder.Click += BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
-                         
+
 
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
@@ -1945,7 +1968,7 @@ namespace Micom_Inline
                         btManual.Click -= BtManual_Click;
                         btReportFolder.Click -= BtReportFolder_Click;
                         btSetting.Click -= BtSetting_Click;
-                         
+
 
                         btUserBarcode.Click -= btUserBarcode_Click;
                         btSkipBarcode.Click -= btSkipBarcode_Click;
@@ -2037,22 +2060,6 @@ namespace Micom_Inline
 
         private void timerReleaseBoard_Tick(object sender, EventArgs e)
         {
-            if (timerReleaseBoard.Interval == 499)
-            {
-                if (Port.IsOpen)
-                {
-                    if (model.Layout.PCB1 && model.Layout.PCB2)
-                    {
-                        Port.Write(Result_okPBA);
-                    }
-                    else if (model.Layout.PCB1 && !model.Layout.PCB2)
-                    {
-                        Port.Write(Result_okPBA1);
-                    }
-                }
-                timerReleaseBoard.Stop();
-            }
-
             if (timerReleaseBoard.Interval == 5)
             {
                 highlinedgwTestMode(3);
@@ -2065,8 +2072,8 @@ namespace Micom_Inline
             }
             else if (timerReleaseBoard.Interval == 2500)
             {
-                if(lbSiteName1.BackColor != Color.Black || lbSiteName2.BackColor != Color.Black || lbSiteName3.BackColor != Color.Black || lbSiteName4.BackColor != Color.Black)
-                { 
+                if (lbSiteName1.BackColor != Color.Black || lbSiteName2.BackColor != Color.Black || lbSiteName3.BackColor != Color.Black || lbSiteName4.BackColor != Color.Black)
+                {
                     if (lbSiteName1.BackColor != activeColor || lbSiteName2.BackColor != activeColor || lbSiteName3.BackColor != activeColor || lbSiteName4.BackColor != activeColor)
                     {
                         tbHistory.AppendText("Openning Elnect");
@@ -2410,6 +2417,7 @@ namespace Micom_Inline
             }
             else
             {
+            
                 try
                 {
                     tsslbCOM.ForeColor = Color.White;
@@ -2424,15 +2432,15 @@ namespace Micom_Inline
                 }
 
             }
-
         }
 
         private void timerQR_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine("OK QR");
-            if (Port.IsOpen)
-                Port.Write(Result_okQR);
-            timerQR.Stop();
+
+                Console.WriteLine("OK QR");
+                if (Port.IsOpen)
+                    Port.Write(Result_okQR);
+                timerQR.Stop();
         }
 
         private void btReloadElnec_Click(object sender, EventArgs e)
@@ -2458,12 +2466,30 @@ namespace Micom_Inline
             FinalTestBigLabel(false);
         }
 
+        private void timerTest_Tick(object sender, EventArgs e)
+        {
+            if (timerTest.Interval == 4000)
+            {
+                Site1.Result = ElnecSite.RESULT_OK;
+                Site2.Result = ElnecSite.RESULT_OK;
+                Site3.Result = ElnecSite.RESULT_OK;
+                Site4.Result = ElnecSite.RESULT_OK;
+
+                FinalTestLabel();
+
+                highlinedgwTestMode(1);
+
+
+                LosingTime = true;
+                if(model.Layout.PCB2)
+                    Port.Write(Result_okPBA);
+                else
+                    Port.Write(Result_okPBA1);
+                highlinedgwTestMode(2);
+                timerTest.Stop();
+            }
+        }
     }
-
-
-
-
-
 
 
     public class ElnecSite
