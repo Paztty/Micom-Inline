@@ -79,6 +79,7 @@ namespace Micom_Inline
         // chart animations
         public int CharCircle = 1;
 
+        public int percentProcess = 0;
 
         public string PortReciver = string.Empty;
         public string[] BaudRate = { "300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200" };
@@ -246,10 +247,13 @@ namespace Micom_Inline
                         Site3.WorkProcess.ClearCMDQueue();
                         Site4.WorkProcess.ClearCMDQueue();
 
-                        Site1.TCP_TimeOut = 1000;
-                        Site2.TCP_TimeOut = 1000;
-                        Site3.TCP_TimeOut = 1000;
-                        Site4.TCP_TimeOut = 1000;
+                        Site1.TCP_TimeOut = 2000;
+                        Site2.TCP_TimeOut = 2000;
+                        Site3.TCP_TimeOut = 2000;
+                        Site4.TCP_TimeOut = 2000;
+
+                        percentProcess = tbLogLineNumber;
+                        pbTesting.Value = 0;
 
                         Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                         Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
@@ -602,7 +606,8 @@ namespace Micom_Inline
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
                             FinalTestBigLabel(true);
-
+                            percentProcess = tbLogLineNumber;
+                            pbTesting.Value = 100;
                             tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
@@ -648,7 +653,8 @@ namespace Micom_Inline
                         tbHistory.Invoke(new MethodInvoker(delegate
                         {
                             FinalTestBigLabel(true);
-
+                            percentProcess = tbLogLineNumber;
+                            pbTesting.Value = 100;
                             tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
@@ -722,6 +728,8 @@ namespace Micom_Inline
                     tbHistory.Invoke(new MethodInvoker(delegate
                     {
                         FinalTestBigLabel(true);
+                        percentProcess = tbLogLineNumber;
+                        pbTesting.Value = 100;
                         tbHistory.AppendText(now + "    " + model.ModelName + Environment.NewLine + "        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
                         Console.WriteLine(ResultRespoonse);
                         CharCircle = 1;
@@ -736,6 +744,12 @@ namespace Micom_Inline
                     }));
                 }
             }
+
+            if (Site1.Result == ElnecSite.EMPTY && Site2.Result == ElnecSite.EMPTY && Site3.Result == ElnecSite.EMPTY && Site4.Result == ElnecSite.EMPTY)
+            {
+                pbTesting.Invoke(new MethodInvoker(delegate { pbTesting.Value = 0; }));
+            }     
+
         }
 
         public void FinalTestBigLabel(bool show)
@@ -901,7 +915,7 @@ namespace Micom_Inline
                 Socket socket = listener.AcceptSocket();
                 socket.ReceiveTimeout = Site1.TCP_TimeOut;
 
-                if (Site1.WorkProcess.Process == WorkProcess.Ready)
+                if (Site1.WorkProcess.Process == WorkProcess.Ready && Site1.WorkProcess.Interrup == false)
                 {
                     Site1.Command = Site1.WorkProcess.GetCommandFIFO();
                     if (Site1.Command != "null")
@@ -917,6 +931,7 @@ namespace Micom_Inline
                 }
                 if (Site1.WorkProcess.Interrup)
                 {
+                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate
                     {
@@ -943,12 +958,6 @@ namespace Micom_Inline
                     {
                         string recive = encoding.GetString(data, 0, d);
                         ProcessSite(Site1, lbSiteName1, lbSite1Checksum, lbROM1checkSum, lbRomNameSite1, lbResultA, lbResultAbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        tbLog.Invoke(new MethodInvoker(delegate
-                        {
-                            if (tbLog.TextLength > 1000000) tbLog.Clear();
-                            tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        }));
-
                     }
                 }
                 socket.Close();
@@ -969,7 +978,7 @@ namespace Micom_Inline
                     break;
                 Socket socket = listener.AcceptSocket();
                 socket.ReceiveTimeout = Site2.TCP_TimeOut;
-                if (Site2.WorkProcess.Process == WorkProcess.Ready)
+                if (Site2.WorkProcess.Process == WorkProcess.Ready && Site2.WorkProcess.Interrup == false)
                 {
                     Site2.Command = Site2.WorkProcess.GetCommandFIFO();
                     if (Site2.Command != "null")
@@ -979,9 +988,9 @@ namespace Micom_Inline
                         Site2.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
-
                 if (Site2.WorkProcess.Interrup)
                 {
+                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site2.WorkProcess.Interrup = false;
@@ -1004,13 +1013,6 @@ namespace Micom_Inline
                     {
                         string recive = encoding.GetString(data, 0, d);
                         ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, lbResultBbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        tbLog.Invoke(new MethodInvoker(delegate
-                        {
-                            if (tbLog.TextLength > 1000000) tbLog.Clear();
-                            tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        }));
-
-
                     }
                 }
                 socket.Close();
@@ -1030,7 +1032,7 @@ namespace Micom_Inline
                     break;
                 Socket socket = listener.AcceptSocket();
                 socket.ReceiveTimeout = Site3.TCP_TimeOut;
-                if (Site3.WorkProcess.Process == WorkProcess.Ready)
+                if (Site3.WorkProcess.Process == WorkProcess.Ready && Site3.WorkProcess.Interrup == false)
                 {
                     Site3.Command = Site3.WorkProcess.GetCommandFIFO();
                     if (Site3.Command != "null")
@@ -1040,9 +1042,9 @@ namespace Micom_Inline
                         Site3.WorkProcess.Process = WorkProcess.Start;
                     }
                 }
-
                 if (Site3.WorkProcess.Interrup)
                 {
+                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site3.WorkProcess.Interrup = false;
@@ -1065,13 +1067,6 @@ namespace Micom_Inline
                     {
                         string recive = encoding.GetString(data, 0, d);
                         ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, lbResultCbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        tbLog.Invoke(new MethodInvoker(delegate
-                        {
-                            if (tbLog.TextLength > 1000000) tbLog.Clear();
-                            tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        }));
-
-
                     }
                 }
                 socket.Close();
@@ -1091,7 +1086,7 @@ namespace Micom_Inline
                     break;
                 Socket socket = listener.AcceptSocket();
                 socket.ReceiveTimeout = Site4.TCP_TimeOut;
-                if (Site4.WorkProcess.Process == WorkProcess.Ready)
+                if (Site4.WorkProcess.Process == WorkProcess.Ready && Site4.WorkProcess.Interrup == false)
                 {
                     Site4.Command = Site4.WorkProcess.GetCommandFIFO();
                     if (Site4.Command != "null")
@@ -1103,6 +1098,7 @@ namespace Micom_Inline
                 }
                 if (Site4.WorkProcess.Interrup)
                 {
+                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site4.WorkProcess.Interrup = false;
@@ -1124,11 +1120,6 @@ namespace Micom_Inline
                     {
                         string recive = encoding.GetString(data, 0, d);
                         ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, lbResultDbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        tbLog.Invoke(new MethodInvoker(delegate
-                        {
-                            if (tbLog.TextLength > 1000000) tbLog.Clear();
-                            tbLog.AppendText(recive.Replace("\\*/n\\*/", System.Environment.NewLine));
-                        }));
                     }
                 }
                 socket.Close();
@@ -1139,6 +1130,13 @@ namespace Micom_Inline
         // Site1 process
         public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, Label lbResultBig, string Response)
         {
+            tbLog.Invoke(new MethodInvoker(delegate
+            {
+                if (tbLog.TextLength > 1000000) tbLog.Clear();
+                tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + Response + System.Environment.NewLine); }));
+                if(tbLogLineNumber - percentProcess < 100)
+                    pbTesting.Value = tbLogLineNumber - percentProcess;
+            }));
             // get infor from site 
             Response = Response.Replace("\r\n", "\n").Replace("\r", "\n");
             string[] ElnecResponses = Response.Split('\n');
@@ -1245,6 +1243,17 @@ namespace Micom_Inline
                         Site.TCP_TimeOut = 500;
                         Site.WorkProcess.Interrup = true;
                         Site.SITE_PROGRESS = "";
+
+                        //if (Site.SITE_PROGRAMRESULT != ElnecSite.RESULT_OK)
+                        //{
+                        //    Site.SITE_PROGRAMRESULT = ElnecSite.RESULT_OK;
+                        //    Site.Result = ElnecSite.RESULT_OK;
+                        //}
+                        //OK_label(lbResult);
+                        //OK_label(lbResultBig);
+                        //Site.TCP_TimeOut = 500;
+                        //Site.WorkProcess.Interrup = true;
+                        //Site.SITE_DETAILE = "";
                     }
                 }
 
@@ -1311,6 +1320,7 @@ namespace Micom_Inline
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
             }
+
             FinalTestLabel();
         }
 
@@ -1320,14 +1330,13 @@ namespace Micom_Inline
             if (btSite1Open.Text == "OPEN")
             {
                 Site1.OpenSite("1180-11227", "127.0.0.1", 8881);
-                btSite1Open.Text = "PROGRAM";
             }
             else
             {
                 Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                 lbResultA.BackColor = activeColor;
                 Site1.WorkProcess.ClearCMDQueue();
-                Site1.TCP_TimeOut = 1000;
+                Site1.TCP_TimeOut = 3000;
                 Site1.WorkProcess.Interrup = true;
                 Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
@@ -1339,14 +1348,13 @@ namespace Micom_Inline
             if (btSite2Open.Text == "OPEN")
             {
                 Site2.OpenSite("1180-11228", "127.0.0.1", 8882);
-                btSite2Open.Text = "PROGRAM";
             }
             else
             {
                 Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                 lbResultB.BackColor = activeColor;
                 Site2.WorkProcess.ClearCMDQueue();
-                Site2.TCP_TimeOut = 1000;
+                Site2.TCP_TimeOut = 3000;
                 Site2.WorkProcess.Interrup = true;
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
@@ -1357,14 +1365,13 @@ namespace Micom_Inline
             if (btSite3Open.Text == "OPEN")
             {
                 Site3.OpenSite("1180-11229", "127.0.0.1", 8883);
-                btSite3Open.Text = "PROGRAM";
             }
             else
             {
                 Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                 lbResultC.BackColor = activeColor;
                 Site3.WorkProcess.ClearCMDQueue();
-                Site3.TCP_TimeOut = 1000;
+                Site3.TCP_TimeOut = 3000;
                 Site3.WorkProcess.Interrup = true;
                 Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
@@ -1375,14 +1382,13 @@ namespace Micom_Inline
             if (btSite4Open.Text == "OPEN")
             {
                 Site4.OpenSite("1180-11230", "127.0.0.1", 8884);
-                btSite4Open.Text = "PROGRAM";
             }
             else
             {
                 Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                 lbResultD.BackColor = activeColor;
                 Site4.WorkProcess.ClearCMDQueue();
-                Site4.TCP_TimeOut = 1000;
+                Site4.TCP_TimeOut = 3000;
                 Site4.WorkProcess.Interrup = true;
                 Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
             }
@@ -2206,7 +2212,6 @@ namespace Micom_Inline
             else
                 siteCheckSumRefrest.BackColor = deactiveColor;
 
-
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
             Site1.WorkProcess.Process = WorkProcess.Ready;
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
@@ -2323,16 +2328,41 @@ namespace Micom_Inline
 
         private void MicomArray_ValueChanged(object sender, EventArgs e)
         {
-            if (NumberArray > 0)
-                PCBarrayCount.Maximum = 4 / (MicomArray.Value * NumberArray);
-            else
-                PCBarrayCount.Maximum = 1;
+            if (radioButton1.Checked && radioButton2.Checked)
+            {
+                NumberArray = 2;
+            }
+            else {
+                NumberArray = 1;
+            }
 
-            if (model.Layout.ArrayCount > PCBarrayCount.Maximum)
-                model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Maximum);
+
+
+            if (NumberArray > 0)
+            {
+                PCBarrayCount.Maximum = 4 / (MicomArray.Value * NumberArray);
+                if (PCBarrayCount.Maximum == 0) PCBarrayCount.Maximum = 1;
+                nbUDXarrayCount.Maximum = PCBarrayCount.Value;
+                nbUDXarrayCount.Minimum = 1;
+                nbUDXarrayCount.Value = 1;
+            }
+            else
+            {
+                nbUDXarrayCount.Maximum = PCBarrayCount.Value;
+                nbUDXarrayCount.Maximum = 1;
+                nbUDXarrayCount.Minimum = 1;
+                nbUDXarrayCount.Value = 1;
+            }
+
             model.Layout.MicomNumber = Convert.ToInt32(MicomArray.Value);
             model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
             model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
+
+            if (model.Layout.ArrayCount > PCBarrayCount.Maximum)
+                model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Maximum);
+            if (model.Layout.XasixArrayCount > nbUDXarrayCount.Maximum)
+                model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Maximum);
+
             model.Layout.drawPCBLayout(pbPCBLayout);
         }
 
