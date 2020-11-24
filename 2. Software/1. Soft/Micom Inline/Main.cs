@@ -200,6 +200,7 @@ namespace Micom_Inline
 
         private void Main_Load(object sender, EventArgs e)
         {
+            this.FormBorderStyle = FormBorderStyle.None;
             DgwTestMode_Init();
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
@@ -247,10 +248,10 @@ namespace Micom_Inline
                         Site3.WorkProcess.ClearCMDQueue();
                         Site4.WorkProcess.ClearCMDQueue();
 
-                        Site1.TCP_TimeOut = 2000;
-                        Site2.TCP_TimeOut = 2000;
-                        Site3.TCP_TimeOut = 2000;
-                        Site4.TCP_TimeOut = 2000;
+                        Site1.TCP_TimeOut = 3000;
+                        Site2.TCP_TimeOut = 3000;
+                        Site3.TCP_TimeOut = 3000;
+                        Site4.TCP_TimeOut = 3000;
 
                         percentProcess = tbLogLineNumber;
                         pbTesting.Value = 0;
@@ -387,7 +388,7 @@ namespace Micom_Inline
             }
             else
             {
-                //this.MaximumSize = new System.Drawing.Size(Screen.PrimaryScreen.WorkingArea.Width + 20  , Screen.PrimaryScreen.WorkingArea.Height + 17);
+                this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
                 this.WindowState = FormWindowState.Maximized;
                 btnMaximize.BackgroundImage = Resources.minimize;
             }
@@ -931,7 +932,6 @@ namespace Micom_Inline
                 }
                 if (Site1.WorkProcess.Interrup)
                 {
-                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate
                     {
@@ -990,7 +990,6 @@ namespace Micom_Inline
                 }
                 if (Site2.WorkProcess.Interrup)
                 {
-                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site2: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site2.WorkProcess.Interrup = false;
@@ -1044,7 +1043,6 @@ namespace Micom_Inline
                 }
                 if (Site3.WorkProcess.Interrup)
                 {
-                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site3: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site3.WorkProcess.Interrup = false;
@@ -1098,7 +1096,6 @@ namespace Micom_Inline
                 }
                 if (Site4.WorkProcess.Interrup)
                 {
-                    socket.ReceiveTimeout = 500;
                     socket.Send(encoding.GetBytes(ElnecSite.STOP_OPERATION));
                     tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + "Site4: " + ElnecSite.STOP_OPERATION + System.Environment.NewLine); }));
                     Site4.WorkProcess.Interrup = false;
@@ -1240,7 +1237,7 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRESS == "99" || Site.SITE_PROGRESS == "100")
                     {
-                        Site.TCP_TimeOut = 500;
+                        Site.TCP_TimeOut = 1500;
                         Site.WorkProcess.Interrup = true;
                         Site.SITE_PROGRESS = "";
 
@@ -1272,7 +1269,7 @@ namespace Micom_Inline
                     }
                     OK_label(lbResult);
                     OK_label(lbResultBig);
-                    Site.TCP_TimeOut = 500;
+                    Site.TCP_TimeOut = 1500;
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
@@ -1286,7 +1283,7 @@ namespace Micom_Inline
                     }
                     NG_label(lbResult);
                     NG_label(lbResultBig);
-                    Site.TCP_TimeOut = 500;
+                    Site.TCP_TimeOut = 1500;
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
@@ -1307,7 +1304,7 @@ namespace Micom_Inline
                         lbSiteChecksum.BackColor = Color.Red;
                     }
                     Site.SITE_LOADPRJRESULT = "";
-                    Site.TCP_TimeOut = 500;
+                    Site.TCP_TimeOut = 1500;
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1315,7 +1312,7 @@ namespace Micom_Inline
                 {
                     NG_label(lbRomNameSite);
                     Site.SITE_LOADPRJRESULT = "";
-                    Site.TCP_TimeOut = 500;
+                    Site.TCP_TimeOut = 1500;
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1327,70 +1324,81 @@ namespace Micom_Inline
 
         private void btSite1Open_Click(object sender, EventArgs e)
         {
-            if (btSite1Open.Text == "OPEN")
+            if (Permissions == TECH)
             {
-                Site1.OpenSite("1180-11227", "127.0.0.1", 8881);
+                if (btSite1Open.Text == "OPEN")
+                {
+                    Site1.OpenSite("1180-" + (ElnecAddress).ToString("d5"), RemoteIP, RemotePort);
+                }
+                else
+                {
+                    Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                    lbResultA.BackColor = activeColor;
+                    Site1.WorkProcess.ClearCMDQueue();
+                    Site1.TCP_TimeOut = 3000;
+                    Site1.WorkProcess.Interrup = true;
+                    Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                }
             }
-            else
-            {
-                Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
-                lbResultA.BackColor = activeColor;
-                Site1.WorkProcess.ClearCMDQueue();
-                Site1.TCP_TimeOut = 3000;
-                Site1.WorkProcess.Interrup = true;
-                Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-            }
-
         }
 
         private void btSite2Open_Click(object sender, EventArgs e)
         {
-            if (btSite2Open.Text == "OPEN")
+            if (Permissions == TECH)
             {
-                Site2.OpenSite("1180-11228", "127.0.0.1", 8882);
-            }
-            else
-            {
-                Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
-                lbResultB.BackColor = activeColor;
-                Site2.WorkProcess.ClearCMDQueue();
-                Site2.TCP_TimeOut = 3000;
-                Site2.WorkProcess.Interrup = true;
-                Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                if (btSite2Open.Text == "OPEN")
+                {
+                    Site2.OpenSite("1180-" + (ElnecAddress + 1).ToString("d5"), RemoteIP, RemotePort + 1);
+                }
+                else
+                {
+                    Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                    lbResultB.BackColor = activeColor;
+                    Site2.WorkProcess.ClearCMDQueue();
+                    Site2.TCP_TimeOut = 3000;
+                    Site2.WorkProcess.Interrup = true;
+                    Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                }
             }
         }
 
         private void btSite3Open_Click(object sender, EventArgs e)
         {
-            if (btSite3Open.Text == "OPEN")
+            if (Permissions == TECH)
             {
-                Site3.OpenSite("1180-11229", "127.0.0.1", 8883);
-            }
-            else
-            {
-                Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
-                lbResultC.BackColor = activeColor;
-                Site3.WorkProcess.ClearCMDQueue();
-                Site3.TCP_TimeOut = 3000;
-                Site3.WorkProcess.Interrup = true;
-                Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                if (btSite3Open.Text == "OPEN")
+                {
+                    Site3.OpenSite("1180-" + (ElnecAddress + 2).ToString("d5"), RemoteIP, RemotePort + 2);
+                }
+                else
+                {
+                    Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                    lbResultC.BackColor = activeColor;
+                    Site3.WorkProcess.ClearCMDQueue();
+                    Site3.TCP_TimeOut = 3000;
+                    Site3.WorkProcess.Interrup = true;
+                    Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                }
             }
         }
 
         private void btSite4Open_Click(object sender, EventArgs e)
         {
-            if (btSite4Open.Text == "OPEN")
+            if (Permissions == TECH)
             {
-                Site4.OpenSite("1180-11230", "127.0.0.1", 8884);
-            }
-            else
-            {
-                Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
-                lbResultD.BackColor = activeColor;
-                Site4.WorkProcess.ClearCMDQueue();
-                Site4.TCP_TimeOut = 3000;
-                Site4.WorkProcess.Interrup = true;
-                Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                if (btSite4Open.Text == "OPEN")
+                {
+                    Site4.OpenSite("1180-" + (ElnecAddress + 3).ToString("d5"), RemoteIP, RemotePort + 3);
+                }
+                else
+                {
+                    Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
+                    lbResultD.BackColor = activeColor;
+                    Site4.WorkProcess.ClearCMDQueue();
+                    Site4.TCP_TimeOut = 3000;
+                    Site4.WorkProcess.Interrup = true;
+                    Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                }
             }
         }
 
