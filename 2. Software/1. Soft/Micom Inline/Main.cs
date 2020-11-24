@@ -237,6 +237,15 @@ namespace Micom_Inline
                     Port.Write(String_getOK);
                     if (lbAutoManual.Text == "Auto mode")
                     {
+                        Site1.WorkProcess.ClearCMDQueue();
+                        Site2.WorkProcess.ClearCMDQueue();
+                        Site3.WorkProcess.ClearCMDQueue();
+                        Site4.WorkProcess.ClearCMDQueue();
+
+                        Site1.progressValue = 0;
+                        Site2.progressValue = 0;
+                        Site3.progressValue = 0;
+                        Site4.progressValue = 0;
 
                         Site1.TCP_TimeOut = 3000;
                         Site2.TCP_TimeOut = 3000;
@@ -1142,6 +1151,7 @@ namespace Micom_Inline
                             }
                         case ElnecSite.PROG_IS_BUSY:
                             {
+                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                                 lbSiteName.BackColor = busyColor;
                                 break;
                             }
@@ -1221,20 +1231,14 @@ namespace Micom_Inline
                         Site.WorkProcess.Interrup = true;
                         Site.SITE_PROGRESS = "";
                     }
-                    pbTesting.Invoke(new MethodInvoker(delegate
+                    if (Site.SITE_PROGRESS != "")
                     {
-                        if (Site.SITE_PROGRESS != "")
-                        { 
-                            int a = pbTesting.Value + Convert.ToInt32(Site.SITE_PROGRESS);
-                            if (a <= 400)
-                                pbTesting.Value = a;
-                            else
-                                pbTesting.Value = 400;
-                            Console.WriteLine(a.ToString());
-                        }
-                        
-                    }));
+                        int a = Convert.ToInt32(Site.SITE_PROGRESS);
+                        if (a > Site.progressValue)
+                            Site.progressValue = a;
+                    }
                 }
+
 
                 if (Site.SITE_OPTYPE == "10")
                 {
@@ -1251,6 +1255,7 @@ namespace Micom_Inline
                     }
                     OK_label(lbResult);
                     OK_label(lbResultBig);
+                    Site.progressValue = 100;
                     Site.WorkProcess.ClearCMDQueue();
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
@@ -1264,6 +1269,7 @@ namespace Micom_Inline
                     }
                     NG_label(lbResult);
                     NG_label(lbResultBig);
+                    Site.progressValue = 100;
                     Site.WorkProcess.ClearCMDQueue();
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
@@ -1298,7 +1304,16 @@ namespace Micom_Inline
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
             }
-            
+
+            pbTesting.Invoke(new MethodInvoker(delegate
+            {
+                int a = Site1.progressValue + Site2.progressValue + Site3.progressValue + Site4.progressValue;
+                if (a <= pbTesting.Maximum)
+                    pbTesting.Value = a;
+                else
+                    pbTesting.Value = pbTesting.Maximum;
+                Console.WriteLine(a.ToString());
+            }));
             FinalTestLabel();
         }
 
@@ -2714,12 +2729,14 @@ namespace Micom_Inline
         public string SITE_OPTYPE { get; set; }
         public string SITE_PROGRESS { get; set; }
         public string SITE_PRGREADYSTATUS { get; set; }
-        public string SITE_DETAILE { get; set; }
+        public string SITE_DETAILE { get; set; } = "";
         public string SITE_OPRESULT { get; set; }
         public string SITE_LOADPRJRESULT { get; set; }
         public string SITE_PROGRAMRESULT { get; set; }
 
         public int TCP_TimeOut = 3000;
+
+        public int progressValue { get; set; } = 0;
 
         public WorkProcess WorkProcess = new WorkProcess();
 
@@ -3074,7 +3091,6 @@ namespace Micom_Inline
 
             if (File.Exists(path + today_txt + ".txt")) // Nếu file lịch sử tồn tại thì lưu thông tin vào
             {
-                int line = File.ReadAllLines(path + today_txt + ".txt").Length;
                 using (StreamWriter sw = File.AppendText(path + today_txt + ".txt"))
                 {
                     string reportData = "L" + "1" + "|" + Result + "|" + model + "|" + "not user" + "|" + moment + "|" + site1Result + "|" + site2Result + "|" + site3Result + "|" + site4Result;
