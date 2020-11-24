@@ -200,7 +200,7 @@ namespace Micom_Inline
 
         private void Main_Load(object sender, EventArgs e)
         {
-            this.FormBorderStyle = FormBorderStyle.None;
+            //this.FormBorderStyle = FormBorderStyle.None;
             DgwTestMode_Init();
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
@@ -277,8 +277,8 @@ namespace Micom_Inline
                         Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                         Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     }
-                    else if(Permissions == MANAGER && lbAutoManual.Text == "IDE") 
-                    {               
+                    else if (Permissions == MANAGER && lbAutoManual.Text == "IDE")
+                    {
                         lbMachineStatus.Invoke(new MethodInvoker(delegate {
                             highlinedgwTestMode(0);
                             resetdgwTestMode();
@@ -749,7 +749,7 @@ namespace Micom_Inline
             if (Site1.Result == ElnecSite.EMPTY && Site2.Result == ElnecSite.EMPTY && Site3.Result == ElnecSite.EMPTY && Site4.Result == ElnecSite.EMPTY)
             {
                 pbTesting.Invoke(new MethodInvoker(delegate { pbTesting.Value = 0; }));
-            }     
+            }
 
         }
 
@@ -1131,7 +1131,7 @@ namespace Micom_Inline
             {
                 if (tbLog.TextLength > 1000000) tbLog.Clear();
                 tbLog.Invoke(new MethodInvoker(delegate { if (tbLog.TextLength > 1000000) tbLog.Clear(); tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + Response + System.Environment.NewLine); }));
-                if(tbLogLineNumber - percentProcess < 100)
+                if (tbLogLineNumber - percentProcess < 100)
                     pbTesting.Value = tbLogLineNumber - percentProcess;
             }));
             // get infor from site 
@@ -1237,7 +1237,7 @@ namespace Micom_Inline
                 {
                     if (Site.SITE_PROGRESS == "99" || Site.SITE_PROGRESS == "100")
                     {
-                        Site.TCP_TimeOut = 1500;
+                        Site.TCP_TimeOut = 500;
                         Site.WorkProcess.Interrup = true;
                         Site.SITE_PROGRESS = "";
 
@@ -1269,7 +1269,7 @@ namespace Micom_Inline
                     }
                     OK_label(lbResult);
                     OK_label(lbResultBig);
-                    Site.TCP_TimeOut = 1500;
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
@@ -1283,7 +1283,7 @@ namespace Micom_Inline
                     }
                     NG_label(lbResult);
                     NG_label(lbResultBig);
-                    Site.TCP_TimeOut = 1500;
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.Interrup = true;
                     Site.SITE_DETAILE = "";
                 }
@@ -1304,7 +1304,7 @@ namespace Micom_Inline
                         lbSiteChecksum.BackColor = Color.Red;
                     }
                     Site.SITE_LOADPRJRESULT = "";
-                    Site.TCP_TimeOut = 1500;
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1312,7 +1312,7 @@ namespace Micom_Inline
                 {
                     NG_label(lbRomNameSite);
                     Site.SITE_LOADPRJRESULT = "";
-                    Site.TCP_TimeOut = 1500;
+                    Site.TCP_TimeOut = 500;
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1330,7 +1330,7 @@ namespace Micom_Inline
                 {
                     Site1.OpenSite("1180-" + (ElnecAddress).ToString("d5"), RemoteIP, RemotePort);
                 }
-                else
+                else if (btSite1Open.Text == "PROGRAM")
                 {
                     Site1.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     lbResultA.BackColor = activeColor;
@@ -1350,7 +1350,7 @@ namespace Micom_Inline
                 {
                     Site2.OpenSite("1180-" + (ElnecAddress + 1).ToString("d5"), RemoteIP, RemotePort + 1);
                 }
-                else
+                else if (btSite2Open.Text == "PROGRAM")
                 {
                     Site2.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     lbResultB.BackColor = activeColor;
@@ -1370,7 +1370,7 @@ namespace Micom_Inline
                 {
                     Site3.OpenSite("1180-" + (ElnecAddress + 2).ToString("d5"), RemoteIP, RemotePort + 2);
                 }
-                else
+                else if (btSite3Open.Text == "PROGRAM")
                 {
                     Site3.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     lbResultC.BackColor = activeColor;
@@ -1390,7 +1390,7 @@ namespace Micom_Inline
                 {
                     Site4.OpenSite("1180-" + (ElnecAddress + 3).ToString("d5"), RemoteIP, RemotePort + 3);
                 }
-                else
+                else if (btSite4Open.Text == "PROGRAM")
                 {
                     Site4.SITE_PROGRAMRESULT = ElnecSite.EMPTY;
                     lbResultD.BackColor = activeColor;
