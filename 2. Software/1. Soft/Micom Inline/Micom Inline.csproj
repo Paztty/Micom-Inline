@@ -101,6 +101,12 @@
     <Compile Include="OPForm.Designer.cs">
       <DependentUpon>OPForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PassWorldForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PassWorldForm.Designer.cs">
+      <DependentUpon>PassWorldForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Report.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="OPForm.resx">
       <DependentUpon>OPForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PassWorldForm.resx">
+      <DependentUpon>PassWorldForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report.resx">
       <DependentUpon>Report.cs</DependentUpon>

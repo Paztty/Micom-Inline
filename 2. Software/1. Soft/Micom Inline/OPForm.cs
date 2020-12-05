@@ -20,7 +20,11 @@ namespace Micom_Inline
         private void OK_Click(object sender, EventArgs e)
         {
             if (textBox1.Text == "OP")
+            {
+                this.DialogResult = DialogResult.OK;
                 this.Close();
+            }
+
         }
 
         private void OPForm_KeyDown(object sender, KeyEventArgs e)
@@ -33,8 +37,16 @@ namespace Micom_Inline
             if (e.KeyChar == 13)
             {
                 if (textBox1.Text == "OP")
-                    this.Close();
+                    this.DialogResult = DialogResult.OK;
+                else
+                    this.DialogResult = DialogResult.Cancel;
+                this.Close();
             }
+        }
+
+        private void OPForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -13,28 +13,28 @@ void serialEvent(){  //serialEven
     if(Response == "@010211*78")
     {
         digitalWrite(13,LOW);
-    delay(10000);
+    delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     }
     if(Response == "@010200*67")
     {
         digitalWrite(13,LOW);
-    delay(10000);
+    delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     }    
     if(Response == "@010201*68")
     {
         digitalWrite(13,LOW);
-    delay(10000);
+    delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     } 
     if(Response == "@010210*77")
     {
         digitalWrite(13,LOW);
-    delay(10000);
+    delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     } 
