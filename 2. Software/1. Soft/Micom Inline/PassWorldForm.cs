@@ -94,7 +94,6 @@ namespace Micom_Inline
                     }
                 }
             }
-
         }
         private void btChangePassword_Click(object sender, EventArgs e)
         {
@@ -104,6 +103,11 @@ namespace Micom_Inline
                 panelChangePass.Height = 100;
             }
                 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
         }
     }
 }

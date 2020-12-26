@@ -38,6 +38,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.panelChangePass = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelChangePass.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,9 +73,9 @@
             this.Apply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Apply.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Apply.ForeColor = System.Drawing.Color.White;
-            this.Apply.Location = new System.Drawing.Point(269, 155);
+            this.Apply.Location = new System.Drawing.Point(286, 155);
             this.Apply.Name = "Apply";
-            this.Apply.Size = new System.Drawing.Size(123, 31);
+            this.Apply.Size = new System.Drawing.Size(106, 31);
             this.Apply.TabIndex = 2;
             this.Apply.Text = "Apply";
             this.Apply.UseVisualStyleBackColor = false;
@@ -89,7 +90,7 @@
             this.btChangePassword.ForeColor = System.Drawing.Color.White;
             this.btChangePassword.Location = new System.Drawing.Point(12, 155);
             this.btChangePassword.Name = "btChangePassword";
-            this.btChangePassword.Size = new System.Drawing.Size(238, 31);
+            this.btChangePassword.Size = new System.Drawing.Size(155, 31);
             this.btChangePassword.TabIndex = 3;
             this.btChangePassword.Text = "Change Password";
             this.btChangePassword.UseVisualStyleBackColor = false;
@@ -158,6 +159,21 @@
             this.panelChangePass.Size = new System.Drawing.Size(392, 100);
             this.panelChangePass.TabIndex = 9;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Red;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(173, 155);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(107, 31);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Close";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // PassWorldForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -166,6 +182,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(400, 196);
+            this.ControlBox = false;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btChangePassword);
             this.Controls.Add(this.Apply);
             this.Controls.Add(this.panelChangePass);
@@ -201,5 +219,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Panel panelChangePass;
+        private System.Windows.Forms.Button button1;
     }
 }
