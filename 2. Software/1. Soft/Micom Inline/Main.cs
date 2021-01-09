@@ -17,6 +17,9 @@ namespace Micom_Inline
 {
     public partial class Main : Form
     {
+
+        public const string Version = "1.5.7";
+
         // Permissions 
         public const string OP = "OP";
         public const string TECH = "TECH";
@@ -76,6 +79,8 @@ namespace Micom_Inline
 
         public string ResultRespoonse = "";
         private bool Timeout = false;
+        bool startTest = false;
+        bool endTest = true;
 
         public bool Site1IsTalking = false;
         public bool Site2IsTalking = false;
@@ -84,7 +89,6 @@ namespace Micom_Inline
 
         // chart animations
         public int CharCircle = 1;
-
         public int percentProcess = 0;
 
         public string PortReciver = string.Empty;
@@ -130,6 +134,7 @@ namespace Micom_Inline
         {
             InitializeComponent();
 
+            tslPreviewName.Text = "Auto Multi Writing System(A - MS) V" + Version;
             this.SetStyle(ControlStyles.Selectable, false);
 
             tbStRomCsSite1.AutoSize = false;
@@ -277,6 +282,8 @@ namespace Micom_Inline
                             new MethodInvoker(
                                 delegate
                                 {
+                                    startTest = true;
+                                    endTest = false;
                                     lastWorkingTime = DateTime.Now;
                                     Timeout = false;
                                     timerTimeOut.Interval = model.TimeOut * 1000;
@@ -496,7 +503,10 @@ namespace Micom_Inline
                 lbAutoManual.Text = "Auto mode";
                 lbAutoManual.ForeColor = activeColor;
             }
-
+            Site1.ClearSiteParam();
+            Site2.ClearSiteParam();
+            Site3.ClearSiteParam();
+            Site4.ClearSiteParam();
         }
 
         private void BtManual_Click(object sender, EventArgs e)
@@ -714,6 +724,8 @@ namespace Micom_Inline
                             Site4.ClearSiteParam();
 
                         }));
+                        startTest = false;
+                        endTest = true;
                     }
                 }
                 else if (model.Layout.MicomNumber == 2)
@@ -768,6 +780,8 @@ namespace Micom_Inline
                             Site3.ClearSiteParam();
                             Site4.ClearSiteParam();
                         }));
+                        startTest = false;
+                        endTest = true;
                     }
                 }
             }
@@ -850,6 +864,8 @@ namespace Micom_Inline
                         Site3.ClearSiteParam();
                         Site4.ClearSiteParam();
                     }));
+                    startTest = false;
+                    endTest = true;
                 }
             }
         }
@@ -872,7 +888,6 @@ namespace Micom_Inline
             lbResultBbig.Visible = show;
             lbResultCbig.Visible = show;
             lbResultDbig.Visible = show;
-
         }
 
 
@@ -1320,7 +1335,7 @@ namespace Micom_Inline
                     }
                 }
                 // processing data
-                if (Site.SITE_OPTYPE == "5")
+                if (Site.SITE_OPTYPE == "5" && Site.Result == ElnecSite.EMPTY)
                 {
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     if (Site.SITE_PROGRESS != "")
@@ -1408,7 +1423,10 @@ namespace Micom_Inline
 
                 if (lbAutoManual.Text == "Auto mode")
                 {
-                    FinalTestLabel();
+                    if (startTest == true && endTest == false)
+                    {
+                        FinalTestLabel();
+                    }
                 }
             }
             pbTesting.Invoke(new MethodInvoker(delegate
@@ -1708,6 +1726,11 @@ namespace Micom_Inline
         private void openFileModel_FileOk(object sender, CancelEventArgs e)
         {
             _CONFIG.recentModelPath = Path.GetDirectoryName(openFileModel.FileName);
+            FileInfo file = new FileInfo(openFileModel.FileName);
+            while (IsFileLocked(file))
+            {
+                Console.WriteLine("file is locker");
+            }
 
             string[] config = File.ReadAllLines(openFileModel.FileName);
 
@@ -2641,6 +2664,26 @@ namespace Micom_Inline
             timerTimeOut.Dispose();
         }
 
+        protected virtual bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            //file is not locked
+            return false;
+        }
 
         public string bufferRP = "";
         // copy history to MES
@@ -2671,27 +2714,6 @@ namespace Micom_Inline
                     }
                 }
             }
-        }
-        protected virtual bool IsFileLocked(FileInfo file)
-        {
-            try
-            {
-                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    stream.Close();
-                }
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-
-            //file is not locked
-            return false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
