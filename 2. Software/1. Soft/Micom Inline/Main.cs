@@ -18,7 +18,7 @@ namespace Micom_Inline
     public partial class Main : Form
     {
 
-        public const string Version = "1.5.7";
+        public const string Version = "1.5.8";
 
         // Permissions 
         public const string OP = "OP";
@@ -475,6 +475,18 @@ namespace Micom_Inline
         private void BtAuto_Click(object sender,
                                   EventArgs e)
         {
+            Timeout = false;
+
+            Site1.ClearSiteParam();
+            Site2.ClearSiteParam();
+            Site3.ClearSiteParam();
+            Site4.ClearSiteParam();
+
+            ActiveLabel(lbResultA);
+            ActiveLabel(lbResultB);
+            ActiveLabel(lbResultC);
+            ActiveLabel(lbResultD);
+
             gbSetting.Visible = false;
             btAuto.BackColor = Color.FromArgb(50, 50, 50);
             btLoadModel.BackColor = Color.FromArgb(30, 30, 30);
@@ -503,10 +515,7 @@ namespace Micom_Inline
                 lbAutoManual.Text = "Auto mode";
                 lbAutoManual.ForeColor = activeColor;
             }
-            Site1.ClearSiteParam();
-            Site2.ClearSiteParam();
-            Site3.ClearSiteParam();
-            Site4.ClearSiteParam();
+
         }
 
         private void BtManual_Click(object sender, EventArgs e)
@@ -647,9 +656,7 @@ namespace Micom_Inline
             }
             else
                 gbSetting.Visible = false;
-
         }
-
 
         public void ActiveLabel(System.Windows.Forms.Label label)
         {
@@ -1062,7 +1069,7 @@ namespace Micom_Inline
                         {
                             if (tbLog.TextLength > 100000) tbLog.Clear();
                             tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine) + System.Environment.NewLine);
-                            ProcessSite(Site1, lbSiteName1, lbSite1Checksum, lbROM1checkSum, lbRomNameSite1, lbResultA, lbResultAbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                            ProcessSite(Site1, lbSiteName1, lbSite1Checksum, lbROM1checkSum, lbRomNameSite1, lbResultA, lbResultAbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine), lbManualROM1);
                         }));
                     }
                 }
@@ -1116,7 +1123,7 @@ namespace Micom_Inline
                         {
                             if (tbLog.TextLength > 100000) tbLog.Clear();
                             tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine) + System.Environment.NewLine);
-                            ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, lbResultBbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                            ProcessSite(Site2, lbSiteName2, lbSite2Checksum, lbROM2checkSum, lbRomNameSite2, lbResultB, lbResultBbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine), lbManualROM2);
 
                         }));
                     }
@@ -1169,7 +1176,7 @@ namespace Micom_Inline
                         {
                             if (tbLog.TextLength > 100000) tbLog.Clear();
                             tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine) + System.Environment.NewLine);
-                            ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, lbResultCbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                            ProcessSite(Site3, lbSiteName3, lbSite3Checksum, lbROM3checkSum, lbRomNameSite3, lbResultC, lbResultCbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine), lbManualROM3);
 
                         }));
                     }
@@ -1223,7 +1230,7 @@ namespace Micom_Inline
                         {
                             if (tbLog.TextLength > 100000) tbLog.Clear();
                             tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine) + System.Environment.NewLine);
-                            ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, lbResultDbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine));
+                            ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, lbResultDbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine), lbManualROM4);
 
                         }));
                     }
@@ -1235,7 +1242,7 @@ namespace Micom_Inline
             Console.WriteLine("Thread 4 break");
         }
         // Site1 process
-        public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, Label lbResultBig, string Response)
+        public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, Label lbResultBig, string Response, Label lbROMmanual)
         {
             // get infor from site 
             string[] ElnecResponses = Response.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
@@ -1296,6 +1303,7 @@ namespace Micom_Inline
                                 else if (data[1] == ElnecSite.KEY_PROGRAMMER_NOTFOUND)
                                 {
                                     lbSiteName.BackColor = Color.Black;
+                                    lbROMmanual.BackColor = Color.Black;
                                 }
                                 break;
                             }
@@ -1345,7 +1353,6 @@ namespace Micom_Inline
                             Site.progressValue = a;
                         else
                             Site.progressValue = 100 + a;
-                       
                     }
                 }
 
@@ -1380,7 +1387,6 @@ namespace Micom_Inline
                 {
                     NG_label(lbRomNameSite);
                     Site.SITE_LOADPRJRESULT = "";
-
                     Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                     Site.WorkProcess.Process = WorkProcess.Ready;
                 }
@@ -1398,6 +1404,7 @@ namespace Micom_Inline
                         OK_label(lbResultBig);
                         Site.progressValue = 200;
                         Site.WorkProcess.ClearCMDQueue();
+                        Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                         Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                         Site.SITE_DETAILE = "";
                     }
@@ -1412,6 +1419,7 @@ namespace Micom_Inline
                         NG_label(lbResultBig);
                         Site.progressValue = 200;
                         Site.WorkProcess.ClearCMDQueue();
+                        Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                         Site.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                         Site.SITE_DETAILE = "";
                     }
@@ -1844,8 +1852,6 @@ namespace Micom_Inline
 
         public void openLastWokingModel(string path)
         {
-            try
-            {
                 string[] config = File.ReadAllLines(path);
                 lbROM1checkSum.Invoke(new MethodInvoker(delegate
                 {
@@ -1890,8 +1896,6 @@ namespace Micom_Inline
                     AMWsProcess.PutComandToFIFO(config[i]);
                     Console.WriteLine(config[i]);
                 }
-            }
-            catch (Exception) { }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -2459,29 +2463,6 @@ namespace Micom_Inline
             FinalTestBigLabel(false);
         }
 
-        private void timerTest_Tick(object sender, EventArgs e)
-        {
-            if (timerTest.Interval == 4000)
-            {
-                Site1.Result = ElnecSite.RESULT_OK;
-                Site2.Result = ElnecSite.RESULT_OK;
-                Site3.Result = ElnecSite.RESULT_OK;
-                Site4.Result = ElnecSite.RESULT_OK;
-
-                FinalTestLabel();
-
-                highlinedgwTestMode(1);
-
-
-                LosingTime = true;
-                if (model.Layout.PCB2)
-                    Port.Write(Result_okPBA);
-                else
-                    Port.Write(Result_okPBA1);
-                highlinedgwTestMode(2);
-                timerTest.Stop();
-            }
-        }
 
         // Manual control
         public void StartManualTest(object sender, EventArgs e)
@@ -2520,7 +2501,7 @@ namespace Micom_Inline
             if (lbManualROM2.BackColor == activeColor)
             {
                 Site2.WorkProcess.ClearCMDQueue();
-                Site2.WorkProcess.Interrup = true;
+                //Site2.WorkProcess.Interrup = true;
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                 if (logHistory.Length > 4) tbHistory.AppendText(", ");
@@ -2561,22 +2542,26 @@ namespace Micom_Inline
             if (lbManualROM1.BackColor == activeColor)
             {
                 Site1.WorkProcess.ClearCMDQueue();
-                Site1.WorkProcess.Interrup = true;
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             }
             if (lbManualROM2.BackColor == activeColor)
             {
                 Site2.WorkProcess.ClearCMDQueue();
-                Site2.WorkProcess.Interrup = true;
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             }
             if (lbManualROM3.BackColor == activeColor)
             {
                 Site3.WorkProcess.ClearCMDQueue();
-                Site3.WorkProcess.Interrup = true;
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             }
             if (lbManualROM4.BackColor == activeColor)
             {
                 Site4.WorkProcess.ClearCMDQueue();
-                Site4.WorkProcess.Interrup = true;
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             }
         }
 
@@ -2952,7 +2937,6 @@ namespace Micom_Inline
 
         public void OpenSite(string Address, string RemoteIP, int RemotePort)
         {
-
             string strCmdText = "/c --quiet & pg4uw #" + this.Name.ToString() + " /usb:" + this.Name.ToString() + ":" + Address.ToString() + " /enableremote:autoanswer /remoteport:" + RemotePort.ToString() + " /remoteaddr:" + RemoteIP;
             Console.WriteLine(strCmdText);
             ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd.exe")
