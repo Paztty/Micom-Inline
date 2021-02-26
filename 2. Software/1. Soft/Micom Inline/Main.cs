@@ -12,14 +12,16 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Text.Json;
+using Elnec.Pg4uw.RemotelbNET;
 
 namespace Micom_Inline
 {
     public partial class Main : Form
     {
 
-        public const string Version = "1.5.8";
-
+        public const string Version = "1.6.0";
+        bool matchServer = true;
         // Permissions 
         public const string OP = "OP";
         public const string TECH = "TECH";
@@ -130,11 +132,27 @@ namespace Micom_Inline
         /// <summary>
         /// start main function
         /// </summary>
+        /// 
+        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var requestedNameAssembly = new System.Reflection.AssemblyName(args.Name);
+            var requestedName = requestedNameAssembly.Name;
+            if (requestedName.EndsWith(".resources")) return null;
+            var binFolder = Application.StartupPath;
+            var fullPath = System.IO.Path.Combine(binFolder, requestedName) + ".dll";
+            if (System.IO.File.Exists(fullPath))
+            {
+                return System.Reflection.Assembly.LoadFrom(fullPath);
+            }
+
+            return null;
+        }
         public Main()
         {
             InitializeComponent();
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            tslPreviewName.Text = "Auto Multi Writing System(A - MS) V" + Version;
+            tslPreviewName.Text = "Auto Multi Writing System(A-MS) V" + Version;
             this.SetStyle(ControlStyles.Selectable, false);
 
             tbStRomCsSite1.AutoSize = false;
@@ -152,13 +170,16 @@ namespace Micom_Inline
             cbbComName.DataSource = SerialPort.GetPortNames();
 
             ElnecAddress = _CONFIG.ElnecAddress;
-
+            cbServerCompare.Checked = _CONFIG.ServerCompare;
             tbHistory.AppendText("<<<<<< AUTO MICOM WRITING SYSTEM >>>>>>" + Environment.NewLine);
             tsslPermissions.Text = "User: " + Permissions;
 
             gbLog.Visible = false;
             gbTestHistory.Visible = true;
             gbSetting.Visible = false;
+
+            gbSetting.BringToFront();
+            pnResultFinal.BringToFront();
             pnResultFinal.Visible = false;
 
             lastWorkingTime = DateTime.Now;
@@ -167,17 +188,10 @@ namespace Micom_Inline
             checkPermision();
             SkipBarCode();
 
-
-
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
             Site3.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
             Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-
-            Site1.WorkProcess.Process = WorkProcess.Ready;
-            Site2.WorkProcess.Process = WorkProcess.Ready;
-            Site3.WorkProcess.Process = WorkProcess.Ready;
-            Site4.WorkProcess.Process = WorkProcess.Ready;
 
             try
             {
@@ -202,9 +216,19 @@ namespace Micom_Inline
                 {
                     lbClock.Text = t;
                     if (LosingTime)
+                    {
                         lbFreeTime.Text = "Lost time: " + lostTime.TotalSeconds.ToString("f0") + " S";
+                        if (lostTime.TotalSeconds > 60 && lostTime.TotalSeconds < 63)
+                        {
+                            File.WriteAllText(_CONFIG.configPath + "status.txt", "STOP");
+                        }
+                        if (lostTime.TotalSeconds < 5)
+                        {
+                            File.WriteAllText(_CONFIG.configPath + "status.txt", "RUNNING");
+                        }
+                    }
                     else
-                        lbFreeTime.Text = "Test time: " + lostTime.TotalSeconds.ToString("f1") + " S";
+                        lbWorkingtime.Text = "Test time: " + lostTime.TotalSeconds.ToString("f1") + " S";
                 }));
                 Thread.Sleep(100);
             }
@@ -218,7 +242,7 @@ namespace Micom_Inline
             DgwTestMode_Init();
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
             Thread showTime = new Thread(DateTimeShow);
-            pnManualControl.Visible = false;
+            pnManualControl.Enabled = false;
             showTime.Start();
             timerUpdateMes.Start();
             lbAdressSite1.Text = _CONFIG.ElnecStrAddress.ToString() + "-" + ElnecAddress.ToString("d5");
@@ -228,6 +252,9 @@ namespace Micom_Inline
 
             timerReleaseBoard.Interval = 2500;
             timerReleaseBoard.Start();
+
+            gbServerCompare.Enabled = _CONFIG.ServerCompare;
+
             Thread communicationSite1 = new Thread(ElnecComuncationBackgroudSite1);
             communicationSite1.Start();
             Thread communicationSite2 = new Thread(ElnecComuncationBackgroudSite2);
@@ -262,39 +289,60 @@ namespace Micom_Inline
                         Site2.progressValue = 0;
                         Site3.progressValue = 0;
                         Site4.progressValue = 0;
-
-                        Site1.WorkProcess.Interrup = true;
-                        Site2.WorkProcess.Interrup = true;
-                        Site3.WorkProcess.Interrup = true;
-                        Site4.WorkProcess.Interrup = true;
-
-                        Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-                        Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-                        Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-                        Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-
-                        ActiveLabel(lbResultA);
-                        ActiveLabel(lbResultB);
-                        ActiveLabel(lbResultC);
-                        ActiveLabel(lbResultD);
-
                         lbMachineStatus.Invoke(
                             new MethodInvoker(
                                 delegate
                                 {
-                                    startTest = true;
-                                    endTest = false;
-                                    lastWorkingTime = DateTime.Now;
-                                    Timeout = false;
-                                    timerTimeOut.Interval = model.TimeOut * 1000;
-                                    timerTimeOut.Start();
-                                    lbMachineStatus.Text = "WRITTING"; lbMachineStatus.BackColor = activeColor;
-                                    tbHistory.AppendText(DateTime.Now.ToString("#----------------------------------------" + Environment.NewLine + "dd/MM/yyyy - hh/mm/ss : ") + "Model " + model.ModelName + Environment.NewLine);
-                                    FinalTestBigLabel(false);
-                                    resetdgwTestMode();
-                                    highlinedgwTestMode(0);
-                                    pbTesting.Value = 0;
-                                    LosingTime = false;
+                                    if (lbROM1checkSum.Text != lbSite1Checksum.Text
+                                                        ||
+                                                        lbROM2checkSum.Text != lbSite2Checksum.Text
+                                                        ||
+                                                        lbROM3checkSum.Text != lbSite3Checksum.Text
+                                                        ||
+                                                        lbROM4checkSum.Text != lbSite4Checksum.Text)
+                                    {
+                                        lbResultA.BackColor = Color.Red;
+                                        lbResultB.BackColor = Color.Red;
+                                        lbResultC.BackColor = Color.Red;
+                                        lbResultD.BackColor = Color.Red;
+                                        lbMachineStatus.Text = "ERROR";
+                                        lbMachineStatus.BackColor = Color.Red;
+                                        MessageBox.Show("Ckecksum not match or not have program loader, do not program");
+                                    }
+                                    else
+                                    {
+                                        Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                                        Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                                        Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+                                        Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+
+                                        Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                        Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                        Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                        Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+
+                                        ActiveLabel(lbResultA);
+                                        ActiveLabel(lbResultB);
+                                        ActiveLabel(lbResultC);
+                                        ActiveLabel(lbResultD);
+
+
+                                        startTest = true;
+                                        endTest = false;
+                                        lastWorkingTime = DateTime.Now;
+                                        Timeout = false;
+                                        timerTimeOut.Interval = model.TimeOut * 1000;
+                                        timerTimeOut.Start();
+                                        lbMachineStatus.Text = "WRITTING"; lbMachineStatus.BackColor = activeColor;
+                                        tbHistory.AppendText(DateTime.Now.ToString("#----------------------------------------" + Environment.NewLine + "dd/MM/yyyy - hh/mm/ss : ") + "Model " + model.ModelName + Environment.NewLine);
+                                        FinalTestBigLabel(false);
+                                        resetdgwTestMode();
+                                        highlinedgwTestMode(0);
+                                        pbTesting.Value = 0;
+                                        pbTesting.Maximum = 800;
+                                        LosingTime = false;
+
+                                    }
                                 }));
                     }
                 }
@@ -377,6 +425,9 @@ namespace Micom_Inline
 
         private void BtClose_Click(object sender, EventArgs e)
         {
+
+            _CONFIG.SaveConfig();
+
             if (Port.IsOpen) Port.Close();
             CloseElnec();
             Environment.Exit(0);
@@ -449,7 +500,6 @@ namespace Micom_Inline
                 openFileModel.InitialDirectory = _CONFIG.recentModelPath;
                 openFileModel.ShowDialog();
             }
-
         }
 
         public string SearchCom()
@@ -493,8 +543,9 @@ namespace Micom_Inline
             btManual.BackColor = Color.FromArgb(30, 30, 30);
             btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
             btSetting.BackColor = Color.FromArgb(30, 30, 30);
-            pnManualControl.Visible = false;
-            if (lbAutoManual.Text == "Auto mode")
+            pnManualControl.Enabled = false;
+
+            if (lbAutoManual.Text == "Auto mode" || lbAutoManual.ForeColor == deactiveColor)
             {
                 lbAutoManual.Text = "IDE";
                 lbAutoManual.ForeColor = Color.White;
@@ -511,16 +562,44 @@ namespace Micom_Inline
                 {
                     tsslbCOM.Text = "COM ERROR                     ";
                 }
+                if (Port.IsOpen && model != null)
+                {
+                    if (model.Layout.PCB1 && !model.Layout.PCB2)
+                    {
+                        Port.Write(Mode_1Array);
+                    //    tbHistory.AppendText("Mode 1 array had set.\r\n");
+                    }
+                    else if (model.Layout.PCB1 && model.Layout.PCB2)
+                    {
+                        Port.Write(Mode_2Array);
+                    //    tbHistory.AppendText("Mode 2 array had set.\r\n");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Com not connect, Array setting maybe not apply.");
+                }
+                if (_CONFIG.ServerCompare)
+                {
+                    if (matchServer)
+                    {
+                        lbAutoManual.Text = "Auto mode";
+                        lbAutoManual.ForeColor = activeColor;
+                    }
+                }
+                else
+                {
+                    lbAutoManual.Text = "Auto mode";
+                    lbAutoManual.ForeColor = activeColor;
+                }    
 
-                lbAutoManual.Text = "Auto mode";
-                lbAutoManual.ForeColor = activeColor;
             }
 
         }
 
         private void BtManual_Click(object sender, EventArgs e)
         {
-            if (pnManualControl.Visible != true)
+            if (pnManualControl.Enabled != true)
             {
                 PassWorldForm formPass = new PassWorldForm();
                 DialogResult dialogResult = formPass.ShowDialog();
@@ -539,7 +618,7 @@ namespace Micom_Inline
                     lbMachineStatus.Text = "Manual";
                     lbAutoManual.ForeColor = deactiveColor;
 
-                    pnManualControl.Visible = true;
+                    pnManualControl.Enabled = true;
                 }
                 else if (dialogResult == DialogResult.Ignore)
                 {
@@ -556,14 +635,14 @@ namespace Micom_Inline
                     lbMachineStatus.Text = "Manual";
                     lbAutoManual.ForeColor = deactiveColor;
 
-                    pnManualControl.Visible = true;
+                    pnManualControl.Enabled = true;
                 }
                 else
                     Permissions = OP;
                 checkPermision();
             }
             else
-                pnManualControl.Visible = false;
+                pnManualControl.Enabled = false;
 
         }
 
@@ -626,8 +705,16 @@ namespace Micom_Inline
                     btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
 
                     ElnecEndAdd.Text = ElnecAddress.ToString("d5");
-
+                    if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
+                    {
+                        PCBarrayCount.Maximum = model.Layout.ArrayCount;
+                    }
                     PCBarrayCount.Value = model.Layout.ArrayCount;
+
+                    if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
+                    {
+                        nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
+                    }
                     nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
                     radioButton2.Checked = model.Layout.PCB2;
                     model.Layout.drawPCBLayout(pbPCBLayout);
@@ -644,8 +731,16 @@ namespace Micom_Inline
                     btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
 
                     ElnecEndAdd.Text = ElnecAddress.ToString("d5");
-
+                    if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
+                    {
+                        PCBarrayCount.Maximum = model.Layout.ArrayCount;
+                    }
                     PCBarrayCount.Value = model.Layout.ArrayCount;
+
+                    if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
+                    {
+                        nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
+                    }
                     nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
                     radioButton2.Checked = model.Layout.PCB2;
                     model.Layout.drawPCBLayout(pbPCBLayout);
@@ -713,6 +808,7 @@ namespace Micom_Inline
                             FinalTestBigLabel(true);
                             percentProcess = tbLogLineNumber;
                             tbHistory.AppendText("        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                            tbHistory.AppendText(ResultRespoonse + Environment.NewLine);
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
                             timerUpdateChar.Start();
@@ -770,6 +866,7 @@ namespace Micom_Inline
                             FinalTestBigLabel(true);
                             percentProcess = tbLogLineNumber;
                             tbHistory.AppendText("        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                            tbHistory.AppendText(ResultRespoonse + Environment.NewLine);
                             Console.WriteLine(ResultRespoonse);
                             CharCircle = 1;
                             timerUpdateChar.Start();
@@ -854,6 +951,7 @@ namespace Micom_Inline
                         FinalTestBigLabel(true);
                         percentProcess = tbLogLineNumber;
                         tbHistory.AppendText("        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
+                        tbHistory.AppendText(ResultRespoonse + Environment.NewLine);
                         Console.WriteLine(ResultRespoonse);
                         CharCircle = 1;
                         timerUpdateChar.Start();
@@ -1026,7 +1124,6 @@ namespace Micom_Inline
 
         private const int BUFFER_SIZE = 32000;
         static readonly ASCIIEncoding encoding = new ASCIIEncoding();
-
         public void ElnecComuncationBackgroudSite1()
         {
 
@@ -1041,7 +1138,7 @@ namespace Micom_Inline
                 var stream = new NetworkStream(socket);
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
-                writer.AutoFlush = true;
+                writer.AutoFlush = false;
                 while (true)
                 {
                     if (ServerStatus == SERVER_OFF)
@@ -1050,6 +1147,15 @@ namespace Micom_Inline
                     if (Site1.Command != "null")
                     {
                         writer.Write(Site1.Command);
+                        try
+                        {
+                            writer.Flush();
+                        }
+                        catch (Exception)
+                        {
+                            Site1.WorkProcess.PushComandToFist(Site1.Command);
+                            break;
+                        }
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1063,7 +1169,7 @@ namespace Micom_Inline
                         recive = reader.ReadLine();
                     }
                     catch { }
-                    if (recive != "")
+                    if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
@@ -1076,9 +1182,6 @@ namespace Micom_Inline
                 socket.Close();
                 Site1IsTalking = false;
             }
-            listener.Stop();
-            
-            Console.WriteLine("Thread 1 break");
         }
         public void ElnecComuncationBackgroudSite2()
         {
@@ -1094,7 +1197,7 @@ namespace Micom_Inline
                 var stream = new NetworkStream(socket);
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
-                writer.AutoFlush = true;
+                writer.AutoFlush = false;
                 while (true)
                 {
                     if (ServerStatus == SERVER_OFF)
@@ -1104,6 +1207,15 @@ namespace Micom_Inline
                     if (Site2.Command != "null")
                     {
                         writer.Write(Site2.Command);
+                        try
+                        {
+                            writer.Flush();
+                        }
+                        catch (Exception)
+                        {
+                            Site2.WorkProcess.PushComandToFist(Site2.Command);
+                            break;
+                        }
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1117,7 +1229,7 @@ namespace Micom_Inline
                         recive = reader.ReadLine();
                     }
                     catch { }
-                    if (recive != "")
+                    if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
@@ -1131,8 +1243,6 @@ namespace Micom_Inline
                 socket.Close();
                 Site2IsTalking = false;
             }
-            listener.Stop();
-            Console.WriteLine("Thread 2 break");
         }
         public void ElnecComuncationBackgroudSite3()
         {
@@ -1148,7 +1258,7 @@ namespace Micom_Inline
                 var stream = new NetworkStream(socket);
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
-                writer.AutoFlush = true;
+                writer.AutoFlush = false;
                 while (true)
                 {
                     if (ServerStatus == SERVER_OFF)
@@ -1157,6 +1267,15 @@ namespace Micom_Inline
                     if (Site3.Command != "null")
                     {
                         writer.Write(Site3.Command);
+                        try
+                        {
+                            writer.Flush();
+                        }
+                        catch (Exception)
+                        {
+                            Site3.WorkProcess.PushComandToFist(Site3.Command);
+                            break;
+                        }
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1170,7 +1289,7 @@ namespace Micom_Inline
                         recive = reader.ReadLine();
                     }
                     catch { }
-                    if (recive != "")
+                    if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
@@ -1184,8 +1303,6 @@ namespace Micom_Inline
                 socket.Close();
                 Site3IsTalking = false;
             }
-            listener.Stop();
-            Console.WriteLine("Thread 3 break");
         }
         public void ElnecComuncationBackgroudSite4()
         {
@@ -1202,7 +1319,7 @@ namespace Micom_Inline
                 var stream = new NetworkStream(socket);
                 var reader = new StreamReader(stream);
                 var writer = new StreamWriter(stream);
-                writer.AutoFlush = true;
+                writer.AutoFlush = false;
                 while (true)
                 {
                     if (ServerStatus == SERVER_OFF)
@@ -1211,6 +1328,15 @@ namespace Micom_Inline
                     if (Site4.Command != "null")
                     {
                         writer.Write(Site4.Command);
+                        try
+                        {
+                            writer.Flush();
+                        }
+                        catch (Exception)
+                        {
+                            Site4.WorkProcess.PushComandToFist(Site4.Command);
+                            break;
+                        }
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 1000000) tbLog.Clear();
@@ -1224,24 +1350,20 @@ namespace Micom_Inline
                         recive = reader.ReadLine();
                     }
                     catch { }
-                    if (recive != "")
+                    if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
                         {
                             if (tbLog.TextLength > 100000) tbLog.Clear();
                             tbLog.AppendText("L" + tbLogLineNumber++.ToString() + ": " + recive.Replace("\\*/n\\*/", System.Environment.NewLine) + System.Environment.NewLine);
                             ProcessSite(Site4, lbSiteName4, lbSite4Checksum, lbROM4checkSum, lbRomNameSite4, lbResultD, lbResultDbig, recive.Replace("\\*/n\\*/", System.Environment.NewLine), lbManualROM4);
-
                         }));
                     }
                 }
                 socket.Close();
                 Site4IsTalking = false;
             }
-            listener.Stop();
-            Console.WriteLine("Thread 4 break");
         }
-        // Site1 process
         public void ProcessSite(ElnecSite Site, Label lbSiteName, Label lbSiteChecksum, Label lbROMcheckSum, Label lbRomNameSite, Label lbResult, Label lbResultBig, string Response, Label lbROMmanual)
         {
             // get infor from site 
@@ -1266,7 +1388,7 @@ namespace Micom_Inline
                     {
                         case "CreditBoxDeviceCreditDecrementValue":
                             {
-                                Site.WorkProcess.Process = WorkProcess.Ready;
+                                Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
                                 break;
                             }
                         case ElnecSite.PROG_IS_BUSY:
@@ -1345,14 +1467,17 @@ namespace Micom_Inline
                 // processing data
                 if (Site.SITE_OPTYPE == "5" && Site.Result == ElnecSite.EMPTY)
                 {
-                    Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                    Site.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS); 
                     if (Site.SITE_PROGRESS != "")
                     {
                         int a = Convert.ToInt32(Site.SITE_PROGRESS);
-                        if (Site.progressValue < 100 && Site.progressValue < a)
-                            Site.progressValue = a;
-                        else
-                            Site.progressValue = 100 + a;
+                        if (a > 0)
+                        {
+                            if (Site.progressValue < a)
+                                Site.progressValue = a;
+                            else
+                                Site.progressValue = 100 + a;
+                        }
                     }
                 }
 
@@ -1440,11 +1565,11 @@ namespace Micom_Inline
             pbTesting.Invoke(new MethodInvoker(delegate
             {
                 int a = Site1.progressValue + Site2.progressValue + Site3.progressValue + Site4.progressValue;
-                if (a <= pbTesting.Maximum)
+                if (a < pbTesting.Maximum)
                     pbTesting.Value = a;
                 else
                     pbTesting.Value = pbTesting.Maximum;
-                Console.WriteLine(a.ToString());
+                //Console.WriteLine("Site 1: {0}  Site 2: {1}  Site 3: {2}  Site 4: {3}",Site1.progressValue, Site2.progressValue, Site3.progressValue, Site4.progressValue);
             }));
 
         }
@@ -1541,7 +1666,6 @@ namespace Micom_Inline
         {
             string path = Path.GetDirectoryName(openFileDialogSite1.FileName);
             _CONFIG.recentWorkPath = path;
-            string[] paths = path.Split('\\');
 
             lbStRomNameSite1.Text = Path.GetFileNameWithoutExtension(openFileDialogSite1.FileName);
             model.ROMs[0].ROM_PATH = Path.GetDirectoryName(openFileDialogSite1.FileName) + "\\" + Path.GetFileName(openFileDialogSite1.FileName);
@@ -1571,7 +1695,6 @@ namespace Micom_Inline
         {
             string path = Path.GetDirectoryName(openFileDialogSite2.FileName);
             _CONFIG.recentWorkPath = path;
-            string[] paths = path.Split('\\');
 
             lbStRomNameSite2.Text = Path.GetFileNameWithoutExtension(openFileDialogSite2.FileName);
             model.ROMs[1].ROM_PATH = Path.GetDirectoryName(openFileDialogSite2.FileName) + "\\" + Path.GetFileName(openFileDialogSite2.FileName);
@@ -1600,7 +1723,6 @@ namespace Micom_Inline
         {
             string path = Path.GetDirectoryName(openFileDialogSite3.FileName);
             _CONFIG.recentWorkPath = path;
-            string[] paths = path.Split('\\');
 
             lbStRomNameSite3.Text = Path.GetFileNameWithoutExtension(openFileDialogSite3.FileName);
             model.ROMs[2].ROM_PATH = Path.GetDirectoryName(openFileDialogSite3.FileName) + "\\" + Path.GetFileName(openFileDialogSite3.FileName);
@@ -1731,95 +1853,102 @@ namespace Micom_Inline
             btNameReview.Text = "Save current setting";
         }
 
+        DateTime startLoad = DateTime.Now;
         private void openFileModel_FileOk(object sender, CancelEventArgs e)
         {
-            _CONFIG.recentModelPath = Path.GetDirectoryName(openFileModel.FileName);
-            FileInfo file = new FileInfo(openFileModel.FileName);
-            while (IsFileLocked(file))
+            string[] config;
+            try
             {
-                Console.WriteLine("file is locker");
-            }
+                startLoad = DateTime.Now;
+                _CONFIG.recentModelPath = Path.GetDirectoryName(openFileModel.FileName);
+                config = File.ReadAllLines(openFileModel.FileName);
+                lbModelName.Text = Path.GetFileNameWithoutExtension(openFileModel.FileName);
+                model.ModelName = lbModelName.Text;
 
-            string[] config = File.ReadAllLines(openFileModel.FileName);
+                if (config[5] == "True") model.Layout.PCB1 = true; else if (config[5] == "False") model.Layout.PCB1 = false;
+                if (config[6] == "True") model.Layout.PCB2 = true; else if (config[6] == "False") model.Layout.PCB2 = false;
 
-            lbModelName.Text = Path.GetFileNameWithoutExtension(openFileModel.FileName);
-
-            model.ModelName = lbModelName.Text;
-            if (config[5] == "True") model.Layout.PCB1 = true; else if (config[5] == "False") model.Layout.PCB1 = false;
-            if (config[6] == "True") model.Layout.PCB2 = true; else if (config[6] == "False") model.Layout.PCB2 = false;
-
-            if (config.Length > 10)
-            {
-                if (Convert.ToInt32(config[10]) > 5)
-                    model.TimeOut = Convert.ToInt32(config[10]);
+                if (config.Length > 10)
+                {
+                    if (Convert.ToInt32(config[10]) > 5)
+                        model.TimeOut = Convert.ToInt32(config[10]);
+                    else
+                        model.TimeOut = 30;
+                }
                 else
+                {
                     model.TimeOut = 30;
-            }
-            else
-            {
-                model.TimeOut = 30;
-            }
-            timerTimeOut.Interval = model.TimeOut * 1000;
-
-            model.Layout.ArrayCount = Convert.ToInt32(config[7]);
-            model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
-            model.Layout.MicomNumber = Convert.ToInt32(config[9]);
-
-            model.Layout.drawPCBLayout(pbLayout);
-
-            tbHistory.AppendText("Load model config: PCB 1: " + model.Layout.PCB1.ToString() + "    PCB 2: " + model.Layout.PCB2.ToString() + "   Micom count: " + model.Layout.MicomNumber.ToString() + "  Program timeout: " + model.TimeOut.ToString() + Environment.NewLine);
-            tbHistory.AppendText("Load project to Elnect site..");
-
-            if (Port.IsOpen)
-            {
-                if (model.Layout.PCB1 && !model.Layout.PCB2)
-                {
-                    Port.Write(Mode_1Array);
-                    tbHistory.AppendText("Mode 1 array had set.\r\n");
                 }
-                else if (model.Layout.PCB1 && model.Layout.PCB2)
+                timerTimeOut.Interval = model.TimeOut * 1000;
+
+                model.Layout.ArrayCount = Convert.ToInt32(config[7]);
+                model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
+                model.Layout.MicomNumber = Convert.ToInt32(config[9]);
+
+                model.Layout.drawPCBLayout(pbLayout);
+
+                tbHistory.AppendText("Load model config: PCB 1: " + model.Layout.PCB1.ToString() + "    PCB 2: " + model.Layout.PCB2.ToString() + "   Micom count: " + model.Layout.MicomNumber.ToString() + "  Program timeout: " + model.TimeOut.ToString() + Environment.NewLine);
+
+                if (!Port.IsOpen)
                 {
-                    Port.Write(Mode_2Array);
-                    tbHistory.AppendText("Mode 2 array had set.\r\n");
+                    if (model.Layout.PCB1 && !model.Layout.PCB2)
+                    {
+                        Port.Write(Mode_1Array);
+                        tbHistory.AppendText("Mode 1 array had set.\r\n" + Environment.NewLine);
+                    }
+                    else if (model.Layout.PCB1 && model.Layout.PCB2)
+                    {
+                        Port.Write(Mode_2Array);
+                        tbHistory.AppendText("Mode 2 array had set.\r\n" + Environment.NewLine);
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("Com not connect, Array setting maybe not apply.");
+                }
+
+
+                model.ROMs[0].ROM_PATH = config[1].Remove(config[1].IndexOf('@'), config[1].Length - config[1].IndexOf('@'));
+                lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
+                lbROM1checkSum.Text = lbRomNameSite1.Text.Remove(0, lbRomNameSite1.Text.IndexOf('@') + 1);
+                model.ROMs[0].ROM_CHECKSUM = lbROM1checkSum.Text;
+                lbRomNameSite1.Text = lbRomNameSite1.Text.Remove(lbRomNameSite1.Text.IndexOf('@'), lbRomNameSite1.Text.Length - lbRomNameSite1.Text.IndexOf('@'));
+
+                model.ROMs[1].ROM_PATH = config[2].Remove(config[2].IndexOf('@'), config[2].Length - config[2].IndexOf('@'));
+                lbRomNameSite2.Text = config[2].Split('\\')[config[1].Split('\\').Length - 1];
+                lbROM2checkSum.Text = lbRomNameSite2.Text.Remove(0, lbRomNameSite2.Text.IndexOf('@') + 1);
+                model.ROMs[1].ROM_CHECKSUM = lbROM2checkSum.Text;
+                lbRomNameSite2.Text = lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.IndexOf('@'), lbRomNameSite2.Text.Length - lbRomNameSite2.Text.IndexOf('@'));
+
+                model.ROMs[2].ROM_PATH = config[3].Remove(config[3].IndexOf('@'), config[3].Length - config[3].IndexOf('@'));
+                lbRomNameSite3.Text = config[3].Split('\\')[config[1].Split('\\').Length - 1];
+                lbROM3checkSum.Text = lbRomNameSite3.Text.Remove(0, lbRomNameSite3.Text.IndexOf('@') + 1);
+                model.ROMs[2].ROM_CHECKSUM = lbROM3checkSum.Text;
+                lbRomNameSite3.Text = lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.IndexOf('@'), lbRomNameSite3.Text.Length - lbRomNameSite3.Text.IndexOf('@'));
+
+                model.ROMs[3].ROM_PATH = config[4].Remove(config[4].IndexOf('@'), config[4].Length - config[4].IndexOf('@'));
+                lbRomNameSite4.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
+                lbROM4checkSum.Text = lbRomNameSite4.Text.Remove(0, lbRomNameSite4.Text.IndexOf('@') + 1);
+                model.ROMs[3].ROM_CHECKSUM = lbROM4checkSum.Text;
+                lbRomNameSite4.Text = lbRomNameSite4.Text.Remove(lbRomNameSite4.Text.IndexOf('@'), lbRomNameSite4.Text.Length - lbRomNameSite4.Text.IndexOf('@'));
+
+                tbHistory.AppendText("Site 1 ROM file: " + model.ROMs[0].ROM_PATH + Environment.NewLine + Environment.NewLine);
+                tbHistory.AppendText("Site 2 ROM file: " + model.ROMs[1].ROM_PATH + Environment.NewLine + Environment.NewLine);
+                tbHistory.AppendText("Site 3 ROM file: " + model.ROMs[2].ROM_PATH + Environment.NewLine + Environment.NewLine);
+                tbHistory.AppendText("Site 4 ROM file: " + model.ROMs[3].ROM_PATH + Environment.NewLine + Environment.NewLine);
+
+                
+
             }
-            else
+            catch (Exception err)
             {
-                MessageBox.Show("Com not connect, Array setting maybe not apply.");
+                tbHistory.AppendText("Have an error when load model: " + err.Message);
             }
-
-
-            model.ROMs[0].ROM_PATH = config[1].Remove(config[1].IndexOf('@'), config[1].Length - config[1].IndexOf('@'));
-            lbRomNameSite1.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
-            lbROM1checkSum.Text = lbRomNameSite1.Text.Remove(0, lbRomNameSite1.Text.IndexOf('@') + 1);
-            model.ROMs[0].ROM_CHECKSUM = lbROM1checkSum.Text;
-            lbRomNameSite1.Text = lbRomNameSite1.Text.Remove(lbRomNameSite1.Text.IndexOf('@'), lbRomNameSite1.Text.Length - lbRomNameSite1.Text.IndexOf('@'));
-
-            model.ROMs[1].ROM_PATH = config[2].Remove(config[2].IndexOf('@'), config[2].Length - config[2].IndexOf('@'));
-            lbRomNameSite2.Text = config[2].Split('\\')[config[1].Split('\\').Length - 1];
-            lbROM2checkSum.Text = lbRomNameSite2.Text.Remove(0, lbRomNameSite2.Text.IndexOf('@') + 1);
-            model.ROMs[1].ROM_CHECKSUM = lbROM2checkSum.Text;
-            lbRomNameSite2.Text = lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.IndexOf('@'), lbRomNameSite2.Text.Length - lbRomNameSite2.Text.IndexOf('@'));
-
-            model.ROMs[2].ROM_PATH = config[3].Remove(config[3].IndexOf('@'), config[3].Length - config[3].IndexOf('@'));
-            lbRomNameSite3.Text = config[3].Split('\\')[config[1].Split('\\').Length - 1];
-            lbROM3checkSum.Text = lbRomNameSite3.Text.Remove(0, lbRomNameSite3.Text.IndexOf('@') + 1);
-            model.ROMs[2].ROM_CHECKSUM = lbROM3checkSum.Text;
-            lbRomNameSite3.Text = lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.IndexOf('@'), lbRomNameSite3.Text.Length - lbRomNameSite3.Text.IndexOf('@'));
-
-            model.ROMs[3].ROM_PATH = config[4].Remove(config[4].IndexOf('@'), config[4].Length - config[4].IndexOf('@'));
-            lbRomNameSite4.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
-            lbROM4checkSum.Text = lbRomNameSite4.Text.Remove(0, lbRomNameSite4.Text.IndexOf('@') + 1);
-            model.ROMs[3].ROM_CHECKSUM = lbROM4checkSum.Text;
-            lbRomNameSite4.Text = lbRomNameSite4.Text.Remove(lbRomNameSite4.Text.IndexOf('@'), lbRomNameSite4.Text.Length - lbRomNameSite4.Text.IndexOf('@'));
 
             lbRomNameSite1.BackColor = Color.FromArgb(80, 80, 80);
             lbRomNameSite2.BackColor = Color.FromArgb(80, 80, 80);
             lbRomNameSite3.BackColor = Color.FromArgb(80, 80, 80);
             lbRomNameSite4.BackColor = Color.FromArgb(80, 80, 80);
-
-            timerReleaseBoard.Interval = 749;
-            timerReleaseBoard.Start();
 
             lbSite1Sellect.BackColor = activeColor;
             lbSite2Sellect.BackColor = activeColor;
@@ -1831,88 +1960,193 @@ namespace Micom_Inline
             Site3.WorkProcess.ClearCMDQueue();
             Site4.WorkProcess.ClearCMDQueue();
 
-            Site1.WorkProcess.Interrup = true;
-            Site2.WorkProcess.Interrup = true;
-            Site3.WorkProcess.Interrup = true;
-            Site4.WorkProcess.Interrup = true;
+            Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+            Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+            Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+            Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
+
+            lbSVCPmodel.BackColor = nonactiveColor;
+            lbSVCPchecksum.BackColor = nonactiveColor;
+            lbSVCPversion.BackColor = nonactiveColor;
+
+            if (_CONFIG.ServerCompare)
+            {
+                matchServer = true;
+                if (!File.Exists(_CONFIG.configPath + "\\model.txt"))
+                {
+                    tbHistory.AppendText("Not find any model from Micom SW System, please run program, open Operator, and sellect one." + Environment.NewLine);
+                }
+                else
+                {
+                    Model modelServer = new Model();
+                    string modelStr = File.ReadAllText(_CONFIG.configPath + "model.txt");
+                    modelServer = JsonSerializer.Deserialize<Model>(modelStr);
+
+                    Console.WriteLine(modelServer.PBACode + "  --" + modelServer.AssyCode + "--" + model.ModelName.Split('_')[0]);
+                    Console.WriteLine(modelServer.ROMs[0].Checksum.ToUpper() + "  --  " + model.ROMs[0].ROM_CHECKSUM);
+
+
+                    string version = "";
+                    if (modelServer.ROMs[0].Version.Contains(" "))
+                    {
+                        version = modelServer.ROMs[0].Version.ToUpper().Replace(" ","");
+                    }
+                    if (modelServer.ROMs[0].Version.Contains("-"))
+                    {
+                        version = modelServer.ROMs[0].Version.ToUpper().Replace("-","");
+                    }
+                    Console.WriteLine( version + "--" + model.ModelName.Split('_')[2]);
+
+                    try
+                    {
+                        if (modelServer.PBACode == model.ModelName.Split('_')[0] || modelServer.AssyCode == model.ModelName.Split('_')[0])
+                        {
+                            tbHistory.AppendText("Model matched ok, ");
+                            lbSVCPmodel.BackColor = deactiveColor;
+                            if (model.Layout.MicomNumber == 1)
+                            {
+                                if (model.ROMs[0].ROM_CHECKSUM.Contains(modelServer.ROMs[0].Checksum.ToUpper()))
+                                {
+                                    tbHistory.AppendText("checksum matched ok, ");
+                                    lbSVCPchecksum.BackColor = deactiveColor;
+                                }
+                                else
+                                {
+                                    tbHistory.AppendText("checksum matched fail, ");
+                                    lbSVCPchecksum.BackColor = Color.DarkRed;
+                                    matchServer = false;
+                                }
+                            }
+                            else
+                            {
+                                if (model.ROMs[0].ROM_CHECKSUM.Contains(modelServer.ROMs[0].Checksum.ToUpper()) && model.ROMs[2].ROM_CHECKSUM.Contains(modelServer.ROMs[1].Checksum.ToUpper()))
+                                {
+                                    tbHistory.AppendText("checksum matched, " + Environment.NewLine);
+                                    lbSVCPchecksum.BackColor = deactiveColor;
+                                }
+                                else
+                                {
+                                    tbHistory.AppendText("checksum matched fail, ");
+                                    lbSVCPchecksum.BackColor = Color.DarkRed;
+                                    matchServer = false;
+                                }
+                            }
+
+                            if (model.ModelName.Split('_')[2].Contains(version))
+                            {
+                                tbHistory.AppendText("version matched ok, ");
+                                lbSVCPversion.BackColor = deactiveColor;
+                            }
+                            else
+                            {
+                                lbSVCPversion.BackColor = Color.DarkRed;
+                                tbHistory.AppendText("version matched fail, ");
+                                matchServer = false;
+                            }
+
+                        }
+                        else
+                        {
+                            matchServer = false;
+                            lbSVCPmodel.BackColor = Color.DarkRed;
+                            lbSVCPchecksum.BackColor = Color.DarkRed;
+                            lbSVCPversion.BackColor = Color.DarkRed;
+                            tbHistory.AppendText("Model not match with system." + Environment.NewLine);
+                        }
+                    }
+                    catch (Exception) { }
+                    if (matchServer)
+                    {
+                        tbHistory.AppendText(" load model to site. ");
+                        Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[0].ROM_PATH);
+                        Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[1].ROM_PATH);
+                        Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[2].ROM_PATH);
+                        Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[3].ROM_PATH);
+                        timerReleaseBoard.Interval = 749;
+                        timerReleaseBoard.Start();
+                    }
+                    
+                }
+            }
+            else
+            {
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[0].ROM_PATH);
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[1].ROM_PATH);
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[2].ROM_PATH);
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[3].ROM_PATH);
+                timerReleaseBoard.Interval = 749;
+                timerReleaseBoard.Start();
+            }
+
+        }
+
+        public void openLastWokingModel(string path)
+        {
+            string[] config = File.ReadAllLines(path);
+            lbROM1checkSum.Invoke(new MethodInvoker(delegate
+            {
+                lbROM1checkSum.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
+                lbRomNameSite1.Text = lbROM1checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
+                lbRomNameSite2.Text = config[2].Split('\\')[config[2].Split('\\').Length - 1];
+                lbROM2checkSum.Text = lbRomNameSite2.Text.Split('_')[1].Replace(" ", string.Empty);
+                lbROM3checkSum.Text = config[3].Split('\\')[config[3].Split('\\').Length - 1];
+                lbROM3checkSum.Text = lbROM3checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
+                lbROM4checkSum.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
+                lbROM4checkSum.Text = lbROM4checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
+
+                model.ModelName = lbROM1checkSum.Text.Remove(lbROM1checkSum.Text.Length - 5, 5);
+
+                if (lbROM1checkSum.Text != lbRomNameSite2.Text)
+                {
+                    model.ModelName += "/" + lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.Length - 5, 5);
+                }
+                else if (lbROM1checkSum.Text != lbROM3checkSum.Text)
+                {
+                    model.ModelName += "/" + lbROM3checkSum.Text.Remove(lbROM3checkSum.Text.Length - 5, 5);
+                }
+                else if (lbROM1checkSum.Text != lbROM4checkSum.Text)
+                {
+                    model.ModelName += "/" + lbROM4checkSum.Text.Remove(lbROM4checkSum.Text.Length - 5, 5);
+                }
+                lbModelName.Text = model.ModelName;
+            }));
+
+            Site1.WorkProcess.ClearCMDQueue();
+            Site2.WorkProcess.ClearCMDQueue();
+            Site3.WorkProcess.ClearCMDQueue();
+            Site4.WorkProcess.ClearCMDQueue();
 
             Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
             Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
 
-            Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[0].ROM_PATH);
-            Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[1].ROM_PATH);
-            Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[2].ROM_PATH);
-            Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + model.ROMs[3].ROM_PATH);
+            Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[1]);
+            Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[2]);
+            Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[3]);
+            Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[4]);
 
-            model.saveUpdate(openFileModel.FileName);
-
-        }
-
-        public void openLastWokingModel(string path)
-        {
-                string[] config = File.ReadAllLines(path);
-                lbROM1checkSum.Invoke(new MethodInvoker(delegate
-                {
-                    lbROM1checkSum.Text = config[1].Split('\\')[config[1].Split('\\').Length - 1];
-                    lbRomNameSite1.Text = lbROM1checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
-                    lbRomNameSite2.Text = config[2].Split('\\')[config[2].Split('\\').Length - 1];
-                    lbROM2checkSum.Text = lbRomNameSite2.Text.Split('_')[1].Replace(" ", string.Empty);
-                    lbROM3checkSum.Text = config[3].Split('\\')[config[3].Split('\\').Length - 1];
-                    lbROM3checkSum.Text = lbROM3checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
-                    lbROM4checkSum.Text = config[4].Split('\\')[config[4].Split('\\').Length - 1];
-                    lbROM4checkSum.Text = lbROM4checkSum.Text.Split('_')[1].Replace(" ", string.Empty);
-
-                    model.ModelName = lbROM1checkSum.Text.Remove(lbROM1checkSum.Text.Length - 5, 5);
-
-                    if (lbROM1checkSum.Text != lbRomNameSite2.Text)
-                    {
-                        model.ModelName += "/" + lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.Length - 5, 5);
-                    }
-                    else if (lbROM1checkSum.Text != lbROM3checkSum.Text)
-                    {
-                        model.ModelName += "/" + lbROM3checkSum.Text.Remove(lbROM3checkSum.Text.Length - 5, 5);
-                    }
-                    else if (lbROM1checkSum.Text != lbROM4checkSum.Text)
-                    {
-                        model.ModelName += "/" + lbROM4checkSum.Text.Remove(lbROM4checkSum.Text.Length - 5, 5);
-                    }
-
-                    lbModelName.Text = model.ModelName;
-                }));
-                Site1.WorkProcess.Interrup = true;
-                Site2.WorkProcess.Interrup = true;
-                Site3.WorkProcess.Interrup = true;
-                Site4.WorkProcess.Interrup = true;
-
-                Site1.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[1]);
-                Site2.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[2]);
-                Site3.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[3]);
-                Site4.WorkProcess.PutComandToFIFO(ElnecSite.LOAD_PROJECT + config[4]);
-
-                for (int i = 5; i < config.Length; i++)
-                {
-                    AMWsProcess.PutComandToFIFO(config[i]);
-                    Console.WriteLine(config[i]);
-                }
+            for (int i = 5; i < config.Length; i++)
+            {
+                AMWsProcess.PutComandToFIFO(config[i]);
+                Console.WriteLine(config[i]);
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-            if (label1.BackColor != activeColor)
-                label1.BackColor = activeColor;
-            else
-                label1.BackColor = deactiveColor;
+            if (Permissions == MANAGER || Permissions == TECH)
+            {
+                if (label1.BackColor != activeColor)
+                    label1.BackColor = activeColor;
+                else
+                    label1.BackColor = deactiveColor;
 
-            Site1.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-            Site1.WorkProcess.Process = WorkProcess.Ready;
-            Site2.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-            Site2.WorkProcess.Process = WorkProcess.Ready;
-            Site3.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-            Site3.WorkProcess.Process = WorkProcess.Ready;
-            Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
-            Site4.WorkProcess.Process = WorkProcess.Ready;
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.GET_PRG_STATUS);
+            }
         }
 
         private void lbSiteName1_Click(object sender, EventArgs e)
@@ -2133,6 +2367,11 @@ namespace Micom_Inline
                 else
                 {
                     tbHistory.AppendText(". ");
+                    if (DateTime.Now.Subtract(startLoad).TotalSeconds > 15)
+                    {
+                        tbHistory.AppendText("fail: \"load model timeout\" " + Environment.NewLine);
+                        timerReleaseBoard.Stop();
+                    }
                 }
             }
 
@@ -2208,20 +2447,18 @@ namespace Micom_Inline
         }
         private void siteCheckSumRefrest_Click(object sender, EventArgs e)
         {
-            if (siteCheckSumRefrest.BackColor != activeColor)
-                siteCheckSumRefrest.BackColor = activeColor;
-            else
-                siteCheckSumRefrest.BackColor = deactiveColor;
+            if (Permissions == MANAGER || Permissions == TECH)
+            {
+                if (siteCheckSumRefrest.BackColor != activeColor)
+                    siteCheckSumRefrest.BackColor = activeColor;
+                else
+                    siteCheckSumRefrest.BackColor = deactiveColor;
 
-            Site1.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
-            Site1.WorkProcess.Process = WorkProcess.Ready;
-            Site2.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
-            Site2.WorkProcess.Process = WorkProcess.Ready;
-            Site3.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
-            Site3.WorkProcess.Process = WorkProcess.Ready;
-            Site4.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
-            Site4.WorkProcess.Process = WorkProcess.Ready;
-
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.GETDEVCHECKSUM);
+            }
         }
 
         int NumberArray = 4;
@@ -2327,15 +2564,18 @@ namespace Micom_Inline
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (tbCS2.Text != "")
+            string CS1 = "", CS2 = "";
+            CS1 = tbStRomCsSite1.Text;
+            CS2 = tbStRomCsSite3.Text;
+
+            if (CS2 != CS1)
             {
-                model.ModelName = tbQRname.Text + "_" + tbCS1.Text + "-" + tbCS2.Text + "_" + tbVersion.Text;
+                model.ModelName = tbQRname.Text + "_" + CS1 + "-" + CS2 + "_" + tbVersion.Text;
             }
             else
             {
-                model.ModelName = tbQRname.Text + "_" + tbCS1.Text + "_" + tbVersion.Text;
+                model.ModelName = tbQRname.Text + "_" + CS1 + "_" + tbVersion.Text;
             }
-
 
             model.ROMs[0].ROM_CHECKSUM = tbStRomCsSite1.Text;
             model.ROMs[1].ROM_CHECKSUM = tbStRomCsSite2.Text;
@@ -2378,12 +2618,15 @@ namespace Micom_Inline
         }
         private void btApplyConnectSettup_Click(object sender, EventArgs e)
         {
-
             _CONFIG.defaulBaudrate = Convert.ToInt32(BaudRate[cbbComBaurate.SelectedIndex]);
             _CONFIG.defaulComPort = cbbComName.Text;
             _CONFIG.ElnecStrAddress = Convert.ToInt32(ElnecStartAdd.Text);
             _CONFIG.ElnecAddress = Convert.ToInt32(ElnecEndAdd.Text);
             _CONFIG.recentModelPath = model.ModelPath;
+            _CONFIG.ServerCompare = cbServerCompare.Checked;
+
+            gbServerCompare.Enabled = _CONFIG.ServerCompare;
+
             _CONFIG.SaveConfig();
         }
 
@@ -2491,7 +2734,6 @@ namespace Micom_Inline
             if (lbManualROM1.BackColor == activeColor)
             {
                 Site1.WorkProcess.ClearCMDQueue();
-                //Site1.WorkProcess.Interrup = true;
                 Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                 Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                 tbHistory.AppendText("ROM 1");
@@ -2501,7 +2743,6 @@ namespace Micom_Inline
             if (lbManualROM2.BackColor == activeColor)
             {
                 Site2.WorkProcess.ClearCMDQueue();
-                //Site2.WorkProcess.Interrup = true;
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                 Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                 if (logHistory.Length > 4) tbHistory.AppendText(", ");
@@ -2512,7 +2753,6 @@ namespace Micom_Inline
             if (lbManualROM3.BackColor == activeColor)
             {
                 Site3.WorkProcess.ClearCMDQueue();
-                //Site3.WorkProcess.Interrup = true;
                 Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                 Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                 if (logHistory.Length > 4) tbHistory.AppendText(", ");
@@ -2523,7 +2763,6 @@ namespace Micom_Inline
             if (lbManualROM4.BackColor == activeColor)
             {
                 Site4.WorkProcess.ClearCMDQueue();
-                //Site4.WorkProcess.Interrup = true;
                 Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                 Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
                 if (logHistory.Length > 4) tbHistory.AppendText(", ");
@@ -2604,7 +2843,6 @@ namespace Micom_Inline
                 if (lbResultA.BackColor == activeColor)
                 {
                     Site1.WorkProcess.ClearCMDQueue();
-                    Site1.WorkProcess.Interrup = true;
                     Site1.Result = ElnecSite.RESULT_NG;
                     Site1.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
                     NG_label(lbResultA);
@@ -2615,7 +2853,6 @@ namespace Micom_Inline
                 if (lbResultB.BackColor == activeColor)
                 {
                     Site2.WorkProcess.ClearCMDQueue();
-                    Site2.WorkProcess.Interrup = true;
                     Site2.Result = ElnecSite.RESULT_NG;
                     Site2.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
                     NG_label(lbResultB);
@@ -2624,7 +2861,6 @@ namespace Micom_Inline
                 }
                 if (lbResultC.BackColor == activeColor)
                 {
-                    Site3.WorkProcess.Interrup = true;
                     Site3.WorkProcess.ClearCMDQueue();
                     Site3.Result = ElnecSite.RESULT_NG;
                     Site3.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
@@ -2635,7 +2871,6 @@ namespace Micom_Inline
                 if (lbResultD.BackColor == activeColor)
                 {
                     Site4.WorkProcess.ClearCMDQueue();
-                    Site4.WorkProcess.Interrup = true;
                     Site4.Result = ElnecSite.RESULT_NG;
                     Site4.SITE_PROGRAMRESULT = ElnecSite.RESULT_NG;
                     NG_label(lbResultD);
@@ -2704,6 +2939,26 @@ namespace Micom_Inline
         private void timer1_Tick(object sender, EventArgs e)
         {
             copyHistoryToMES();
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+            if (Permissions == MANAGER || Permissions == TECH)
+            {
+                if (label8.BackColor == activeColor)
+                {
+                    label8.BackColor = deactiveColor;
+                }
+                else
+                {
+                    label8.BackColor = activeColor;
+                }
+
+                Site1.WorkProcess.PutComandToFIFO(ElnecSite.REFIND_PGM);
+                Site2.WorkProcess.PutComandToFIFO(ElnecSite.REFIND_PGM);
+                Site3.WorkProcess.PutComandToFIFO(ElnecSite.REFIND_PGM);
+                Site4.WorkProcess.PutComandToFIFO(ElnecSite.REFIND_PGM);
+            }
         }
     }
 
@@ -3160,6 +3415,7 @@ namespace Micom_Inline
         public string MANAGER_ACC = "manager";
         public string MANAGER_PASS = "123654789";
 
+        public bool ServerCompare = false;
         private string ReportBuffer = "";
         public AMW_CONFIG()
         {
@@ -3180,7 +3436,8 @@ namespace Micom_Inline
                   + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
                   + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
                   + "ElnecAddress@" + this.ElnecAddress + Environment.NewLine
-                  + "ElnecStrAddress@" + this.ElnecStrAddress + Environment.NewLine;
+                  + "ElnecStrAddress@" + this.ElnecStrAddress + Environment.NewLine
+                  + "ServerCompare@" + this.ServerCompare + Environment.NewLine;
                 File.WriteAllText(configPath + "config.cfg", config);
             }
             else
@@ -3247,6 +3504,9 @@ namespace Micom_Inline
                                 this.ElnecAddress = Convert.ToInt32(configData[1]);
                                 break;
                             }
+                        case "ServerCompare":
+                            this.ServerCompare = configData[1].Contains("True");
+                            break;
                     }
                 }
             }
@@ -3268,7 +3528,8 @@ namespace Micom_Inline
                       + "defaultMANAGER_ACC@" + this.MANAGER_ACC + Environment.NewLine
                       + "defaultMANAGER_PASS@" + this.MANAGER_PASS + Environment.NewLine
                       + "ElnecAddress@" + this.ElnecAddress.ToString() + Environment.NewLine
-                      + "ElnecStrAddress@" + this.ElnecStrAddress.ToString() + Environment.NewLine;
+                      + "ElnecStrAddress@" + this.ElnecStrAddress.ToString() + Environment.NewLine
+                      + "ServerCompare@" + this.ServerCompare + Environment.NewLine;
                 File.WriteAllText(configPath + "config.cfg", config);
             }
         }
@@ -3378,6 +3639,16 @@ namespace Micom_Inline
             else
                 return -1;
         }
+
+        public void PushComandToFist(string Command)
+        {
+            for (int i = this.ComandQueue.Length - 1; i >= 1; i--)
+            {
+                this.ComandQueue[i] = this.ComandQueue[i - 1];
+            }
+            this.ComandQueue[0] = Command;
+        }
+
         public void ClearCMDQueue()
         {
             for (int i = 0; i < this.ComandQueue.Length - 1; i++)
