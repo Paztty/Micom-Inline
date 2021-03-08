@@ -1,0 +1,1 @@
+cd C:\Program Files (x86)\Elnec_sw\Programmer && pg4uw #1 /usb:1:1180-11227 /enableremote:autoanswer && pg4uw #2 /usb:2:1180-11228 /enableremote:autoanswer && pg4uw #3 /usb:3:1180-11229 /enableremote:autoanswer && pg4uw #4 /usb:4:1180-11230 /enableremote:autoanswer
