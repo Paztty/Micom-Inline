@@ -29,15 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbFormName = new System.Windows.Forms.Label();
+            this.btnMinimize = new System.Windows.Forms.Button();
+            this.btnMaximize = new System.Windows.Forms.Button();
+            this.btClose = new System.Windows.Forms.Button();
             this.gbSiteInfor = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.lbSite4Checksum = new System.Windows.Forms.Label();
@@ -94,7 +97,15 @@
             this.lbRomNameSite3 = new System.Windows.Forms.Label();
             this.lbRomNameSite2 = new System.Windows.Forms.Label();
             this.tblControlBar = new System.Windows.Forms.TableLayoutPanel();
+            this.btManualTest = new System.Windows.Forms.Button();
+            this.logo = new System.Windows.Forms.Button();
+            this.btSetting = new System.Windows.Forms.Button();
+            this.btReportFolder = new System.Windows.Forms.Button();
+            this.btManual = new System.Windows.Forms.Button();
+            this.btAuto = new System.Windows.Forms.Button();
+            this.btLoadModel = new System.Windows.Forms.Button();
             this.lbModelName = new System.Windows.Forms.Label();
+            this.logoDEV = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lbClock = new System.Windows.Forms.Label();
             this.lbWorkingtime = new System.Windows.Forms.Label();
@@ -135,6 +146,7 @@
             this.lbCounterNumberDef = new System.Windows.Forms.Label();
             this.lbCounterNumberTotal = new System.Windows.Forms.Label();
             this.lbCounterOK = new System.Windows.Forms.Label();
+            this.pBChar = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -159,12 +171,19 @@
             this.pnCenter = new System.Windows.Forms.Panel();
             this.gbLineProcess = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.lbPrevious = new System.Windows.Forms.Label();
+            this.lbArrow1 = new System.Windows.Forms.Label();
+            this.lbArrow2 = new System.Windows.Forms.Label();
             this.lbCamera = new System.Windows.Forms.Label();
             this.lbFixture = new System.Windows.Forms.Label();
             this.lbNext = new System.Windows.Forms.Label();
+            this.lbArrow4 = new System.Windows.Forms.Label();
             this.lbBufferNG = new System.Windows.Forms.Label();
+            this.lbArrow3 = new System.Windows.Forms.Label();
             this.lbAutoManual = new System.Windows.Forms.Label();
+            this.pbLayout = new System.Windows.Forms.PictureBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
@@ -177,6 +196,7 @@
             this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
+            this.panelMachineImage = new System.Windows.Forms.Panel();
             this.gbSetting = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -206,6 +226,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.pnArrayLayout = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pbPCBLayout = new System.Windows.Forms.PictureBox();
             this.pnArraySetting = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
@@ -290,27 +311,6 @@
             this.timerTimeOut = new System.Windows.Forms.Timer(this.components);
             this.timerUpdateMes = new System.Windows.Forms.Timer(this.components);
             this.timerUpdateStatus = new System.Windows.Forms.Timer(this.components);
-            this.btnMinimize = new System.Windows.Forms.Button();
-            this.btnMaximize = new System.Windows.Forms.Button();
-            this.btClose = new System.Windows.Forms.Button();
-            this.btManualTest = new System.Windows.Forms.Button();
-            this.logo = new System.Windows.Forms.Button();
-            this.btSetting = new System.Windows.Forms.Button();
-            this.btReportFolder = new System.Windows.Forms.Button();
-            this.btManual = new System.Windows.Forms.Button();
-            this.btAuto = new System.Windows.Forms.Button();
-            this.btLoadModel = new System.Windows.Forms.Button();
-            this.logoDEV = new System.Windows.Forms.Button();
-            this.pBChar = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lbArrow1 = new System.Windows.Forms.Label();
-            this.lbArrow2 = new System.Windows.Forms.Label();
-            this.lbArrow4 = new System.Windows.Forms.Label();
-            this.lbArrow3 = new System.Windows.Forms.Label();
-            this.pbLayout = new System.Windows.Forms.PictureBox();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.pbPCBLayout = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbSiteInfor.SuspendLayout();
@@ -338,6 +338,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gbTestCounter.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pBChar)).BeginInit();
             this.tableLayoutPanel10.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -346,6 +347,7 @@
             this.pnCenter.SuspendLayout();
             this.gbLineProcess.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLayout)).BeginInit();
             this.tableLayoutPanel12.SuspendLayout();
             this.gbSetting.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
@@ -353,6 +355,7 @@
             this.tableLayoutPanel17.SuspendLayout();
             this.pnArrayLayout.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPCBLayout)).BeginInit();
             this.pnArraySetting.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
@@ -375,9 +378,6 @@
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pBChar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLayout)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPCBLayout)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -391,7 +391,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.5485815F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.6461385F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 330F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 164F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.gbSiteInfor, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel11, 4, 2);
@@ -452,6 +452,63 @@
             this.lbFormName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbFormName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LbFormName_MouseDown);
             // 
+            // btnMinimize
+            // 
+            this.btnMinimize.BackColor = System.Drawing.Color.Black;
+            this.btnMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMinimize.BackgroundImage")));
+            this.btnMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMinimize.FlatAppearance.BorderSize = 0;
+            this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMinimize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimize.ForeColor = System.Drawing.Color.Lime;
+            this.btnMinimize.Location = new System.Drawing.Point(1425, 0);
+            this.btnMinimize.Margin = new System.Windows.Forms.Padding(0);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(25, 30);
+            this.btnMinimize.TabIndex = 1;
+            this.btnMinimize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMinimize.UseVisualStyleBackColor = false;
+            this.btnMinimize.Click += new System.EventHandler(this.BtnMinimize_Click);
+            // 
+            // btnMaximize
+            // 
+            this.btnMaximize.BackColor = System.Drawing.Color.Black;
+            this.btnMaximize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMaximize.BackgroundImage")));
+            this.btnMaximize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnMaximize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMaximize.FlatAppearance.BorderSize = 0;
+            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMaximize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMaximize.ForeColor = System.Drawing.Color.Yellow;
+            this.btnMaximize.Location = new System.Drawing.Point(1450, 0);
+            this.btnMaximize.Margin = new System.Windows.Forms.Padding(0);
+            this.btnMaximize.Name = "btnMaximize";
+            this.btnMaximize.Size = new System.Drawing.Size(25, 30);
+            this.btnMaximize.TabIndex = 2;
+            this.btnMaximize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMaximize.UseVisualStyleBackColor = false;
+            this.btnMaximize.Click += new System.EventHandler(this.BtnMaximize_Click);
+            // 
+            // btClose
+            // 
+            this.btClose.BackColor = System.Drawing.Color.Black;
+            this.btClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btClose.BackgroundImage")));
+            this.btClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btClose.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btClose.FlatAppearance.BorderSize = 0;
+            this.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btClose.ForeColor = System.Drawing.Color.Red;
+            this.btClose.Location = new System.Drawing.Point(1475, 0);
+            this.btClose.Margin = new System.Windows.Forms.Padding(0);
+            this.btClose.Name = "btClose";
+            this.btClose.Size = new System.Drawing.Size(27, 30);
+            this.btClose.TabIndex = 3;
+            this.btClose.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btClose.UseVisualStyleBackColor = false;
+            this.btClose.Click += new System.EventHandler(this.BtClose_Click);
+            // 
             // gbSiteInfor
             // 
             this.gbSiteInfor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
@@ -461,9 +518,9 @@
             this.gbSiteInfor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gbSiteInfor.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbSiteInfor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gbSiteInfor.Location = new System.Drawing.Point(544, 649);
+            this.gbSiteInfor.Location = new System.Drawing.Point(537, 649);
             this.gbSiteInfor.Name = "gbSiteInfor";
-            this.gbSiteInfor.Size = new System.Drawing.Size(461, 162);
+            this.gbSiteInfor.Size = new System.Drawing.Size(454, 162);
             this.gbSiteInfor.TabIndex = 9;
             this.gbSiteInfor.TabStop = false;
             this.gbSiteInfor.Text = "Elnec information";
@@ -499,7 +556,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(455, 140);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(448, 140);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // lbSite4Checksum
@@ -508,10 +565,10 @@
             this.lbSite4Checksum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.lbSite4Checksum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSite4Checksum.ForeColor = System.Drawing.Color.White;
-            this.lbSite4Checksum.Location = new System.Drawing.Point(331, 115);
+            this.lbSite4Checksum.Location = new System.Drawing.Point(326, 115);
             this.lbSite4Checksum.Margin = new System.Windows.Forms.Padding(3);
             this.lbSite4Checksum.Name = "lbSite4Checksum";
-            this.lbSite4Checksum.Size = new System.Drawing.Size(121, 22);
+            this.lbSite4Checksum.Size = new System.Drawing.Size(119, 22);
             this.lbSite4Checksum.TabIndex = 29;
             this.lbSite4Checksum.Text = "H785000";
             this.lbSite4Checksum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -522,10 +579,10 @@
             this.lbSite3Checksum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.lbSite3Checksum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSite3Checksum.ForeColor = System.Drawing.Color.White;
-            this.lbSite3Checksum.Location = new System.Drawing.Point(331, 87);
+            this.lbSite3Checksum.Location = new System.Drawing.Point(326, 87);
             this.lbSite3Checksum.Margin = new System.Windows.Forms.Padding(3);
             this.lbSite3Checksum.Name = "lbSite3Checksum";
-            this.lbSite3Checksum.Size = new System.Drawing.Size(121, 22);
+            this.lbSite3Checksum.Size = new System.Drawing.Size(119, 22);
             this.lbSite3Checksum.TabIndex = 28;
             this.lbSite3Checksum.Text = "H785000";
             this.lbSite3Checksum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -536,10 +593,10 @@
             this.lbSite2Checksum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.lbSite2Checksum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSite2Checksum.ForeColor = System.Drawing.Color.White;
-            this.lbSite2Checksum.Location = new System.Drawing.Point(331, 59);
+            this.lbSite2Checksum.Location = new System.Drawing.Point(326, 59);
             this.lbSite2Checksum.Margin = new System.Windows.Forms.Padding(3);
             this.lbSite2Checksum.Name = "lbSite2Checksum";
-            this.lbSite2Checksum.Size = new System.Drawing.Size(121, 22);
+            this.lbSite2Checksum.Size = new System.Drawing.Size(119, 22);
             this.lbSite2Checksum.TabIndex = 27;
             this.lbSite2Checksum.Text = "H785000";
             this.lbSite2Checksum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -550,10 +607,10 @@
             this.lbSite1Checksum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.lbSite1Checksum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSite1Checksum.ForeColor = System.Drawing.Color.White;
-            this.lbSite1Checksum.Location = new System.Drawing.Point(331, 31);
+            this.lbSite1Checksum.Location = new System.Drawing.Point(326, 31);
             this.lbSite1Checksum.Margin = new System.Windows.Forms.Padding(3);
             this.lbSite1Checksum.Name = "lbSite1Checksum";
-            this.lbSite1Checksum.Size = new System.Drawing.Size(121, 22);
+            this.lbSite1Checksum.Size = new System.Drawing.Size(119, 22);
             this.lbSite1Checksum.TabIndex = 26;
             this.lbSite1Checksum.Text = "H785000";
             this.lbSite1Checksum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -564,10 +621,10 @@
             this.siteCheckSumRefrest.BackColor = System.Drawing.Color.Black;
             this.siteCheckSumRefrest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.siteCheckSumRefrest.ForeColor = System.Drawing.Color.White;
-            this.siteCheckSumRefrest.Location = new System.Drawing.Point(331, 3);
+            this.siteCheckSumRefrest.Location = new System.Drawing.Point(326, 3);
             this.siteCheckSumRefrest.Margin = new System.Windows.Forms.Padding(3);
             this.siteCheckSumRefrest.Name = "siteCheckSumRefrest";
-            this.siteCheckSumRefrest.Size = new System.Drawing.Size(121, 22);
+            this.siteCheckSumRefrest.Size = new System.Drawing.Size(119, 22);
             this.siteCheckSumRefrest.TabIndex = 24;
             this.siteCheckSumRefrest.Text = "Site Checksum";
             this.siteCheckSumRefrest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -582,7 +639,7 @@
             this.label8.Location = new System.Drawing.Point(59, 3);
             this.label8.Margin = new System.Windows.Forms.Padding(3);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(266, 22);
+            this.label8.Size = new System.Drawing.Size(261, 22);
             this.label8.TabIndex = 23;
             this.label8.Text = "Refine Program";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -672,7 +729,7 @@
             this.lbAdressSite1.Location = new System.Drawing.Point(59, 31);
             this.lbAdressSite1.Margin = new System.Windows.Forms.Padding(3);
             this.lbAdressSite1.Name = "lbAdressSite1";
-            this.lbAdressSite1.Size = new System.Drawing.Size(266, 22);
+            this.lbAdressSite1.Size = new System.Drawing.Size(261, 22);
             this.lbAdressSite1.TabIndex = 32;
             this.lbAdressSite1.Text = "Elnec address";
             this.lbAdressSite1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -686,7 +743,7 @@
             this.lbAdressSite2.Location = new System.Drawing.Point(59, 59);
             this.lbAdressSite2.Margin = new System.Windows.Forms.Padding(3);
             this.lbAdressSite2.Name = "lbAdressSite2";
-            this.lbAdressSite2.Size = new System.Drawing.Size(266, 22);
+            this.lbAdressSite2.Size = new System.Drawing.Size(261, 22);
             this.lbAdressSite2.TabIndex = 33;
             this.lbAdressSite2.Text = "Elnec address";
             this.lbAdressSite2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -700,7 +757,7 @@
             this.lbAdressSite3.Location = new System.Drawing.Point(59, 87);
             this.lbAdressSite3.Margin = new System.Windows.Forms.Padding(3);
             this.lbAdressSite3.Name = "lbAdressSite3";
-            this.lbAdressSite3.Size = new System.Drawing.Size(266, 22);
+            this.lbAdressSite3.Size = new System.Drawing.Size(261, 22);
             this.lbAdressSite3.TabIndex = 30;
             this.lbAdressSite3.Text = "Elnec address";
             this.lbAdressSite3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -714,7 +771,7 @@
             this.lbAdressSite4.Location = new System.Drawing.Point(59, 115);
             this.lbAdressSite4.Margin = new System.Windows.Forms.Padding(3);
             this.lbAdressSite4.Name = "lbAdressSite4";
-            this.lbAdressSite4.Size = new System.Drawing.Size(266, 22);
+            this.lbAdressSite4.Size = new System.Drawing.Size(261, 22);
             this.lbAdressSite4.TabIndex = 31;
             this.lbAdressSite4.Text = "Elnec address";
             this.lbAdressSite4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -729,7 +786,7 @@
             this.tableLayoutPanel11.Controls.Add(this.panel2, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.panel4, 0, 2);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(1008, 80);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(994, 80);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 4;
@@ -738,7 +795,7 @@
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 168F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(494, 734);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(508, 734);
             this.tableLayoutPanel11.TabIndex = 13;
             // 
             // pnManualControl
@@ -747,7 +804,7 @@
             this.pnManualControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnManualControl.Location = new System.Drawing.Point(3, 569);
             this.pnManualControl.Name = "pnManualControl";
-            this.pnManualControl.Size = new System.Drawing.Size(488, 162);
+            this.pnManualControl.Size = new System.Drawing.Size(502, 162);
             this.pnManualControl.TabIndex = 13;
             // 
             // gBManualControl
@@ -760,7 +817,7 @@
             this.gBManualControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gBManualControl.Location = new System.Drawing.Point(0, 0);
             this.gBManualControl.Name = "gBManualControl";
-            this.gBManualControl.Size = new System.Drawing.Size(488, 162);
+            this.gBManualControl.Size = new System.Drawing.Size(502, 162);
             this.gBManualControl.TabIndex = 7;
             this.gBManualControl.TabStop = false;
             this.gBManualControl.Text = "Manual Control ";
@@ -787,7 +844,7 @@
             this.tableLayoutPanel20.RowCount = 2;
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(482, 140);
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(496, 140);
             this.tableLayoutPanel20.TabIndex = 0;
             // 
             // btManualTestStart
@@ -800,9 +857,9 @@
             this.btManualTestStart.Font = new System.Drawing.Font("Perpetua", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btManualTestStart.ForeColor = System.Drawing.Color.White;
             this.btManualTestStart.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btManualTestStart.Location = new System.Drawing.Point(101, 73);
+            this.btManualTestStart.Location = new System.Drawing.Point(104, 73);
             this.btManualTestStart.Name = "btManualTestStart";
-            this.btManualTestStart.Size = new System.Drawing.Size(184, 61);
+            this.btManualTestStart.Size = new System.Drawing.Size(190, 61);
             this.btManualTestStart.TabIndex = 53;
             this.btManualTestStart.Text = "START";
             this.btManualTestStart.UseVisualStyleBackColor = false;
@@ -818,9 +875,9 @@
             this.btManualTestStop.Font = new System.Drawing.Font("Perpetua", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btManualTestStop.ForeColor = System.Drawing.Color.White;
             this.btManualTestStop.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btManualTestStop.Location = new System.Drawing.Point(291, 73);
+            this.btManualTestStop.Location = new System.Drawing.Point(300, 73);
             this.btManualTestStop.Name = "btManualTestStop";
-            this.btManualTestStop.Size = new System.Drawing.Size(185, 61);
+            this.btManualTestStop.Size = new System.Drawing.Size(190, 61);
             this.btManualTestStop.TabIndex = 52;
             this.btManualTestStop.Text = "STOP";
             this.btManualTestStop.UseVisualStyleBackColor = false;
@@ -833,11 +890,11 @@
             this.lbManualROM3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbManualROM3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbManualROM3.ForeColor = System.Drawing.Color.White;
-            this.lbManualROM3.Location = new System.Drawing.Point(291, 6);
+            this.lbManualROM3.Location = new System.Drawing.Point(300, 6);
             this.lbManualROM3.Margin = new System.Windows.Forms.Padding(3);
             this.lbManualROM3.Name = "lbManualROM3";
             this.lbManualROM3.Padding = new System.Windows.Forms.Padding(3);
-            this.lbManualROM3.Size = new System.Drawing.Size(89, 61);
+            this.lbManualROM3.Size = new System.Drawing.Size(92, 61);
             this.lbManualROM3.TabIndex = 51;
             this.lbManualROM3.Text = "ROM 3";
             this.lbManualROM3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -850,11 +907,11 @@
             this.lbManualROM4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbManualROM4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbManualROM4.ForeColor = System.Drawing.Color.White;
-            this.lbManualROM4.Location = new System.Drawing.Point(386, 6);
+            this.lbManualROM4.Location = new System.Drawing.Point(398, 6);
             this.lbManualROM4.Margin = new System.Windows.Forms.Padding(3);
             this.lbManualROM4.Name = "lbManualROM4";
             this.lbManualROM4.Padding = new System.Windows.Forms.Padding(3);
-            this.lbManualROM4.Size = new System.Drawing.Size(90, 61);
+            this.lbManualROM4.Size = new System.Drawing.Size(92, 61);
             this.lbManualROM4.TabIndex = 50;
             this.lbManualROM4.Text = "ROM 4";
             this.lbManualROM4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -871,7 +928,7 @@
             this.label45.Margin = new System.Windows.Forms.Padding(3);
             this.label45.Name = "label45";
             this.label45.Padding = new System.Windows.Forms.Padding(3);
-            this.label45.Size = new System.Drawing.Size(89, 61);
+            this.label45.Size = new System.Drawing.Size(92, 61);
             this.label45.TabIndex = 49;
             this.label45.Text = "Sellect ROM";
             this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -883,11 +940,11 @@
             this.lbManualROM1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbManualROM1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbManualROM1.ForeColor = System.Drawing.Color.White;
-            this.lbManualROM1.Location = new System.Drawing.Point(101, 6);
+            this.lbManualROM1.Location = new System.Drawing.Point(104, 6);
             this.lbManualROM1.Margin = new System.Windows.Forms.Padding(3);
             this.lbManualROM1.Name = "lbManualROM1";
             this.lbManualROM1.Padding = new System.Windows.Forms.Padding(3);
-            this.lbManualROM1.Size = new System.Drawing.Size(89, 61);
+            this.lbManualROM1.Size = new System.Drawing.Size(92, 61);
             this.lbManualROM1.TabIndex = 48;
             this.lbManualROM1.Text = "ROM 1";
             this.lbManualROM1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -900,11 +957,11 @@
             this.lbManualROM2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbManualROM2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbManualROM2.ForeColor = System.Drawing.Color.White;
-            this.lbManualROM2.Location = new System.Drawing.Point(196, 6);
+            this.lbManualROM2.Location = new System.Drawing.Point(202, 6);
             this.lbManualROM2.Margin = new System.Windows.Forms.Padding(3);
             this.lbManualROM2.Name = "lbManualROM2";
             this.lbManualROM2.Padding = new System.Windows.Forms.Padding(3);
-            this.lbManualROM2.Size = new System.Drawing.Size(89, 61);
+            this.lbManualROM2.Size = new System.Drawing.Size(92, 61);
             this.lbManualROM2.TabIndex = 43;
             this.lbManualROM2.Text = "ROM 2";
             this.lbManualROM2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -919,7 +976,7 @@
             this.pbTesting.MarqueeAnimationSpeed = 1;
             this.pbTesting.Maximum = 400;
             this.pbTesting.Name = "pbTesting";
-            this.pbTesting.Size = new System.Drawing.Size(488, 19);
+            this.pbTesting.Size = new System.Drawing.Size(502, 19);
             this.pbTesting.Step = 1;
             this.pbTesting.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbTesting.TabIndex = 10;
@@ -933,7 +990,7 @@
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.panel2.Size = new System.Drawing.Size(494, 469);
+            this.panel2.Size = new System.Drawing.Size(508, 469);
             this.panel2.TabIndex = 11;
             // 
             // gbLog
@@ -946,7 +1003,7 @@
             this.gbLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbLog.Location = new System.Drawing.Point(3, 3);
             this.gbLog.Name = "gbLog";
-            this.gbLog.Size = new System.Drawing.Size(488, 463);
+            this.gbLog.Size = new System.Drawing.Size(502, 463);
             this.gbLog.TabIndex = 6;
             this.gbLog.TabStop = false;
             this.gbLog.Text = "Programer activity log";
@@ -963,7 +1020,7 @@
             this.tbLog.Name = "tbLog";
             this.tbLog.ReadOnly = true;
             this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbLog.Size = new System.Drawing.Size(482, 441);
+            this.tbLog.Size = new System.Drawing.Size(496, 441);
             this.tbLog.TabIndex = 0;
             // 
             // gbTestHistory
@@ -976,7 +1033,7 @@
             this.gbTestHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbTestHistory.Location = new System.Drawing.Point(3, 3);
             this.gbTestHistory.Name = "gbTestHistory";
-            this.gbTestHistory.Size = new System.Drawing.Size(488, 463);
+            this.gbTestHistory.Size = new System.Drawing.Size(502, 463);
             this.gbTestHistory.TabIndex = 11;
             this.gbTestHistory.TabStop = false;
             this.gbTestHistory.Text = "Test History";
@@ -992,7 +1049,7 @@
             this.tbHistory.Name = "tbHistory";
             this.tbHistory.ReadOnly = true;
             this.tbHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbHistory.Size = new System.Drawing.Size(482, 441);
+            this.tbHistory.Size = new System.Drawing.Size(496, 441);
             this.tbHistory.TabIndex = 1;
             // 
             // panel4
@@ -1002,7 +1059,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(3, 497);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(488, 66);
+            this.panel4.Size = new System.Drawing.Size(502, 66);
             this.panel4.TabIndex = 14;
             // 
             // gbManualTest
@@ -1015,7 +1072,7 @@
             this.gbManualTest.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbManualTest.Location = new System.Drawing.Point(0, 0);
             this.gbManualTest.Name = "gbManualTest";
-            this.gbManualTest.Size = new System.Drawing.Size(488, 66);
+            this.gbManualTest.Size = new System.Drawing.Size(502, 66);
             this.gbManualTest.TabIndex = 9;
             this.gbManualTest.TabStop = false;
             this.gbManualTest.Text = "Maunal test";
@@ -1033,7 +1090,7 @@
             this.tableLayoutPanel21.Padding = new System.Windows.Forms.Padding(3);
             this.tableLayoutPanel21.RowCount = 1;
             this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel21.Size = new System.Drawing.Size(482, 44);
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(496, 44);
             this.tableLayoutPanel21.TabIndex = 0;
             // 
             // btManualSendDataTest
@@ -1045,9 +1102,9 @@
             this.btManualSendDataTest.Font = new System.Drawing.Font("Perpetua", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btManualSendDataTest.ForeColor = System.Drawing.Color.White;
             this.btManualSendDataTest.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btManualSendDataTest.Location = new System.Drawing.Point(346, 6);
+            this.btManualSendDataTest.Location = new System.Drawing.Point(356, 6);
             this.btManualSendDataTest.Name = "btManualSendDataTest";
-            this.btManualSendDataTest.Size = new System.Drawing.Size(130, 32);
+            this.btManualSendDataTest.Size = new System.Drawing.Size(134, 32);
             this.btManualSendDataTest.TabIndex = 54;
             this.btManualSendDataTest.Text = "SEND";
             this.btManualSendDataTest.UseVisualStyleBackColor = false;
@@ -1063,7 +1120,7 @@
             this.cbbMachineCommand.IntegralHeight = false;
             this.cbbMachineCommand.Location = new System.Drawing.Point(6, 6);
             this.cbbMachineCommand.Name = "cbbMachineCommand";
-            this.cbbMachineCommand.Size = new System.Drawing.Size(334, 30);
+            this.cbbMachineCommand.Size = new System.Drawing.Size(344, 30);
             this.cbbMachineCommand.TabIndex = 0;
             this.cbbMachineCommand.SelectedIndexChanged += new System.EventHandler(this.cbbMachineCommand_SelectedIndexChanged);
             // 
@@ -1077,7 +1134,7 @@
             this.gbServerCompare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbServerCompare.Location = new System.Drawing.Point(0, 0);
             this.gbServerCompare.Name = "gbServerCompare";
-            this.gbServerCompare.Size = new System.Drawing.Size(488, 66);
+            this.gbServerCompare.Size = new System.Drawing.Size(502, 66);
             this.gbServerCompare.TabIndex = 8;
             this.gbServerCompare.TabStop = false;
             this.gbServerCompare.Text = "Server compare";
@@ -1095,7 +1152,7 @@
             this.tableLayoutPanel13.Padding = new System.Windows.Forms.Padding(3);
             this.tableLayoutPanel13.RowCount = 1;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(482, 44);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(496, 44);
             this.tableLayoutPanel13.TabIndex = 0;
             // 
             // lbSVCPmodel
@@ -1109,7 +1166,7 @@
             this.lbSVCPmodel.Margin = new System.Windows.Forms.Padding(3);
             this.lbSVCPmodel.Name = "lbSVCPmodel";
             this.lbSVCPmodel.Padding = new System.Windows.Forms.Padding(3);
-            this.lbSVCPmodel.Size = new System.Drawing.Size(232, 32);
+            this.lbSVCPmodel.Size = new System.Drawing.Size(239, 32);
             this.lbSVCPmodel.TabIndex = 49;
             this.lbSVCPmodel.Text = "Model";
             this.lbSVCPmodel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1121,11 +1178,11 @@
             this.lbSVCPchecksum.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbSVCPchecksum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSVCPchecksum.ForeColor = System.Drawing.Color.White;
-            this.lbSVCPchecksum.Location = new System.Drawing.Point(244, 6);
+            this.lbSVCPchecksum.Location = new System.Drawing.Point(251, 6);
             this.lbSVCPchecksum.Margin = new System.Windows.Forms.Padding(3);
             this.lbSVCPchecksum.Name = "lbSVCPchecksum";
             this.lbSVCPchecksum.Padding = new System.Windows.Forms.Padding(3);
-            this.lbSVCPchecksum.Size = new System.Drawing.Size(232, 32);
+            this.lbSVCPchecksum.Size = new System.Drawing.Size(239, 32);
             this.lbSVCPchecksum.TabIndex = 48;
             this.lbSVCPchecksum.Text = "Checksum";
             this.lbSVCPchecksum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1141,7 +1198,7 @@
             this.gbRom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbRom.Location = new System.Drawing.Point(3, 482);
             this.gbRom.Name = "gbRom";
-            this.gbRom.Size = new System.Drawing.Size(535, 161);
+            this.gbRom.Size = new System.Drawing.Size(528, 161);
             this.gbRom.TabIndex = 10;
             this.gbRom.TabStop = false;
             this.gbRom.Text = "ROM Information";
@@ -1171,7 +1228,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(529, 139);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(522, 139);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // lbRomNameSite1
@@ -1182,7 +1239,7 @@
             this.lbRomNameSite1.Location = new System.Drawing.Point(68, 30);
             this.lbRomNameSite1.Margin = new System.Windows.Forms.Padding(3);
             this.lbRomNameSite1.Name = "lbRomNameSite1";
-            this.lbRomNameSite1.Size = new System.Drawing.Size(458, 21);
+            this.lbRomNameSite1.Size = new System.Drawing.Size(451, 21);
             this.lbRomNameSite1.TabIndex = 36;
             this.lbRomNameSite1.Text = "Project name.prj";
             this.lbRomNameSite1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -1197,7 +1254,7 @@
             this.label20.Location = new System.Drawing.Point(68, 3);
             this.label20.Margin = new System.Windows.Forms.Padding(3);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(458, 21);
+            this.label20.Size = new System.Drawing.Size(451, 21);
             this.label20.TabIndex = 22;
             this.label20.Text = "Project";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1286,7 +1343,7 @@
             this.lbRomNameSite4.Location = new System.Drawing.Point(68, 111);
             this.lbRomNameSite4.Margin = new System.Windows.Forms.Padding(3);
             this.lbRomNameSite4.Name = "lbRomNameSite4";
-            this.lbRomNameSite4.Size = new System.Drawing.Size(458, 25);
+            this.lbRomNameSite4.Size = new System.Drawing.Size(451, 25);
             this.lbRomNameSite4.TabIndex = 36;
             this.lbRomNameSite4.Text = "Project name.prj";
             this.lbRomNameSite4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -1299,7 +1356,7 @@
             this.lbRomNameSite3.Location = new System.Drawing.Point(68, 84);
             this.lbRomNameSite3.Margin = new System.Windows.Forms.Padding(3);
             this.lbRomNameSite3.Name = "lbRomNameSite3";
-            this.lbRomNameSite3.Size = new System.Drawing.Size(458, 21);
+            this.lbRomNameSite3.Size = new System.Drawing.Size(451, 21);
             this.lbRomNameSite3.TabIndex = 36;
             this.lbRomNameSite3.Text = "Project name.prj";
             this.lbRomNameSite3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -1312,7 +1369,7 @@
             this.lbRomNameSite2.Location = new System.Drawing.Point(68, 57);
             this.lbRomNameSite2.Margin = new System.Windows.Forms.Padding(3);
             this.lbRomNameSite2.Name = "lbRomNameSite2";
-            this.lbRomNameSite2.Size = new System.Drawing.Size(458, 21);
+            this.lbRomNameSite2.Size = new System.Drawing.Size(451, 21);
             this.lbRomNameSite2.TabIndex = 36;
             this.lbRomNameSite2.Text = "Project name.prj";
             this.lbRomNameSite2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -1353,6 +1410,158 @@
             this.tblControlBar.Size = new System.Drawing.Size(1502, 50);
             this.tblControlBar.TabIndex = 8;
             // 
+            // btManualTest
+            // 
+            this.btManualTest.AutoEllipsis = true;
+            this.btManualTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btManualTest.BackgroundImage = global::Micom_Inline.Properties.Resources.keyboard;
+            this.btManualTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btManualTest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btManualTest.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btManualTest.FlatAppearance.BorderSize = 0;
+            this.btManualTest.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
+            this.btManualTest.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btManualTest.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btManualTest.Location = new System.Drawing.Point(700, 0);
+            this.btManualTest.Margin = new System.Windows.Forms.Padding(0);
+            this.btManualTest.Name = "btManualTest";
+            this.btManualTest.Size = new System.Drawing.Size(47, 50);
+            this.btManualTest.TabIndex = 12;
+            this.toolTip.SetToolTip(this.btManualTest, "Maunal test");
+            this.btManualTest.UseVisualStyleBackColor = false;
+            this.btManualTest.Click += new System.EventHandler(this.btManualTest_Click);
+            // 
+            // logo
+            // 
+            this.logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logo.BackgroundImage")));
+            this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.logo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logo.FlatAppearance.BorderSize = 0;
+            this.logo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.logo.Location = new System.Drawing.Point(53, 3);
+            this.logo.Name = "logo";
+            this.logo.Size = new System.Drawing.Size(44, 44);
+            this.logo.TabIndex = 10;
+            this.logo.Text = " ";
+            this.logo.UseVisualStyleBackColor = true;
+            this.logo.Click += new System.EventHandler(this.logo_Click);
+            // 
+            // btSetting
+            // 
+            this.btSetting.AutoEllipsis = true;
+            this.btSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btSetting.BackgroundImage")));
+            this.btSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btSetting.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btSetting.FlatAppearance.BorderSize = 0;
+            this.btSetting.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
+            this.btSetting.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btSetting.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btSetting.Location = new System.Drawing.Point(650, 0);
+            this.btSetting.Margin = new System.Windows.Forms.Padding(0);
+            this.btSetting.Name = "btSetting";
+            this.btSetting.Size = new System.Drawing.Size(50, 50);
+            this.btSetting.TabIndex = 5;
+            this.toolTip.SetToolTip(this.btSetting, "SETTING");
+            this.btSetting.UseVisualStyleBackColor = false;
+            this.btSetting.Click += new System.EventHandler(this.BtSetting_Click);
+            this.btSetting.MouseLeave += new System.EventHandler(this.btSetting_MouseLeave);
+            this.btSetting.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btSetting_MouseMove);
+            // 
+            // btReportFolder
+            // 
+            this.btReportFolder.AutoEllipsis = true;
+            this.btReportFolder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btReportFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btReportFolder.BackgroundImage")));
+            this.btReportFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btReportFolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btReportFolder.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btReportFolder.FlatAppearance.BorderSize = 0;
+            this.btReportFolder.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
+            this.btReportFolder.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btReportFolder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btReportFolder.Location = new System.Drawing.Point(600, 0);
+            this.btReportFolder.Margin = new System.Windows.Forms.Padding(0);
+            this.btReportFolder.Name = "btReportFolder";
+            this.btReportFolder.Size = new System.Drawing.Size(50, 50);
+            this.btReportFolder.TabIndex = 4;
+            this.btReportFolder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.toolTip.SetToolTip(this.btReportFolder, "REPORT");
+            this.btReportFolder.UseVisualStyleBackColor = false;
+            this.btReportFolder.Click += new System.EventHandler(this.BtReportFolder_Click);
+            this.btReportFolder.MouseLeave += new System.EventHandler(this.btReportFolder_MouseLeave);
+            this.btReportFolder.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btReportFolder_MouseMove);
+            // 
+            // btManual
+            // 
+            this.btManual.AutoEllipsis = true;
+            this.btManual.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btManual.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btManual.BackgroundImage")));
+            this.btManual.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btManual.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btManual.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btManual.FlatAppearance.BorderSize = 0;
+            this.btManual.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
+            this.btManual.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btManual.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btManual.Location = new System.Drawing.Point(550, 0);
+            this.btManual.Margin = new System.Windows.Forms.Padding(0);
+            this.btManual.Name = "btManual";
+            this.btManual.Size = new System.Drawing.Size(50, 50);
+            this.btManual.TabIndex = 3;
+            this.toolTip.SetToolTip(this.btManual, "MANUAL MODE");
+            this.btManual.UseVisualStyleBackColor = false;
+            this.btManual.Click += new System.EventHandler(this.BtManual_Click);
+            this.btManual.MouseLeave += new System.EventHandler(this.btManual_MouseLeave);
+            this.btManual.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btManual_MouseMove);
+            // 
+            // btAuto
+            // 
+            this.btAuto.AutoEllipsis = true;
+            this.btAuto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btAuto.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btAuto.BackgroundImage")));
+            this.btAuto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btAuto.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btAuto.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btAuto.FlatAppearance.BorderSize = 0;
+            this.btAuto.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
+            this.btAuto.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btAuto.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btAuto.Location = new System.Drawing.Point(500, 0);
+            this.btAuto.Margin = new System.Windows.Forms.Padding(0);
+            this.btAuto.Name = "btAuto";
+            this.btAuto.Size = new System.Drawing.Size(50, 50);
+            this.btAuto.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btAuto, "AUTO MODE");
+            this.btAuto.UseVisualStyleBackColor = false;
+            this.btAuto.Click += new System.EventHandler(this.BtAuto_Click);
+            this.btAuto.MouseLeave += new System.EventHandler(this.btAuto_MouseLeave);
+            this.btAuto.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btAuto_MouseMove);
+            // 
+            // btLoadModel
+            // 
+            this.btLoadModel.AutoEllipsis = true;
+            this.btLoadModel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btLoadModel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btLoadModel.BackgroundImage")));
+            this.btLoadModel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btLoadModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btLoadModel.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btLoadModel.FlatAppearance.BorderSize = 0;
+            this.btLoadModel.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
+            this.btLoadModel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btLoadModel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btLoadModel.Location = new System.Drawing.Point(100, 0);
+            this.btLoadModel.Margin = new System.Windows.Forms.Padding(0);
+            this.btLoadModel.Name = "btLoadModel";
+            this.btLoadModel.Size = new System.Drawing.Size(50, 50);
+            this.btLoadModel.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btLoadModel, "LOAD MODEL");
+            this.btLoadModel.UseVisualStyleBackColor = false;
+            this.btLoadModel.Click += new System.EventHandler(this.BtLoadModel_Click);
+            this.btLoadModel.MouseLeave += new System.EventHandler(this.btLoadModel_MouseLeave);
+            this.btLoadModel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btLoadModel_MouseMove);
+            // 
             // lbModelName
             // 
             this.lbModelName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
@@ -1368,6 +1577,21 @@
             this.lbModelName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbModelName.MouseLeave += new System.EventHandler(this.lbModelName_MouseLeave);
             this.lbModelName.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbModelName_MouseMove);
+            // 
+            // logoDEV
+            // 
+            this.logoDEV.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logoDEV.BackgroundImage")));
+            this.logoDEV.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.logoDEV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logoDEV.FlatAppearance.BorderSize = 0;
+            this.logoDEV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.logoDEV.Location = new System.Drawing.Point(3, 3);
+            this.logoDEV.Name = "logoDEV";
+            this.logoDEV.Size = new System.Drawing.Size(44, 44);
+            this.logoDEV.TabIndex = 9;
+            this.logoDEV.Text = " ";
+            this.logoDEV.UseVisualStyleBackColor = true;
+            this.logoDEV.Click += new System.EventHandler(this.logoDEV_Click);
             // 
             // panel3
             // 
@@ -1593,7 +1817,7 @@
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(253, 399);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(250, 399);
             this.tableLayoutPanel9.TabIndex = 12;
             // 
             // gbTestStatus
@@ -1607,7 +1831,7 @@
             this.gbTestStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbTestStatus.Location = new System.Drawing.Point(3, 282);
             this.gbTestStatus.Name = "gbTestStatus";
-            this.gbTestStatus.Size = new System.Drawing.Size(247, 114);
+            this.gbTestStatus.Size = new System.Drawing.Size(244, 114);
             this.gbTestStatus.TabIndex = 8;
             this.gbTestStatus.TabStop = false;
             this.gbTestStatus.Text = "Test Information";
@@ -1632,7 +1856,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(241, 92);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(238, 92);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // lbResultB
@@ -1641,10 +1865,10 @@
             this.lbResultB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbResultB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbResultB.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbResultB.Location = new System.Drawing.Point(123, 3);
+            this.lbResultB.Location = new System.Drawing.Point(122, 3);
             this.lbResultB.Margin = new System.Windows.Forms.Padding(3);
             this.lbResultB.Name = "lbResultB";
-            this.lbResultB.Size = new System.Drawing.Size(55, 40);
+            this.lbResultB.Size = new System.Drawing.Size(54, 40);
             this.lbResultB.TabIndex = 15;
             this.lbResultB.Text = "B";
             this.lbResultB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1659,7 +1883,7 @@
             this.lbMachineStatus.Margin = new System.Windows.Forms.Padding(3);
             this.lbMachineStatus.Name = "lbMachineStatus";
             this.tableLayoutPanel5.SetRowSpan(this.lbMachineStatus, 2);
-            this.lbMachineStatus.Size = new System.Drawing.Size(114, 86);
+            this.lbMachineStatus.Size = new System.Drawing.Size(113, 86);
             this.lbMachineStatus.TabIndex = 10;
             this.lbMachineStatus.Text = "Initing...";
             this.lbMachineStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1670,10 +1894,10 @@
             this.lbResultA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbResultA.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbResultA.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbResultA.Location = new System.Drawing.Point(184, 3);
+            this.lbResultA.Location = new System.Drawing.Point(182, 3);
             this.lbResultA.Margin = new System.Windows.Forms.Padding(3);
             this.lbResultA.Name = "lbResultA";
-            this.lbResultA.Size = new System.Drawing.Size(54, 40);
+            this.lbResultA.Size = new System.Drawing.Size(53, 40);
             this.lbResultA.TabIndex = 12;
             this.lbResultA.Text = "A";
             this.lbResultA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1684,10 +1908,10 @@
             this.lbResultC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbResultC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbResultC.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbResultC.Location = new System.Drawing.Point(184, 49);
+            this.lbResultC.Location = new System.Drawing.Point(182, 49);
             this.lbResultC.Margin = new System.Windows.Forms.Padding(3);
             this.lbResultC.Name = "lbResultC";
-            this.lbResultC.Size = new System.Drawing.Size(54, 40);
+            this.lbResultC.Size = new System.Drawing.Size(53, 40);
             this.lbResultC.TabIndex = 13;
             this.lbResultC.Text = "C";
             this.lbResultC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1698,10 +1922,10 @@
             this.lbResultD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbResultD.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbResultD.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbResultD.Location = new System.Drawing.Point(123, 49);
+            this.lbResultD.Location = new System.Drawing.Point(122, 49);
             this.lbResultD.Margin = new System.Windows.Forms.Padding(3);
             this.lbResultD.Name = "lbResultD";
-            this.lbResultD.Size = new System.Drawing.Size(55, 40);
+            this.lbResultD.Size = new System.Drawing.Size(54, 40);
             this.lbResultD.TabIndex = 14;
             this.lbResultD.Text = "D";
             this.lbResultD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1723,7 +1947,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 19);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(241, 92);
+            this.dataGridView1.Size = new System.Drawing.Size(238, 92);
             this.dataGridView1.TabIndex = 0;
             // 
             // gbTestCounter
@@ -1736,7 +1960,7 @@
             this.gbTestCounter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbTestCounter.Location = new System.Drawing.Point(3, 3);
             this.gbTestCounter.Name = "gbTestCounter";
-            this.gbTestCounter.Size = new System.Drawing.Size(247, 74);
+            this.gbTestCounter.Size = new System.Drawing.Size(244, 74);
             this.gbTestCounter.TabIndex = 10;
             this.gbTestCounter.TabStop = false;
             this.gbTestCounter.Text = "Test Counter";
@@ -1763,7 +1987,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(241, 52);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(238, 52);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // lbCounterTotal
@@ -1776,7 +2000,7 @@
             this.lbCounterTotal.Location = new System.Drawing.Point(3, 3);
             this.lbCounterTotal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lbCounterTotal.Name = "lbCounterTotal";
-            this.lbCounterTotal.Size = new System.Drawing.Size(54, 23);
+            this.lbCounterTotal.Size = new System.Drawing.Size(53, 23);
             this.lbCounterTotal.TabIndex = 23;
             this.lbCounterTotal.Text = "Total";
             this.lbCounterTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1788,10 +2012,10 @@
             this.lbCounterNG.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbCounterNG.Font = new System.Drawing.Font("Perpetua", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbCounterNG.ForeColor = System.Drawing.Color.White;
-            this.lbCounterNG.Location = new System.Drawing.Point(123, 3);
+            this.lbCounterNG.Location = new System.Drawing.Point(121, 3);
             this.lbCounterNG.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lbCounterNG.Name = "lbCounterNG";
-            this.lbCounterNG.Size = new System.Drawing.Size(54, 23);
+            this.lbCounterNG.Size = new System.Drawing.Size(53, 23);
             this.lbCounterNG.TabIndex = 22;
             this.lbCounterNG.Text = "NG";
             this.lbCounterNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1803,10 +2027,10 @@
             this.lbCounterNumberOK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbCounterNumberOK.Font = new System.Drawing.Font("Perpetua", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbCounterNumberOK.ForeColor = System.Drawing.Color.Lime;
-            this.lbCounterNumberOK.Location = new System.Drawing.Point(63, 26);
+            this.lbCounterNumberOK.Location = new System.Drawing.Point(62, 26);
             this.lbCounterNumberOK.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.lbCounterNumberOK.Name = "lbCounterNumberOK";
-            this.lbCounterNumberOK.Size = new System.Drawing.Size(54, 23);
+            this.lbCounterNumberOK.Size = new System.Drawing.Size(53, 23);
             this.lbCounterNumberOK.TabIndex = 21;
             this.lbCounterNumberOK.Text = "98";
             this.lbCounterNumberOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1818,7 +2042,7 @@
             this.label32.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label32.Font = new System.Drawing.Font("Perpetua", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label32.ForeColor = System.Drawing.Color.White;
-            this.label32.Location = new System.Drawing.Point(183, 3);
+            this.label32.Location = new System.Drawing.Point(180, 3);
             this.label32.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(55, 23);
@@ -1833,10 +2057,10 @@
             this.lbCounterNumberNG.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbCounterNumberNG.Font = new System.Drawing.Font("Perpetua", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbCounterNumberNG.ForeColor = System.Drawing.Color.Red;
-            this.lbCounterNumberNG.Location = new System.Drawing.Point(123, 26);
+            this.lbCounterNumberNG.Location = new System.Drawing.Point(121, 26);
             this.lbCounterNumberNG.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.lbCounterNumberNG.Name = "lbCounterNumberNG";
-            this.lbCounterNumberNG.Size = new System.Drawing.Size(54, 23);
+            this.lbCounterNumberNG.Size = new System.Drawing.Size(53, 23);
             this.lbCounterNumberNG.TabIndex = 19;
             this.lbCounterNumberNG.Text = "2";
             this.lbCounterNumberNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1848,7 +2072,7 @@
             this.lbCounterNumberDef.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbCounterNumberDef.Font = new System.Drawing.Font("Perpetua", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbCounterNumberDef.ForeColor = System.Drawing.Color.Fuchsia;
-            this.lbCounterNumberDef.Location = new System.Drawing.Point(183, 26);
+            this.lbCounterNumberDef.Location = new System.Drawing.Point(180, 26);
             this.lbCounterNumberDef.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.lbCounterNumberDef.Name = "lbCounterNumberDef";
             this.lbCounterNumberDef.Size = new System.Drawing.Size(55, 23);
@@ -1866,7 +2090,7 @@
             this.lbCounterNumberTotal.Location = new System.Drawing.Point(3, 26);
             this.lbCounterNumberTotal.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.lbCounterNumberTotal.Name = "lbCounterNumberTotal";
-            this.lbCounterNumberTotal.Size = new System.Drawing.Size(54, 23);
+            this.lbCounterNumberTotal.Size = new System.Drawing.Size(53, 23);
             this.lbCounterNumberTotal.TabIndex = 16;
             this.lbCounterNumberTotal.Text = "100";
             this.lbCounterNumberTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1878,13 +2102,22 @@
             this.lbCounterOK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbCounterOK.Font = new System.Drawing.Font("Perpetua", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbCounterOK.ForeColor = System.Drawing.Color.White;
-            this.lbCounterOK.Location = new System.Drawing.Point(63, 3);
+            this.lbCounterOK.Location = new System.Drawing.Point(62, 3);
             this.lbCounterOK.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lbCounterOK.Name = "lbCounterOK";
-            this.lbCounterOK.Size = new System.Drawing.Size(54, 23);
+            this.lbCounterOK.Size = new System.Drawing.Size(53, 23);
             this.lbCounterOK.TabIndex = 15;
             this.lbCounterOK.Text = "OK";
             this.lbCounterOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pBChar
+            // 
+            this.pBChar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pBChar.Location = new System.Drawing.Point(3, 83);
+            this.pBChar.Name = "pBChar";
+            this.pBChar.Size = new System.Drawing.Size(244, 193);
+            this.pBChar.TabIndex = 11;
+            this.pBChar.TabStop = false;
             // 
             // tableLayoutPanel10
             // 
@@ -1901,7 +2134,7 @@
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 168F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(541, 168);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(534, 168);
             this.tableLayoutPanel10.TabIndex = 15;
             // 
             // groupBox3
@@ -1914,7 +2147,7 @@
             this.groupBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(264, 162);
+            this.groupBox3.Size = new System.Drawing.Size(261, 162);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Barcode testing";
@@ -1940,7 +2173,7 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(258, 140);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(255, 140);
             this.tableLayoutPanel8.TabIndex = 0;
             // 
             // lbBarcodeTesting4
@@ -1952,7 +2185,7 @@
             this.lbBarcodeTesting4.Location = new System.Drawing.Point(83, 108);
             this.lbBarcodeTesting4.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeTesting4.Name = "lbBarcodeTesting4";
-            this.lbBarcodeTesting4.Size = new System.Drawing.Size(172, 29);
+            this.lbBarcodeTesting4.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeTesting4.TabIndex = 20;
             this.lbBarcodeTesting4.Text = "...";
             this.lbBarcodeTesting4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1980,7 +2213,7 @@
             this.lbBarcodeTesting3.Location = new System.Drawing.Point(83, 73);
             this.lbBarcodeTesting3.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeTesting3.Name = "lbBarcodeTesting3";
-            this.lbBarcodeTesting3.Size = new System.Drawing.Size(172, 29);
+            this.lbBarcodeTesting3.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeTesting3.TabIndex = 18;
             this.lbBarcodeTesting3.Text = "vẫn tiếp tục chờ ";
             this.lbBarcodeTesting3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2008,7 +2241,7 @@
             this.lbBarcodeTesting2.Location = new System.Drawing.Point(83, 38);
             this.lbBarcodeTesting2.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeTesting2.Name = "lbBarcodeTesting2";
-            this.lbBarcodeTesting2.Size = new System.Drawing.Size(172, 29);
+            this.lbBarcodeTesting2.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeTesting2.TabIndex = 16;
             this.lbBarcodeTesting2.Text = "Waiting...";
             this.lbBarcodeTesting2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2050,7 +2283,7 @@
             this.lbBarcodeTesting1.Location = new System.Drawing.Point(83, 3);
             this.lbBarcodeTesting1.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeTesting1.Name = "lbBarcodeTesting1";
-            this.lbBarcodeTesting1.Size = new System.Drawing.Size(172, 29);
+            this.lbBarcodeTesting1.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeTesting1.TabIndex = 13;
             this.lbBarcodeTesting1.Text = "Waiting scaner...";
             this.lbBarcodeTesting1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2063,9 +2296,9 @@
             this.gbQRcode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gbQRcode.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbQRcode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gbQRcode.Location = new System.Drawing.Point(273, 3);
+            this.gbQRcode.Location = new System.Drawing.Point(270, 3);
             this.gbQRcode.Name = "gbQRcode";
-            this.gbQRcode.Size = new System.Drawing.Size(265, 162);
+            this.gbQRcode.Size = new System.Drawing.Size(261, 162);
             this.gbQRcode.TabIndex = 8;
             this.gbQRcode.TabStop = false;
             this.gbQRcode.Text = "Barcode waiting";
@@ -2091,7 +2324,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(259, 140);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(255, 140);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // lbBarcodeWaiting4
@@ -2103,7 +2336,7 @@
             this.lbBarcodeWaiting4.Location = new System.Drawing.Point(83, 108);
             this.lbBarcodeWaiting4.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeWaiting4.Name = "lbBarcodeWaiting4";
-            this.lbBarcodeWaiting4.Size = new System.Drawing.Size(173, 29);
+            this.lbBarcodeWaiting4.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeWaiting4.TabIndex = 20;
             this.lbBarcodeWaiting4.Text = "...";
             this.lbBarcodeWaiting4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2131,7 +2364,7 @@
             this.lbBarcodeWaiting3.Location = new System.Drawing.Point(83, 73);
             this.lbBarcodeWaiting3.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeWaiting3.Name = "lbBarcodeWaiting3";
-            this.lbBarcodeWaiting3.Size = new System.Drawing.Size(173, 29);
+            this.lbBarcodeWaiting3.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeWaiting3.TabIndex = 18;
             this.lbBarcodeWaiting3.Text = "vẫn tiếp tục chờ ";
             this.lbBarcodeWaiting3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2159,7 +2392,7 @@
             this.lbBarcodeWaiting2.Location = new System.Drawing.Point(83, 38);
             this.lbBarcodeWaiting2.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeWaiting2.Name = "lbBarcodeWaiting2";
-            this.lbBarcodeWaiting2.Size = new System.Drawing.Size(173, 29);
+            this.lbBarcodeWaiting2.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeWaiting2.TabIndex = 16;
             this.lbBarcodeWaiting2.Text = "Waiting...";
             this.lbBarcodeWaiting2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2201,7 +2434,7 @@
             this.lbBarcodeWaiting1.Location = new System.Drawing.Point(83, 3);
             this.lbBarcodeWaiting1.Margin = new System.Windows.Forms.Padding(3);
             this.lbBarcodeWaiting1.Name = "lbBarcodeWaiting1";
-            this.lbBarcodeWaiting1.Size = new System.Drawing.Size(173, 29);
+            this.lbBarcodeWaiting1.Size = new System.Drawing.Size(169, 29);
             this.lbBarcodeWaiting1.TabIndex = 13;
             this.lbBarcodeWaiting1.Text = "Waiting scaner...";
             this.lbBarcodeWaiting1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2212,9 +2445,9 @@
             this.pnCenter.Controls.Add(this.gbLineProcess);
             this.pnCenter.Controls.Add(this.gbSetting);
             this.pnCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnCenter.Location = new System.Drawing.Point(256, 83);
+            this.pnCenter.Location = new System.Drawing.Point(253, 83);
             this.pnCenter.Name = "pnCenter";
-            this.pnCenter.Size = new System.Drawing.Size(749, 393);
+            this.pnCenter.Size = new System.Drawing.Size(738, 393);
             this.pnCenter.TabIndex = 17;
             // 
             // gbLineProcess
@@ -2227,7 +2460,7 @@
             this.gbLineProcess.Location = new System.Drawing.Point(0, 0);
             this.gbLineProcess.Name = "gbLineProcess";
             this.gbLineProcess.Padding = new System.Windows.Forms.Padding(5);
-            this.gbLineProcess.Size = new System.Drawing.Size(749, 393);
+            this.gbLineProcess.Size = new System.Drawing.Size(738, 393);
             this.gbLineProcess.TabIndex = 5;
             this.gbLineProcess.TabStop = false;
             this.gbLineProcess.Text = "Line Process";
@@ -2261,7 +2494,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label17, 5, 4);
             this.tableLayoutPanel3.Controls.Add(this.label23, 4, 4);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel12, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.panel10, 6, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panelMachineImage, 6, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(5, 21);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(10);
@@ -2273,8 +2506,36 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(739, 367);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(728, 367);
             this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Image = ((System.Drawing.Image)(resources.GetObject("label5.Image")));
+            this.label5.Location = new System.Drawing.Point(276, 151);
+            this.label5.Margin = new System.Windows.Forms.Padding(3);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 63);
+            this.label5.TabIndex = 11;
+            this.label5.Text = " ";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Image = ((System.Drawing.Image)(resources.GetObject("label6.Image")));
+            this.label6.Location = new System.Drawing.Point(366, 151);
+            this.label6.Margin = new System.Windows.Forms.Padding(3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(82, 63);
+            this.label6.TabIndex = 12;
+            this.label6.Text = " ";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbPrevious
             // 
@@ -2285,10 +2546,36 @@
             this.lbPrevious.Location = new System.Drawing.Point(10, 220);
             this.lbPrevious.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.lbPrevious.Name = "lbPrevious";
-            this.lbPrevious.Size = new System.Drawing.Size(69, 63);
+            this.lbPrevious.Size = new System.Drawing.Size(68, 63);
             this.lbPrevious.TabIndex = 0;
             this.lbPrevious.Text = "Previous";
             this.lbPrevious.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbArrow1
+            // 
+            this.lbArrow1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lbArrow1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbArrow1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lbArrow1.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow1.Image")));
+            this.lbArrow1.Location = new System.Drawing.Point(84, 220);
+            this.lbArrow1.Margin = new System.Windows.Forms.Padding(3);
+            this.lbArrow1.Name = "lbArrow1";
+            this.lbArrow1.Size = new System.Drawing.Size(65, 63);
+            this.lbArrow1.TabIndex = 1;
+            this.lbArrow1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbArrow2
+            // 
+            this.lbArrow2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lbArrow2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbArrow2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lbArrow2.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow2.Image")));
+            this.lbArrow2.Location = new System.Drawing.Point(226, 220);
+            this.lbArrow2.Margin = new System.Windows.Forms.Padding(3);
+            this.lbArrow2.Name = "lbArrow2";
+            this.lbArrow2.Size = new System.Drawing.Size(44, 63);
+            this.lbArrow2.TabIndex = 2;
+            this.lbArrow2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbCamera
             // 
@@ -2296,10 +2583,10 @@
             this.lbCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbCamera.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbCamera.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCamera.Location = new System.Drawing.Point(157, 220);
+            this.lbCamera.Location = new System.Drawing.Point(155, 220);
             this.lbCamera.Margin = new System.Windows.Forms.Padding(3);
             this.lbCamera.Name = "lbCamera";
-            this.lbCamera.Size = new System.Drawing.Size(66, 63);
+            this.lbCamera.Size = new System.Drawing.Size(65, 63);
             this.lbCamera.TabIndex = 5;
             this.lbCamera.Text = "Camera QR code";
             this.lbCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2311,10 +2598,10 @@
             this.tableLayoutPanel3.SetColumnSpan(this.lbFixture, 2);
             this.lbFixture.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbFixture.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbFixture.Location = new System.Drawing.Point(280, 82);
+            this.lbFixture.Location = new System.Drawing.Point(276, 82);
             this.lbFixture.Margin = new System.Windows.Forms.Padding(3);
             this.lbFixture.Name = "lbFixture";
-            this.lbFixture.Size = new System.Drawing.Size(174, 63);
+            this.lbFixture.Size = new System.Drawing.Size(172, 63);
             this.lbFixture.TabIndex = 9;
             this.lbFixture.Text = "Fixture";
             this.lbFixture.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2325,13 +2612,26 @@
             this.lbNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbNext.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbNext.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbNext.Location = new System.Drawing.Point(657, 220);
+            this.lbNext.Location = new System.Drawing.Point(648, 220);
             this.lbNext.Margin = new System.Windows.Forms.Padding(3);
             this.lbNext.Name = "lbNext";
-            this.lbNext.Size = new System.Drawing.Size(69, 63);
+            this.lbNext.Size = new System.Drawing.Size(67, 63);
             this.lbNext.TabIndex = 8;
             this.lbNext.Text = "Next";
             this.lbNext.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbArrow4
+            // 
+            this.lbArrow4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lbArrow4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbArrow4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lbArrow4.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow4.Image")));
+            this.lbArrow4.Location = new System.Drawing.Point(577, 220);
+            this.lbArrow4.Margin = new System.Windows.Forms.Padding(3);
+            this.lbArrow4.Name = "lbArrow4";
+            this.lbArrow4.Size = new System.Drawing.Size(65, 63);
+            this.lbArrow4.TabIndex = 4;
+            this.lbArrow4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbBufferNG
             // 
@@ -2339,13 +2639,26 @@
             this.lbBufferNG.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
             this.lbBufferNG.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbBufferNG.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbBufferNG.Location = new System.Drawing.Point(513, 220);
+            this.lbBufferNG.Location = new System.Drawing.Point(506, 220);
             this.lbBufferNG.Margin = new System.Windows.Forms.Padding(3);
             this.lbBufferNG.Name = "lbBufferNG";
-            this.lbBufferNG.Size = new System.Drawing.Size(66, 63);
+            this.lbBufferNG.Size = new System.Drawing.Size(65, 63);
             this.lbBufferNG.TabIndex = 7;
             this.lbBufferNG.Text = "Output";
             this.lbBufferNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbArrow3
+            // 
+            this.lbArrow3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lbArrow3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbArrow3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lbArrow3.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow3.Image")));
+            this.lbArrow3.Location = new System.Drawing.Point(454, 220);
+            this.lbArrow3.Margin = new System.Windows.Forms.Padding(3);
+            this.lbArrow3.Name = "lbArrow3";
+            this.lbArrow3.Size = new System.Drawing.Size(46, 63);
+            this.lbArrow3.TabIndex = 3;
+            this.lbArrow3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbAutoManual
             // 
@@ -2353,22 +2666,32 @@
             this.tableLayoutPanel3.SetColumnSpan(this.lbAutoManual, 2);
             this.lbAutoManual.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbAutoManual.Font = new System.Drawing.Font("Perpetua", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbAutoManual.Location = new System.Drawing.Point(280, 10);
+            this.lbAutoManual.Location = new System.Drawing.Point(276, 10);
             this.lbAutoManual.Name = "lbAutoManual";
-            this.lbAutoManual.Size = new System.Drawing.Size(174, 69);
+            this.lbAutoManual.Size = new System.Drawing.Size(172, 69);
             this.lbAutoManual.TabIndex = 13;
             this.lbAutoManual.Text = "IDE";
             this.lbAutoManual.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pbLayout
+            // 
+            this.tableLayoutPanel3.SetColumnSpan(this.pbLayout, 2);
+            this.pbLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbLayout.Location = new System.Drawing.Point(276, 220);
+            this.pbLayout.Name = "pbLayout";
+            this.pbLayout.Size = new System.Drawing.Size(172, 63);
+            this.pbLayout.TabIndex = 14;
+            this.pbLayout.TabStop = false;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
             this.label17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(108)))), ((int)(((byte)(137)))));
             this.label17.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label17.Location = new System.Drawing.Point(371, 289);
+            this.label17.Location = new System.Drawing.Point(366, 289);
             this.label17.Margin = new System.Windows.Forms.Padding(3);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(83, 16);
+            this.label17.Size = new System.Drawing.Size(82, 16);
             this.label17.TabIndex = 15;
             this.label17.Text = "ARRAY 1";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2378,10 +2701,10 @@
             this.label23.AutoSize = true;
             this.label23.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(106)))), ((int)(((byte)(104)))));
             this.label23.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label23.Location = new System.Drawing.Point(280, 289);
+            this.label23.Location = new System.Drawing.Point(276, 289);
             this.label23.Margin = new System.Windows.Forms.Padding(3);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(85, 16);
+            this.label23.Size = new System.Drawing.Size(84, 16);
             this.label23.TabIndex = 16;
             this.label23.Text = "ARRAY 2";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2413,7 +2736,7 @@
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(210, 132);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(207, 132);
             this.tableLayoutPanel12.TabIndex = 17;
             // 
             // button7
@@ -2425,7 +2748,7 @@
             this.button7.ForeColor = System.Drawing.Color.White;
             this.button7.Location = new System.Drawing.Point(3, 25);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(49, 16);
+            this.button7.Size = new System.Drawing.Size(48, 16);
             this.button7.TabIndex = 38;
             this.button7.Text = "A";
             this.button7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2441,7 +2764,7 @@
             this.label11.Location = new System.Drawing.Point(3, 3);
             this.label11.Margin = new System.Windows.Forms.Padding(3);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(204, 16);
+            this.label11.Size = new System.Drawing.Size(201, 16);
             this.label11.TabIndex = 24;
             this.label11.Text = "Check Sum";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2453,10 +2776,10 @@
             this.lbROM1checkSum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbROM1checkSum.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbROM1checkSum.ForeColor = System.Drawing.Color.White;
-            this.lbROM1checkSum.Location = new System.Drawing.Point(58, 25);
+            this.lbROM1checkSum.Location = new System.Drawing.Point(57, 25);
             this.lbROM1checkSum.Margin = new System.Windows.Forms.Padding(3);
             this.lbROM1checkSum.Name = "lbROM1checkSum";
-            this.lbROM1checkSum.Size = new System.Drawing.Size(149, 16);
+            this.lbROM1checkSum.Size = new System.Drawing.Size(147, 16);
             this.lbROM1checkSum.TabIndex = 13;
             this.lbROM1checkSum.Text = "00000000";
             this.lbROM1checkSum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2468,10 +2791,10 @@
             this.lbROM2checkSum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbROM2checkSum.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbROM2checkSum.ForeColor = System.Drawing.Color.White;
-            this.lbROM2checkSum.Location = new System.Drawing.Point(58, 47);
+            this.lbROM2checkSum.Location = new System.Drawing.Point(57, 47);
             this.lbROM2checkSum.Margin = new System.Windows.Forms.Padding(3);
             this.lbROM2checkSum.Name = "lbROM2checkSum";
-            this.lbROM2checkSum.Size = new System.Drawing.Size(149, 16);
+            this.lbROM2checkSum.Size = new System.Drawing.Size(147, 16);
             this.lbROM2checkSum.TabIndex = 37;
             this.lbROM2checkSum.Text = "00000000";
             this.lbROM2checkSum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2483,10 +2806,10 @@
             this.lbROM3checkSum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbROM3checkSum.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbROM3checkSum.ForeColor = System.Drawing.Color.White;
-            this.lbROM3checkSum.Location = new System.Drawing.Point(58, 69);
+            this.lbROM3checkSum.Location = new System.Drawing.Point(57, 69);
             this.lbROM3checkSum.Margin = new System.Windows.Forms.Padding(3);
             this.lbROM3checkSum.Name = "lbROM3checkSum";
-            this.lbROM3checkSum.Size = new System.Drawing.Size(149, 16);
+            this.lbROM3checkSum.Size = new System.Drawing.Size(147, 16);
             this.lbROM3checkSum.TabIndex = 18;
             this.lbROM3checkSum.Text = "00000000";
             this.lbROM3checkSum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2498,10 +2821,10 @@
             this.lbROM4checkSum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbROM4checkSum.Font = new System.Drawing.Font("Perpetua", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbROM4checkSum.ForeColor = System.Drawing.Color.White;
-            this.lbROM4checkSum.Location = new System.Drawing.Point(58, 91);
+            this.lbROM4checkSum.Location = new System.Drawing.Point(57, 91);
             this.lbROM4checkSum.Margin = new System.Windows.Forms.Padding(3);
             this.lbROM4checkSum.Name = "lbROM4checkSum";
-            this.lbROM4checkSum.Size = new System.Drawing.Size(149, 16);
+            this.lbROM4checkSum.Size = new System.Drawing.Size(147, 16);
             this.lbROM4checkSum.TabIndex = 25;
             this.lbROM4checkSum.Text = "00000000";
             this.lbROM4checkSum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2515,7 +2838,7 @@
             this.button8.ForeColor = System.Drawing.Color.White;
             this.button8.Location = new System.Drawing.Point(3, 47);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(49, 16);
+            this.button8.Size = new System.Drawing.Size(48, 16);
             this.button8.TabIndex = 39;
             this.button8.Text = "B";
             this.button8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2530,7 +2853,7 @@
             this.button10.ForeColor = System.Drawing.Color.White;
             this.button10.Location = new System.Drawing.Point(3, 69);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(49, 16);
+            this.button10.Size = new System.Drawing.Size(48, 16);
             this.button10.TabIndex = 41;
             this.button10.Text = "C";
             this.button10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2545,11 +2868,23 @@
             this.button9.ForeColor = System.Drawing.Color.White;
             this.button9.Location = new System.Drawing.Point(3, 91);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(49, 16);
+            this.button9.Size = new System.Drawing.Size(48, 16);
             this.button9.TabIndex = 40;
             this.button9.Text = "D";
             this.button9.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button9.UseVisualStyleBackColor = false;
+            // 
+            // panelMachineImage
+            // 
+            this.panelMachineImage.BackgroundImage = global::Micom_Inline.Properties.Resources.Screenshot_2021_03_08_180014_removebg_preview;
+            this.panelMachineImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tableLayoutPanel3.SetColumnSpan(this.panelMachineImage, 4);
+            this.panelMachineImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMachineImage.Location = new System.Drawing.Point(454, 13);
+            this.panelMachineImage.Name = "panelMachineImage";
+            this.tableLayoutPanel3.SetRowSpan(this.panelMachineImage, 3);
+            this.panelMachineImage.Size = new System.Drawing.Size(261, 201);
+            this.panelMachineImage.TabIndex = 18;
             // 
             // gbSetting
             // 
@@ -2559,7 +2894,7 @@
             this.gbSetting.ForeColor = System.Drawing.Color.White;
             this.gbSetting.Location = new System.Drawing.Point(0, 0);
             this.gbSetting.Name = "gbSetting";
-            this.gbSetting.Size = new System.Drawing.Size(749, 393);
+            this.gbSetting.Size = new System.Drawing.Size(738, 393);
             this.gbSetting.TabIndex = 0;
             this.gbSetting.TabStop = false;
             this.gbSetting.Text = "Setting";
@@ -2586,7 +2921,7 @@
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(743, 373);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(732, 373);
             this.tableLayoutPanel14.TabIndex = 0;
             // 
             // groupBox4
@@ -2601,7 +2936,7 @@
             this.groupBox4.Location = new System.Drawing.Point(3, 161);
             this.groupBox4.Name = "groupBox4";
             this.tableLayoutPanel14.SetRowSpan(this.groupBox4, 2);
-            this.groupBox4.Size = new System.Drawing.Size(393, 179);
+            this.groupBox4.Size = new System.Drawing.Size(382, 179);
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "ROM link";
@@ -2646,7 +2981,7 @@
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(387, 157);
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(376, 157);
             this.tableLayoutPanel17.TabIndex = 0;
             // 
             // label40
@@ -2714,10 +3049,10 @@
             this.tbStRomCsSite4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbStRomCsSite4.Font = new System.Drawing.Font("Perpetua", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbStRomCsSite4.ForeColor = System.Drawing.Color.White;
-            this.tbStRomCsSite4.Location = new System.Drawing.Point(318, 127);
+            this.tbStRomCsSite4.Location = new System.Drawing.Point(311, 127);
             this.tbStRomCsSite4.MaxLength = 8;
             this.tbStRomCsSite4.Name = "tbStRomCsSite4";
-            this.tbStRomCsSite4.Size = new System.Drawing.Size(66, 15);
+            this.tbStRomCsSite4.Size = new System.Drawing.Size(62, 15);
             this.tbStRomCsSite4.TabIndex = 38;
             this.tbStRomCsSite4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2730,10 +3065,10 @@
             this.tbStRomCsSite3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbStRomCsSite3.Font = new System.Drawing.Font("Perpetua", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbStRomCsSite3.ForeColor = System.Drawing.Color.White;
-            this.tbStRomCsSite3.Location = new System.Drawing.Point(318, 96);
+            this.tbStRomCsSite3.Location = new System.Drawing.Point(311, 96);
             this.tbStRomCsSite3.MaxLength = 8;
             this.tbStRomCsSite3.Name = "tbStRomCsSite3";
-            this.tbStRomCsSite3.Size = new System.Drawing.Size(66, 15);
+            this.tbStRomCsSite3.Size = new System.Drawing.Size(62, 15);
             this.tbStRomCsSite3.TabIndex = 37;
             this.tbStRomCsSite3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2746,10 +3081,10 @@
             this.tbStRomCsSite2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbStRomCsSite2.Font = new System.Drawing.Font("Perpetua", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbStRomCsSite2.ForeColor = System.Drawing.Color.White;
-            this.tbStRomCsSite2.Location = new System.Drawing.Point(318, 65);
+            this.tbStRomCsSite2.Location = new System.Drawing.Point(311, 65);
             this.tbStRomCsSite2.MaxLength = 8;
             this.tbStRomCsSite2.Name = "tbStRomCsSite2";
-            this.tbStRomCsSite2.Size = new System.Drawing.Size(66, 15);
+            this.tbStRomCsSite2.Size = new System.Drawing.Size(62, 15);
             this.tbStRomCsSite2.TabIndex = 36;
             this.tbStRomCsSite2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2762,7 +3097,7 @@
             this.lbStRomNameSite4.Location = new System.Drawing.Point(80, 127);
             this.lbStRomNameSite4.Margin = new System.Windows.Forms.Padding(3);
             this.lbStRomNameSite4.Name = "lbStRomNameSite4";
-            this.lbStRomNameSite4.Size = new System.Drawing.Size(159, 27);
+            this.lbStRomNameSite4.Size = new System.Drawing.Size(152, 27);
             this.lbStRomNameSite4.TabIndex = 25;
             this.lbStRomNameSite4.Text = "Project name.prj";
             this.lbStRomNameSite4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2773,10 +3108,10 @@
             this.label18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.label18.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label18.ForeColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(318, 3);
+            this.label18.Location = new System.Drawing.Point(311, 3);
             this.label18.Margin = new System.Windows.Forms.Padding(3);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(66, 25);
+            this.label18.Size = new System.Drawing.Size(62, 25);
             this.label18.TabIndex = 23;
             this.label18.Text = "Check Sum";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2792,7 +3127,7 @@
             this.label22.Location = new System.Drawing.Point(80, 3);
             this.label22.Margin = new System.Windows.Forms.Padding(3);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(232, 25);
+            this.label22.Size = new System.Drawing.Size(225, 25);
             this.label22.TabIndex = 22;
             this.label22.Text = "Project (*.eprj)";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2822,7 +3157,7 @@
             this.lbStRomNameSite3.Location = new System.Drawing.Point(80, 96);
             this.lbStRomNameSite3.Margin = new System.Windows.Forms.Padding(3);
             this.lbStRomNameSite3.Name = "lbStRomNameSite3";
-            this.lbStRomNameSite3.Size = new System.Drawing.Size(159, 25);
+            this.lbStRomNameSite3.Size = new System.Drawing.Size(152, 25);
             this.lbStRomNameSite3.TabIndex = 18;
             this.lbStRomNameSite3.Text = "Project name.prj";
             this.lbStRomNameSite3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2836,7 +3171,7 @@
             this.lbStRomNameSite2.Location = new System.Drawing.Point(80, 65);
             this.lbStRomNameSite2.Margin = new System.Windows.Forms.Padding(3);
             this.lbStRomNameSite2.Name = "lbStRomNameSite2";
-            this.lbStRomNameSite2.Size = new System.Drawing.Size(159, 25);
+            this.lbStRomNameSite2.Size = new System.Drawing.Size(152, 25);
             this.lbStRomNameSite2.TabIndex = 16;
             this.lbStRomNameSite2.Text = "Project name.prj";
             this.lbStRomNameSite2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2850,7 +3185,7 @@
             this.lbStRomNameSite1.Location = new System.Drawing.Point(80, 34);
             this.lbStRomNameSite1.Margin = new System.Windows.Forms.Padding(3);
             this.lbStRomNameSite1.Name = "lbStRomNameSite1";
-            this.lbStRomNameSite1.Size = new System.Drawing.Size(159, 25);
+            this.lbStRomNameSite1.Size = new System.Drawing.Size(152, 25);
             this.lbStRomNameSite1.TabIndex = 13;
             this.lbStRomNameSite1.Text = "Project name.prj";
             this.lbStRomNameSite1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2920,10 +3255,10 @@
             this.tbStRomCsSite1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbStRomCsSite1.Font = new System.Drawing.Font("Perpetua", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbStRomCsSite1.ForeColor = System.Drawing.Color.White;
-            this.tbStRomCsSite1.Location = new System.Drawing.Point(318, 34);
+            this.tbStRomCsSite1.Location = new System.Drawing.Point(311, 34);
             this.tbStRomCsSite1.MaxLength = 8;
             this.tbStRomCsSite1.Name = "tbStRomCsSite1";
-            this.tbStRomCsSite1.Size = new System.Drawing.Size(66, 15);
+            this.tbStRomCsSite1.Size = new System.Drawing.Size(62, 15);
             this.tbStRomCsSite1.TabIndex = 14;
             this.tbStRomCsSite1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -2933,7 +3268,7 @@
             this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Location = new System.Drawing.Point(245, 34);
+            this.button3.Location = new System.Drawing.Point(238, 34);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(67, 25);
             this.button3.TabIndex = 43;
@@ -2948,7 +3283,7 @@
             this.button4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(245, 65);
+            this.button4.Location = new System.Drawing.Point(238, 65);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(67, 25);
             this.button4.TabIndex = 44;
@@ -2963,7 +3298,7 @@
             this.button5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button5.FlatAppearance.BorderSize = 0;
             this.button5.ForeColor = System.Drawing.Color.White;
-            this.button5.Location = new System.Drawing.Point(245, 96);
+            this.button5.Location = new System.Drawing.Point(238, 96);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(67, 25);
             this.button5.TabIndex = 45;
@@ -2978,7 +3313,7 @@
             this.button6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button6.FlatAppearance.BorderSize = 0;
             this.button6.ForeColor = System.Drawing.Color.White;
-            this.button6.Location = new System.Drawing.Point(245, 127);
+            this.button6.Location = new System.Drawing.Point(238, 127);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(67, 27);
             this.button6.TabIndex = 46;
@@ -2994,7 +3329,7 @@
             this.pnArrayLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnArrayLayout.Location = new System.Drawing.Point(3, 3);
             this.pnArrayLayout.Name = "pnArrayLayout";
-            this.pnArrayLayout.Size = new System.Drawing.Size(463, 152);
+            this.pnArrayLayout.Size = new System.Drawing.Size(452, 152);
             this.pnArrayLayout.TabIndex = 0;
             // 
             // groupBox1
@@ -3008,17 +3343,26 @@
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(13, 3, 13, 13);
-            this.groupBox1.Size = new System.Drawing.Size(463, 152);
+            this.groupBox1.Size = new System.Drawing.Size(452, 152);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Array Layout";
+            // 
+            // pbPCBLayout
+            // 
+            this.pbPCBLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbPCBLayout.Location = new System.Drawing.Point(13, 19);
+            this.pbPCBLayout.Name = "pbPCBLayout";
+            this.pbPCBLayout.Size = new System.Drawing.Size(426, 120);
+            this.pbPCBLayout.TabIndex = 0;
+            this.pbPCBLayout.TabStop = false;
             // 
             // pnArraySetting
             // 
             this.tableLayoutPanel14.SetColumnSpan(this.pnArraySetting, 2);
             this.pnArraySetting.Controls.Add(this.groupBox2);
             this.pnArraySetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnArraySetting.Location = new System.Drawing.Point(472, 3);
+            this.pnArraySetting.Location = new System.Drawing.Point(461, 3);
             this.pnArraySetting.Name = "pnArraySetting";
             this.pnArraySetting.Size = new System.Drawing.Size(268, 152);
             this.pnArraySetting.TabIndex = 1;
@@ -3254,7 +3598,7 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(737, 24);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(726, 24);
             this.tableLayoutPanel16.TabIndex = 2;
             // 
             // tbQRname
@@ -3270,7 +3614,7 @@
             this.tbQRname.Location = new System.Drawing.Point(130, 3);
             this.tbQRname.MaxLength = 100;
             this.tbQRname.Name = "tbQRname";
-            this.tbQRname.Size = new System.Drawing.Size(169, 15);
+            this.tbQRname.Size = new System.Drawing.Size(166, 15);
             this.tbQRname.TabIndex = 15;
             this.tbQRname.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -3288,9 +3632,9 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(355, 0);
+            this.label16.Location = new System.Drawing.Point(351, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(53, 24);
+            this.label16.Size = new System.Drawing.Size(52, 24);
             this.label16.TabIndex = 11;
             this.label16.Text = "Version";
             // 
@@ -3303,10 +3647,10 @@
             this.tbVersion.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbVersion.Font = new System.Drawing.Font("Perpetua", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbVersion.ForeColor = System.Drawing.Color.White;
-            this.tbVersion.Location = new System.Drawing.Point(414, 3);
+            this.tbVersion.Location = new System.Drawing.Point(409, 3);
             this.tbVersion.MaxLength = 8;
             this.tbVersion.Name = "tbVersion";
-            this.tbVersion.Size = new System.Drawing.Size(143, 15);
+            this.tbVersion.Size = new System.Drawing.Size(141, 15);
             this.tbVersion.TabIndex = 18;
             this.tbVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -3315,10 +3659,10 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(560, 0);
+            this.button1.Location = new System.Drawing.Point(553, 0);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 24);
+            this.button1.Size = new System.Drawing.Size(85, 24);
             this.button1.TabIndex = 33;
             this.button1.Text = "Cancel";
             this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -3330,10 +3674,10 @@
             this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(647, 0);
+            this.button2.Location = new System.Drawing.Point(638, 0);
             this.button2.Margin = new System.Windows.Forms.Padding(0);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 24);
+            this.button2.Size = new System.Drawing.Size(88, 24);
             this.button2.TabIndex = 34;
             this.button2.Text = "Save";
             this.button2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -3349,7 +3693,7 @@
             this.groupBox5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox5.Font = new System.Drawing.Font("Perpetua", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.groupBox5.Location = new System.Drawing.Point(402, 161);
+            this.groupBox5.Location = new System.Drawing.Point(391, 161);
             this.groupBox5.Name = "groupBox5";
             this.tableLayoutPanel14.SetRowSpan(this.groupBox5, 2);
             this.groupBox5.Size = new System.Drawing.Size(338, 179);
@@ -3648,9 +3992,9 @@
             this.panel9.Controls.Add(this.gbSerialTest);
             this.panel9.Controls.Add(this.gbTestMode);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(544, 482);
+            this.panel9.Location = new System.Drawing.Point(537, 482);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(461, 161);
+            this.panel9.Size = new System.Drawing.Size(454, 161);
             this.panel9.TabIndex = 18;
             // 
             // gbSerialTest
@@ -3663,7 +4007,7 @@
             this.gbSerialTest.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbSerialTest.Location = new System.Drawing.Point(0, 0);
             this.gbSerialTest.Name = "gbSerialTest";
-            this.gbSerialTest.Size = new System.Drawing.Size(461, 161);
+            this.gbSerialTest.Size = new System.Drawing.Size(454, 161);
             this.gbSerialTest.TabIndex = 8;
             this.gbSerialTest.TabStop = false;
             this.gbSerialTest.Text = "Serial data";
@@ -3680,7 +4024,7 @@
             this.tbSerialData.Name = "tbSerialData";
             this.tbSerialData.ReadOnly = true;
             this.tbSerialData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbSerialData.Size = new System.Drawing.Size(455, 139);
+            this.tbSerialData.Size = new System.Drawing.Size(448, 139);
             this.tbSerialData.TabIndex = 0;
             // 
             // gbTestMode
@@ -3693,7 +4037,7 @@
             this.gbTestMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.gbTestMode.Location = new System.Drawing.Point(0, 0);
             this.gbTestMode.Name = "gbTestMode";
-            this.gbTestMode.Size = new System.Drawing.Size(461, 161);
+            this.gbTestMode.Size = new System.Drawing.Size(454, 161);
             this.gbTestMode.TabIndex = 7;
             this.gbTestMode.TabStop = false;
             this.gbTestMode.Text = "Test Mode";
@@ -3753,7 +4097,7 @@
             dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
             this.dgtTestMode.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dgtTestMode.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgtTestMode.Size = new System.Drawing.Size(455, 139);
+            this.dgtTestMode.Size = new System.Drawing.Size(448, 139);
             this.dgtTestMode.TabIndex = 6;
             // 
             // No
@@ -4070,350 +4414,6 @@
             this.timerUpdateStatus.Interval = 10000;
             this.timerUpdateStatus.Tick += new System.EventHandler(this.timerUpdateStatus_Tick);
             // 
-            // btnMinimize
-            // 
-            this.btnMinimize.BackColor = System.Drawing.Color.Black;
-            this.btnMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMinimize.BackgroundImage")));
-            this.btnMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMinimize.FlatAppearance.BorderSize = 0;
-            this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMinimize.ForeColor = System.Drawing.Color.Lime;
-            this.btnMinimize.Location = new System.Drawing.Point(1425, 0);
-            this.btnMinimize.Margin = new System.Windows.Forms.Padding(0);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(25, 30);
-            this.btnMinimize.TabIndex = 1;
-            this.btnMinimize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMinimize.UseVisualStyleBackColor = false;
-            this.btnMinimize.Click += new System.EventHandler(this.BtnMinimize_Click);
-            // 
-            // btnMaximize
-            // 
-            this.btnMaximize.BackColor = System.Drawing.Color.Black;
-            this.btnMaximize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMaximize.BackgroundImage")));
-            this.btnMaximize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnMaximize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMaximize.FlatAppearance.BorderSize = 0;
-            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaximize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMaximize.ForeColor = System.Drawing.Color.Yellow;
-            this.btnMaximize.Location = new System.Drawing.Point(1450, 0);
-            this.btnMaximize.Margin = new System.Windows.Forms.Padding(0);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(25, 30);
-            this.btnMaximize.TabIndex = 2;
-            this.btnMaximize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMaximize.UseVisualStyleBackColor = false;
-            this.btnMaximize.Click += new System.EventHandler(this.BtnMaximize_Click);
-            // 
-            // btClose
-            // 
-            this.btClose.BackColor = System.Drawing.Color.Black;
-            this.btClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btClose.BackgroundImage")));
-            this.btClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btClose.FlatAppearance.BorderSize = 0;
-            this.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btClose.ForeColor = System.Drawing.Color.Red;
-            this.btClose.Location = new System.Drawing.Point(1475, 0);
-            this.btClose.Margin = new System.Windows.Forms.Padding(0);
-            this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(27, 30);
-            this.btClose.TabIndex = 3;
-            this.btClose.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btClose.UseVisualStyleBackColor = false;
-            this.btClose.Click += new System.EventHandler(this.BtClose_Click);
-            // 
-            // btManualTest
-            // 
-            this.btManualTest.AutoEllipsis = true;
-            this.btManualTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btManualTest.BackgroundImage = global::Micom_Inline.Properties.Resources.keyboard;
-            this.btManualTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btManualTest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btManualTest.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btManualTest.FlatAppearance.BorderSize = 0;
-            this.btManualTest.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
-            this.btManualTest.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.btManualTest.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btManualTest.Location = new System.Drawing.Point(700, 0);
-            this.btManualTest.Margin = new System.Windows.Forms.Padding(0);
-            this.btManualTest.Name = "btManualTest";
-            this.btManualTest.Size = new System.Drawing.Size(47, 50);
-            this.btManualTest.TabIndex = 12;
-            this.toolTip.SetToolTip(this.btManualTest, "Maunal test");
-            this.btManualTest.UseVisualStyleBackColor = false;
-            this.btManualTest.Click += new System.EventHandler(this.btManualTest_Click);
-            // 
-            // logo
-            // 
-            this.logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logo.BackgroundImage")));
-            this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.logo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logo.FlatAppearance.BorderSize = 0;
-            this.logo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.logo.Location = new System.Drawing.Point(53, 3);
-            this.logo.Name = "logo";
-            this.logo.Size = new System.Drawing.Size(44, 44);
-            this.logo.TabIndex = 10;
-            this.logo.Text = " ";
-            this.logo.UseVisualStyleBackColor = true;
-            this.logo.Click += new System.EventHandler(this.logo_Click);
-            // 
-            // btSetting
-            // 
-            this.btSetting.AutoEllipsis = true;
-            this.btSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btSetting.BackgroundImage")));
-            this.btSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btSetting.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btSetting.FlatAppearance.BorderSize = 0;
-            this.btSetting.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
-            this.btSetting.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.btSetting.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btSetting.Location = new System.Drawing.Point(650, 0);
-            this.btSetting.Margin = new System.Windows.Forms.Padding(0);
-            this.btSetting.Name = "btSetting";
-            this.btSetting.Size = new System.Drawing.Size(50, 50);
-            this.btSetting.TabIndex = 5;
-            this.toolTip.SetToolTip(this.btSetting, "SETTING");
-            this.btSetting.UseVisualStyleBackColor = false;
-            this.btSetting.Click += new System.EventHandler(this.BtSetting_Click);
-            this.btSetting.MouseLeave += new System.EventHandler(this.btSetting_MouseLeave);
-            this.btSetting.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btSetting_MouseMove);
-            // 
-            // btReportFolder
-            // 
-            this.btReportFolder.AutoEllipsis = true;
-            this.btReportFolder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btReportFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btReportFolder.BackgroundImage")));
-            this.btReportFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btReportFolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btReportFolder.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btReportFolder.FlatAppearance.BorderSize = 0;
-            this.btReportFolder.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
-            this.btReportFolder.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.btReportFolder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btReportFolder.Location = new System.Drawing.Point(600, 0);
-            this.btReportFolder.Margin = new System.Windows.Forms.Padding(0);
-            this.btReportFolder.Name = "btReportFolder";
-            this.btReportFolder.Size = new System.Drawing.Size(50, 50);
-            this.btReportFolder.TabIndex = 4;
-            this.btReportFolder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.toolTip.SetToolTip(this.btReportFolder, "REPORT");
-            this.btReportFolder.UseVisualStyleBackColor = false;
-            this.btReportFolder.Click += new System.EventHandler(this.BtReportFolder_Click);
-            this.btReportFolder.MouseLeave += new System.EventHandler(this.btReportFolder_MouseLeave);
-            this.btReportFolder.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btReportFolder_MouseMove);
-            // 
-            // btManual
-            // 
-            this.btManual.AutoEllipsis = true;
-            this.btManual.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btManual.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btManual.BackgroundImage")));
-            this.btManual.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btManual.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btManual.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btManual.FlatAppearance.BorderSize = 0;
-            this.btManual.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
-            this.btManual.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.btManual.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btManual.Location = new System.Drawing.Point(550, 0);
-            this.btManual.Margin = new System.Windows.Forms.Padding(0);
-            this.btManual.Name = "btManual";
-            this.btManual.Size = new System.Drawing.Size(50, 50);
-            this.btManual.TabIndex = 3;
-            this.toolTip.SetToolTip(this.btManual, "MANUAL MODE");
-            this.btManual.UseVisualStyleBackColor = false;
-            this.btManual.Click += new System.EventHandler(this.BtManual_Click);
-            this.btManual.MouseLeave += new System.EventHandler(this.btManual_MouseLeave);
-            this.btManual.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btManual_MouseMove);
-            // 
-            // btAuto
-            // 
-            this.btAuto.AutoEllipsis = true;
-            this.btAuto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btAuto.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btAuto.BackgroundImage")));
-            this.btAuto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btAuto.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btAuto.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btAuto.FlatAppearance.BorderSize = 0;
-            this.btAuto.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
-            this.btAuto.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.btAuto.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btAuto.Location = new System.Drawing.Point(500, 0);
-            this.btAuto.Margin = new System.Windows.Forms.Padding(0);
-            this.btAuto.Name = "btAuto";
-            this.btAuto.Size = new System.Drawing.Size(50, 50);
-            this.btAuto.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btAuto, "AUTO MODE");
-            this.btAuto.UseVisualStyleBackColor = false;
-            this.btAuto.Click += new System.EventHandler(this.BtAuto_Click);
-            this.btAuto.MouseLeave += new System.EventHandler(this.btAuto_MouseLeave);
-            this.btAuto.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btAuto_MouseMove);
-            // 
-            // btLoadModel
-            // 
-            this.btLoadModel.AutoEllipsis = true;
-            this.btLoadModel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btLoadModel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btLoadModel.BackgroundImage")));
-            this.btLoadModel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btLoadModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btLoadModel.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btLoadModel.FlatAppearance.BorderSize = 0;
-            this.btLoadModel.FlatAppearance.CheckedBackColor = System.Drawing.Color.Silver;
-            this.btLoadModel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.btLoadModel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.btLoadModel.Location = new System.Drawing.Point(100, 0);
-            this.btLoadModel.Margin = new System.Windows.Forms.Padding(0);
-            this.btLoadModel.Name = "btLoadModel";
-            this.btLoadModel.Size = new System.Drawing.Size(50, 50);
-            this.btLoadModel.TabIndex = 0;
-            this.toolTip.SetToolTip(this.btLoadModel, "LOAD MODEL");
-            this.btLoadModel.UseVisualStyleBackColor = false;
-            this.btLoadModel.Click += new System.EventHandler(this.BtLoadModel_Click);
-            this.btLoadModel.MouseLeave += new System.EventHandler(this.btLoadModel_MouseLeave);
-            this.btLoadModel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btLoadModel_MouseMove);
-            // 
-            // logoDEV
-            // 
-            this.logoDEV.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logoDEV.BackgroundImage")));
-            this.logoDEV.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.logoDEV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logoDEV.FlatAppearance.BorderSize = 0;
-            this.logoDEV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.logoDEV.Location = new System.Drawing.Point(3, 3);
-            this.logoDEV.Name = "logoDEV";
-            this.logoDEV.Size = new System.Drawing.Size(44, 44);
-            this.logoDEV.TabIndex = 9;
-            this.logoDEV.Text = " ";
-            this.logoDEV.UseVisualStyleBackColor = true;
-            this.logoDEV.Click += new System.EventHandler(this.logoDEV_Click);
-            // 
-            // pBChar
-            // 
-            this.pBChar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pBChar.Location = new System.Drawing.Point(3, 83);
-            this.pBChar.Name = "pBChar";
-            this.pBChar.Size = new System.Drawing.Size(247, 193);
-            this.pBChar.TabIndex = 11;
-            this.pBChar.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Image = ((System.Drawing.Image)(resources.GetObject("label5.Image")));
-            this.label5.Location = new System.Drawing.Point(280, 151);
-            this.label5.Margin = new System.Windows.Forms.Padding(3);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 63);
-            this.label5.TabIndex = 11;
-            this.label5.Text = " ";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Image = ((System.Drawing.Image)(resources.GetObject("label6.Image")));
-            this.label6.Location = new System.Drawing.Point(371, 151);
-            this.label6.Margin = new System.Windows.Forms.Padding(3);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 63);
-            this.label6.TabIndex = 12;
-            this.label6.Text = " ";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbArrow1
-            // 
-            this.lbArrow1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lbArrow1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbArrow1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lbArrow1.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow1.Image")));
-            this.lbArrow1.Location = new System.Drawing.Point(85, 220);
-            this.lbArrow1.Margin = new System.Windows.Forms.Padding(3);
-            this.lbArrow1.Name = "lbArrow1";
-            this.lbArrow1.Size = new System.Drawing.Size(66, 63);
-            this.lbArrow1.TabIndex = 1;
-            this.lbArrow1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbArrow2
-            // 
-            this.lbArrow2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lbArrow2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbArrow2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lbArrow2.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow2.Image")));
-            this.lbArrow2.Location = new System.Drawing.Point(229, 220);
-            this.lbArrow2.Margin = new System.Windows.Forms.Padding(3);
-            this.lbArrow2.Name = "lbArrow2";
-            this.lbArrow2.Size = new System.Drawing.Size(45, 63);
-            this.lbArrow2.TabIndex = 2;
-            this.lbArrow2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbArrow4
-            // 
-            this.lbArrow4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lbArrow4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbArrow4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lbArrow4.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow4.Image")));
-            this.lbArrow4.Location = new System.Drawing.Point(585, 220);
-            this.lbArrow4.Margin = new System.Windows.Forms.Padding(3);
-            this.lbArrow4.Name = "lbArrow4";
-            this.lbArrow4.Size = new System.Drawing.Size(66, 63);
-            this.lbArrow4.TabIndex = 4;
-            this.lbArrow4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbArrow3
-            // 
-            this.lbArrow3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lbArrow3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbArrow3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lbArrow3.Image = ((System.Drawing.Image)(resources.GetObject("lbArrow3.Image")));
-            this.lbArrow3.Location = new System.Drawing.Point(460, 220);
-            this.lbArrow3.Margin = new System.Windows.Forms.Padding(3);
-            this.lbArrow3.Name = "lbArrow3";
-            this.lbArrow3.Size = new System.Drawing.Size(47, 63);
-            this.lbArrow3.TabIndex = 3;
-            this.lbArrow3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pbLayout
-            // 
-            this.tableLayoutPanel3.SetColumnSpan(this.pbLayout, 2);
-            this.pbLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbLayout.Location = new System.Drawing.Point(280, 220);
-            this.pbLayout.Name = "pbLayout";
-            this.pbLayout.Size = new System.Drawing.Size(174, 63);
-            this.pbLayout.TabIndex = 14;
-            this.pbLayout.TabStop = false;
-            // 
-            // panel10
-            // 
-            this.panel10.BackgroundImage = global::Micom_Inline.Properties.Resources.Screenshot_2021_03_08_180014_removebg_preview;
-            this.panel10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tableLayoutPanel3.SetColumnSpan(this.panel10, 4);
-            this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel10.Location = new System.Drawing.Point(460, 13);
-            this.panel10.Name = "panel10";
-            this.tableLayoutPanel3.SetRowSpan(this.panel10, 3);
-            this.panel10.Size = new System.Drawing.Size(266, 201);
-            this.panel10.TabIndex = 18;
-            // 
-            // pbPCBLayout
-            // 
-            this.pbPCBLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbPCBLayout.Location = new System.Drawing.Point(13, 19);
-            this.pbPCBLayout.Name = "pbPCBLayout";
-            this.pbPCBLayout.Size = new System.Drawing.Size(437, 120);
-            this.pbPCBLayout.TabIndex = 0;
-            this.pbPCBLayout.TabStop = false;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -4471,6 +4471,7 @@
             this.gbTestCounter.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pBChar)).EndInit();
             this.tableLayoutPanel10.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
@@ -4482,6 +4483,7 @@
             this.gbLineProcess.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLayout)).EndInit();
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
             this.gbSetting.ResumeLayout(false);
@@ -4491,6 +4493,7 @@
             this.tableLayoutPanel17.PerformLayout();
             this.pnArrayLayout.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbPCBLayout)).EndInit();
             this.pnArraySetting.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel15.ResumeLayout(false);
@@ -4523,9 +4526,6 @@
             this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pBChar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLayout)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPCBLayout)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4807,6 +4807,6 @@
         private System.Windows.Forms.Label lbLineSet;
         private System.Windows.Forms.ComboBox cbbLineLock;
         private System.Windows.Forms.Timer timerUpdateStatus;
-        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Panel panelMachineImage;
     }
 }

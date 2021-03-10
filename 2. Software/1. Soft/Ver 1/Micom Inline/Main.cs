@@ -337,7 +337,7 @@ namespace Micom_Inline
 
                 if (Frame.Contains(Data_sendTest))
                 {
-                    Port.WriteLine(String_getOK);
+                    Port.Write(String_getOK);
                     tbSerialData.Invoke(
                         new MethodInvoker(
                             delegate
@@ -416,7 +416,7 @@ namespace Micom_Inline
                 }
                 else if (Frame.Contains(Data_sendQR))
                 {
-                    Port.WriteLine(String_getOK);
+                    Port.Write(String_getOK);
                     tbSerialData.Invoke(
                         new MethodInvoker(
                             delegate
@@ -428,7 +428,7 @@ namespace Micom_Inline
                 }
                 else if (Frame.Contains(String_getNG))
                 {
-                    Port.WriteLine(ResultRespoonse);
+                    Port.Write(ResultRespoonse);
                     tbSerialData.Invoke(
                         new MethodInvoker(
                             delegate
@@ -443,7 +443,7 @@ namespace Micom_Inline
                 }
                 else if( Frame.Contains("@") && Frame.Contains("*"))
                 {
-                    Port.WriteLine(String_getNG);
+                    Port.Write(String_getNG);
                     tbSerialData.Invoke(
                         new MethodInvoker(
                             delegate
@@ -459,7 +459,7 @@ namespace Micom_Inline
         public void SendOKQR()
         {
             Thread.Sleep(1000);
-            Port.WriteLine(Result_okQR);
+            Port.Write(Result_okQR);
             tbSerialData.Invoke(
                 new MethodInvoker(
                     delegate
@@ -663,14 +663,14 @@ namespace Micom_Inline
                 {
                     if (model.Layout.PCB1 && !model.Layout.PCB2)
                     {
-                        Port.WriteLine(Mode_1Array);
+                        Port.Write(Mode_1Array);
                         tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
 
                         //    tbHistory.AppendText("Mode 1 array had set.\r\n");
                     }
                     else if (model.Layout.PCB1 && model.Layout.PCB2)
                     {
-                        Port.WriteLine(Mode_2Array);
+                        Port.Write(Mode_2Array);
                         tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
                         //    tbHistory.AppendText("Mode 2 array had set.\r\n");
                     }
@@ -2420,13 +2420,13 @@ namespace Micom_Inline
                 {
                     if (model.Layout.PCB1 && !model.Layout.PCB2)
                     {
-                        Port.WriteLine(Mode_1Array);
+                        Port.Write(Mode_1Array);
                         tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
                         tbHistory.AppendText("Mode 1 array had set.\r\n" + Environment.NewLine);
                     }
                     else if (model.Layout.PCB1 && model.Layout.PCB2)
                     {
-                        Port.WriteLine(Mode_2Array);
+                        Port.Write(Mode_2Array);
                         tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
                         tbHistory.AppendText("Mode 2 array had set.\r\n" + Environment.NewLine);
                     }
@@ -2786,7 +2786,7 @@ namespace Micom_Inline
                 highlinedgwTestMode(3);
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
                 {
-                    Port.WriteLine(ResultRespoonse);
+                    Port.Write(ResultRespoonse);
                     tbSerialData.AppendText("[TX--] " + ResultRespoonse + Environment.NewLine);
                 }
                 tbHistory.AppendText((DateTime.Now - lastWorkingTime).TotalSeconds.ToString("F2") + "s" + "           DONE\r\n");
@@ -2899,14 +2899,14 @@ namespace Micom_Inline
             lbBarcodeWaiting2.BackColor = activeColor;
             lbBarcodeWaiting3.BackColor = activeColor;
             lbBarcodeWaiting4.BackColor = activeColor;
-            Port.WriteLine(Data_enaQR);
+            Port.Write(Data_enaQR);
             tbSerialData.AppendText("[TX--] " + Data_enaQR + Environment.NewLine);
         }
 
         private void btSkipBarcode_Click(object sender, EventArgs e)
         {
             SkipBarCode();
-            Port.WriteLine(Data_skipQR);
+            Port.Write(Data_skipQR);
             tbSerialData.AppendText("[TX--] " + Data_skipQR + Environment.NewLine);
         }
         public void SkipBarCode()
@@ -3126,6 +3126,7 @@ namespace Micom_Inline
             _CONFIG.Line = cbbLineLock.Text;
             gbServerCompare.Enabled = _CONFIG.ServerCompare;
             _CONFIG.SaveConfig();
+
             if (_CONFIG.ServerCompare)
             {
                 if (Database.Connect())
@@ -3187,7 +3188,7 @@ namespace Micom_Inline
             Console.WriteLine("OK QR");
             if (Port.IsOpen)
             {
-                Port.WriteLine(Result_okQR);
+                Port.Write(Result_okQR);
                 tbSerialData.AppendText("[TX--] " + Result_okQR + Environment.NewLine);
             }
             timerQR.Stop();
@@ -3546,7 +3547,7 @@ namespace Micom_Inline
                     dataManualTest = command.CMDs[i].Data;
                     if (Port.IsOpen)
                     {
-                        Port.WriteLine(dataManualTest);
+                        Port.Write(dataManualTest);
                         tbSerialData.AppendText("[TX--] " + dataManualTest + Environment.NewLine);
                     }
                 }
@@ -3557,7 +3558,7 @@ namespace Micom_Inline
         {
             if (Port.IsOpen)
             {
-                Port.WriteLine(dataManualTest);
+                Port.Write(dataManualTest);
                 tbSerialData.AppendText("[TX--] " + dataManualTest + Environment.NewLine);
             }
             else
@@ -3580,13 +3581,17 @@ namespace Micom_Inline
             lbNext.Visible = cbInlineMachine.Checked;
             lbBufferNG.Visible = cbInlineMachine.Checked;
 
+            
+
             if (cbInlineMachine.Checked)
             {
                 lbFormName.Text = " Auto Multi Writing System (A-MS) - Inline";
+                panelMachineImage.BackgroundImage = Resources.Screenshot_2021_03_08_180014_removebg_preview;
             }
             else
             {
                 lbFormName.Text = " Auto Multi Writing System (A-MS) - Offline";
+                panelMachineImage.BackgroundImage = Resources.Screenshot_2021_03_08_180014_removebg_preview;
             }
         }
 

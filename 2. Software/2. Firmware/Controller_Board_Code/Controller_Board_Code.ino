@@ -84,7 +84,7 @@ void setup() {
 //Frame: @ ID-1byte CMD-1byte DATA-1byte * CRC 
 // CRC = @(Cmd_startValue) + ID-1*10+ID-0 + ......
 void serialEvent(){
-  Data_com = Serial.readString();
+  Data_com = Serial.readLine();
   //Serial.println(Data_com);
   if (Data_com.length() == 10)
   {
@@ -92,12 +92,7 @@ void serialEvent(){
       //Serial.println(Data_com);
       Serial.println(String_getOK);
       State_sendStart = 0;
-      State_sendQR = 0;
-
-
-
-
-      
+      State_sendQR = 0; 
     }
     else if (compareString(Data_com, String_getNG)) {
       if (State_sendStart == 1) Serial.println(Data_sendTest);

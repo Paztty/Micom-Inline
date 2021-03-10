@@ -164,7 +164,7 @@ namespace Micom_Inline
         public int GetModelLikeThis(String PBACODE, String Checksum, Model model)
         {
             int haveOnServer = 00;
-            string CommandText = "SELECT * FROM \"Micom SW Version\" WHERE \"PBA Code\" LIKE '%"+ PBACODE + "%' OR \"PCB Code\" LIKE '%" + PBACODE + "%';";
+            string CommandText = "SELECT * FROM \"Micom SW Version\" WHERE \"PBA Code\" LIKE '%"+ PBACODE + "%' OR \"Assy Code\" LIKE '%" + PBACODE + "%';";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
                 SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
