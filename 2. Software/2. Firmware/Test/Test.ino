@@ -9,31 +9,44 @@ void setup()
 
 void serialEvent(){  //serialEven
     Response = Serial.readString();
+    if(Response == "@010602*45")
+    {
+        //Serial.println("@010100*66");
+        digitalWrite(13,LOW);
+        delay(1000);
+        digitalWrite(13,HIGH);
+        delay(1000);
+        digitalWrite(13,LOW);
+        delay(1000);
+        digitalWrite(13,HIGH);
+        delay(1000);
+        digitalWrite(13,LOW);
+    }
     if(Response == "@010211*78")
     {
         digitalWrite(13,LOW);
-    delay(7000);
+        delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     }
     if(Response == "@010200*67")
     {
         digitalWrite(13,LOW);
-    delay(7000);
+        delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     }    
     if(Response == "@010201*68")
     {
         digitalWrite(13,LOW);
-    delay(7000);
+        delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     } 
     if(Response == "@010210*77")
     {
         digitalWrite(13,LOW);
-    delay(7000);
+        delay(7000);
         Serial.println("@010100*66");
         digitalWrite(13,HIGH);
     } 

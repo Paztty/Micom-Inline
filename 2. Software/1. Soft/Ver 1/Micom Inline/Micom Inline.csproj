@@ -276,6 +276,8 @@
     <None Include="icon\user.png" />
     <None Include="icon\keyboard.png" />
     <None Include="icon\Screenshot_2021-03-08_180014-removebg-preview.png" />
+    <None Include="icon\OfflineMachine.png" />
+    <None Include="icon\Loading.gif" />
     <Content Include="SoftLogo.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace Micom_Inline
     public partial class Main : Form
     {
 
-        public const string Version = "1.7.1";
+        public const string Version = "1.8.4";
         bool matchServer = true;
         // Permissions 
         public const string OP = "OP";
@@ -111,6 +111,8 @@ namespace Micom_Inline
 
         WorkProcess AMWsProcess = new WorkProcess();
 
+        bool TestingFlag = false;
+
         //Text box tbLog line number
         public int tbLogLineNumber = 0;
 
@@ -177,7 +179,7 @@ namespace Micom_Inline
             tbStRomCsSite3.Size = new System.Drawing.Size(122, 24);
             tbStRomCsSite4.AutoSize = false;
             tbStRomCsSite4.Size = new System.Drawing.Size(122, 24);
-
+            pnWriting.Hide();
             Port.DataReceived += new SerialDataReceivedEventHandler(DataReciver);
 
             cbbComBaurate.DataSource = BaudRate;
@@ -226,6 +228,7 @@ namespace Micom_Inline
         }
 
         public bool LosingTime = true;
+        public int LostTimeSet = 60;
         public void DateTimeShow()
         {
             while (true)
@@ -238,7 +241,7 @@ namespace Micom_Inline
                     if (LosingTime)
                     {
                         lbFreeTime.Text = "Lost time: " + lostTime.TotalSeconds.ToString("f0") + " S";
-                        if (lostTime.TotalSeconds > 60 && MachineStatus == "RUNNING")
+                        if (lostTime.TotalSeconds > LostTimeSet && MachineStatus == "RUNNING")
                         {
                             MachineStatus = "STOP";
                         }
@@ -316,6 +319,8 @@ namespace Micom_Inline
                     lbServerConnect.Text = "Server not available   ";
                 }
             }
+
+            gbTestCounter.ContextMenuStrip = contextMenu;
         }
 
         // Serial reciver
@@ -343,10 +348,15 @@ namespace Micom_Inline
                             delegate
                             {
                                 tbSerialData.AppendText("[TX--] " + String_getOK + Environment.NewLine);
+                                pnWriting.Show();
+                                pnWriting.BringToFront();
                             }));
 
-                    if (lbAutoManual.Text == "Auto mode")
+                    if (lbAutoManual.Text == "Auto mode" && !TestingFlag)
                     {
+                        TestingFlag = true;
+                        pnWriting.Show();
+                        pnWriting.BringToFront();
                         Site1.WorkProcess.ClearCMDQueue();
                         Site2.WorkProcess.ClearCMDQueue();
                         Site3.WorkProcess.ClearCMDQueue();
@@ -381,15 +391,43 @@ namespace Micom_Inline
                                     Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
                                     Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
 
-                                    Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-                                    Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-                                    Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-                                    Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
-
                                     ActiveLabel(lbResultA);
                                     ActiveLabel(lbResultB);
                                     ActiveLabel(lbResultC);
                                     ActiveLabel(lbResultD);
+
+                                    if (!cbSkipSite1.Checked)
+                                        Site1.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                    else
+                                    {
+                                        OK_label(lbResultA);
+                                        OK_label(lbResultA);
+                                        Site1.Result = ElnecSite.RESULT_OK;
+                                    }
+                                    if (!cbSkipSite2.Checked)
+                                        Site2.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                    else
+                                    {
+                                        OK_label(lbResultB);
+                                        OK_label(lbResultB);
+                                        Site2.Result = ElnecSite.RESULT_OK;
+                                    }
+                                    if (!cbSkipSite3.Checked)
+                                        Site3.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                    else
+                                    {
+                                        OK_label(lbResultC);
+                                        OK_label(lbResultC);
+                                        Site3.Result = ElnecSite.RESULT_OK;
+                                    }
+                                    if (!cbSkipSite4.Checked)
+                                        Site4.WorkProcess.PutComandToFIFO(ElnecSite.PROGRAM_DEVICE);
+                                    else
+                                    {
+                                        OK_label(lbResultD);
+                                        OK_label(lbResultD);
+                                        Site4.Result = ElnecSite.RESULT_OK;
+                                    }
 
                                     startTest = true;
                                     endTest = false;
@@ -441,7 +479,7 @@ namespace Micom_Inline
                 {
                     ResultRespoonse = "";
                 }
-                else if( Frame.Contains("@") && Frame.Contains("*"))
+                else if (Frame.Contains("@") && Frame.Contains("*"))
                 {
                     Port.Write(String_getNG);
                     tbSerialData.Invoke(
@@ -453,7 +491,7 @@ namespace Micom_Inline
                 }
             }
             catch (Exception)
-            {}
+            { }
         }
 
         public void SendOKQR()
@@ -577,8 +615,18 @@ namespace Micom_Inline
         private void Main_Resize(object sender, System.EventArgs e)
         {
             DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, 360);
-            model.Layout.drawPCBLayout(pbPCBLayout);
-            model.Layout.drawPCBLayout(pbLayout);
+
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+                model.Layout.drawPCBLayout(pbLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+                model.Layout.drawPCBLayout(pbLayout, true);
+            }
+
         }
 
         private void BtLoadModel_Click(object sender, EventArgs e)
@@ -661,18 +709,34 @@ namespace Micom_Inline
                 }
                 if (Port.IsOpen && model != null)
                 {
-                    if (model.Layout.PCB1 && !model.Layout.PCB2)
+                    if (_CONFIG.InlineMachine == true) // Micom inline: send mode 1 array or 2 arry to control ler board
                     {
-                        Port.Write(Mode_1Array);
-                        tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
-
-                        //    tbHistory.AppendText("Mode 1 array had set.\r\n");
+                        if (model.Layout.PCB1 && !model.Layout.PCB2)
+                        {
+                            Port.Write(Mode_1Array);
+                            tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
+                            //    tbHistory.AppendText("Mode 1 array had set.\r\n");
+                        }
+                        else if (model.Layout.PCB1 && model.Layout.PCB2)
+                        {
+                            Port.Write(Mode_2Array);
+                            tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
+                            //    tbHistory.AppendText("Mode 2 array had set.\r\n");
+                        }
                     }
-                    else if (model.Layout.PCB1 && model.Layout.PCB2)
+                    else
                     {
-                        Port.Write(Mode_2Array);
-                        tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
-                        //    tbHistory.AppendText("Mode 2 array had set.\r\n");
+                        string sendCMD = "";
+                        if (model.Layout.ArrayCount == 2 && model.Layout.MicomNumber == 2)
+                        {
+                            sendCMD = command.GetCMDByName("Mode_2PCB");
+                        }
+                        else
+                        {
+                            sendCMD = command.GetCMDByName("Mode_4PCB");
+                        }
+                        Port.Write(sendCMD);
+                        tbSerialData.AppendText("[TX--] " + sendCMD + Environment.NewLine);
                     }
                 }
                 else
@@ -804,20 +868,38 @@ namespace Micom_Inline
                     btManual.BackColor = Color.FromArgb(30, 30, 30);
                     btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
 
-                    ElnecEndAdd.Text = ElnecAddress.ToString("d5");
-                    if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
-                    {
-                        PCBarrayCount.Maximum = model.Layout.ArrayCount;
-                    }
-                    PCBarrayCount.Value = model.Layout.ArrayCount;
+                    LoadToSettingPanel();
 
-                    if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
-                    {
-                        nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
-                    }
-                    nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
-                    radioButton2.Checked = model.Layout.PCB2;
-                    model.Layout.drawPCBLayout(pbPCBLayout);
+                    //ElnecEndAdd.Text = ElnecAddress.ToString("d5");
+
+                    //radioButton2.Checked = model.Layout.PCB2;
+
+                    //if (MicomArray.Maximum < model.Layout.MicomNumber)
+                    //{
+                    //    MicomArray.Maximum = model.Layout.MicomNumber;
+                    //}
+                    //MicomArray.Value = model.Layout.MicomNumber;
+
+                    //if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
+                    //{
+                    //    PCBarrayCount.Maximum = model.Layout.ArrayCount;
+                    //}
+                    //PCBarrayCount.Value = model.Layout.ArrayCount;
+
+                    //if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
+                    //{
+                    //    nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
+                    //}
+                    //nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
+
+                    //if (_CONFIG.InlineMachine)
+                    //{
+                    //    model.Layout.drawPCBLayout(pbPCBLayout);
+                    //}
+                    //else
+                    //{
+                    //    model.Layout.drawPCBLayout(pbPCBLayout, true);
+                    //}
                 }
                 else if (dialogResult == DialogResult.Ignore)
                 {
@@ -830,20 +912,28 @@ namespace Micom_Inline
                     btManual.BackColor = Color.FromArgb(30, 30, 30);
                     btReportFolder.BackColor = Color.FromArgb(30, 30, 30);
 
-                    ElnecEndAdd.Text = ElnecAddress.ToString("d5");
-                    if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
-                    {
-                        PCBarrayCount.Maximum = model.Layout.ArrayCount;
-                    }
-                    PCBarrayCount.Value = model.Layout.ArrayCount;
+                    LoadToSettingPanel();
+                    //ElnecEndAdd.Text = ElnecAddress.ToString("d5");
+                    //if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
+                    //{
+                    //    PCBarrayCount.Maximum = model.Layout.ArrayCount;
+                    //}
+                    //PCBarrayCount.Value = model.Layout.ArrayCount;
 
-                    if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
-                    {
-                        nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
-                    }
-                    nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
-                    radioButton2.Checked = model.Layout.PCB2;
-                    model.Layout.drawPCBLayout(pbPCBLayout);
+                    //if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
+                    //{
+                    //    nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
+                    //}
+                    //nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
+                    //radioButton2.Checked = model.Layout.PCB2;
+                    //if (_CONFIG.InlineMachine)
+                    //{
+                    //    model.Layout.drawPCBLayout(pbPCBLayout);
+                    //}
+                    //else
+                    //{
+                    //    model.Layout.drawPCBLayout(pbPCBLayout, true);
+                    //}
                 }
                 else
                     Permissions = OP;
@@ -851,6 +941,58 @@ namespace Micom_Inline
             }
             else
                 gbSetting.Visible = false;
+        }
+
+        public void LoadToSettingPanel()
+        {
+            try
+            {
+                tbQRname.Text = model.ModelName.Split('_')[0]; ;
+                tbVersion.Text = model.Version;
+            }
+            catch (Exception)
+            {}
+
+
+            lbStRomNameSite1.Text = lbRomNameSite1.Text;
+            lbStRomNameSite2.Text = lbRomNameSite2.Text;
+            lbStRomNameSite3.Text = lbRomNameSite3.Text;
+            lbStRomNameSite4.Text = lbRomNameSite4.Text;
+
+            tbStRomCsSite1.Text = model.ROMs[0].ROM_CHECKSUM;
+            tbStRomCsSite2.Text = model.ROMs[1].ROM_CHECKSUM;
+            tbStRomCsSite3.Text = model.ROMs[2].ROM_CHECKSUM;
+            tbStRomCsSite4.Text = model.ROMs[3].ROM_CHECKSUM;
+
+            ElnecEndAdd.Text = ElnecAddress.ToString("d5");
+            radioButton2.Checked = model.Layout.PCB2;
+
+            if (MicomArray.Maximum < model.Layout.MicomNumber)
+            {
+                MicomArray.Maximum = model.Layout.MicomNumber;
+            }
+            MicomArray.Value = model.Layout.MicomNumber;
+
+            if (PCBarrayCount.Maximum < model.Layout.ArrayCount)
+            {
+                PCBarrayCount.Maximum = model.Layout.ArrayCount;
+            }
+            PCBarrayCount.Value = model.Layout.ArrayCount;
+
+            if (nbUDXarrayCount.Maximum < model.Layout.XasixArrayCount)
+            {
+                nbUDXarrayCount.Maximum = model.Layout.XasixArrayCount;
+            }
+            nbUDXarrayCount.Value = model.Layout.XasixArrayCount;
+
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
         }
 
         public void ActiveLabel(System.Windows.Forms.Label label)
@@ -872,8 +1014,11 @@ namespace Micom_Inline
         }
         public void FinalTestLabel()
         {
+            pnWriting.Hide();
+            TestingFlag = false;
+            Port.DiscardInBuffer();
+            Port.DiscardOutBuffer();
             string final = "";
-
             if (_CONFIG.InlineMachine)
             {
                 if (model.Layout.PCB1 && !model.Layout.PCB2)
@@ -1115,34 +1260,17 @@ namespace Micom_Inline
                     else
                         AMWsProcess.Statitis_NG += 1;
 
-
-                    if (data == 0b00001111)
+                    if (Site1.Result == ElnecSite.RESULT_OK && Site2.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK && Site4.Result == ElnecSite.RESULT_OK)
+                    {
                         final = "OK";
-                    else
-                        final = "FAIL";
-
-                    int SiteOK = 0;
-                    foreach (char siteOk in data.ToString())
-                    {
-                        if (siteOk == '1')
-                        {
-                            SiteOK++;
-                        }
-                    }
-                    int numberOFPBA = model.Layout.ArrayCount;
-                    if (model.Layout.PCB2)
-                    {
-                        numberOFPBA = model.Layout.ArrayCount * 2;
-                    }
-
-                    if (SiteOK >= numberOFPBA)
-                    {
                         lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
                     }
                     else
                     {
+                        final = "FAIL";
                         lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
                     }
+
                     int checksum = (64 + 1 + 03 + data) % 256;
 
                     ResultRespoonse = dataResponse.Replace("data", data.ToString("D2")).Replace("checksum", checksum.ToString());
@@ -1194,6 +1322,35 @@ namespace Micom_Inline
             lbResultCbig.Text = Site3.Result;
             lbResultDbig.Text = Site4.Result;
 
+            if (cbSkipSite1.Checked)
+            {
+
+                lbResultAbig.Text = "SKIP";
+                ActiveLabel(lbResultAbig);
+                lbResultAbig.BackColor = Color.Gray;
+            }
+
+            if (cbSkipSite2.Checked)
+            {
+
+                lbResultBbig.Text = "SKIP";
+                ActiveLabel(lbResultBbig);
+                lbResultBbig.BackColor = Color.Gray;
+            }
+            if (cbSkipSite3.Checked)
+            {
+
+                lbResultCbig.Text = "SKIP";
+                ActiveLabel(lbResultCbig);
+                lbResultCbig.BackColor = Color.Gray;
+            }
+            if (cbSkipSite4.Checked)
+            {
+
+                lbResultDbig.Text = "SKIP";
+                ActiveLabel(lbResultDbig);
+                lbResultDbig.BackColor = Color.Gray;
+            }
             pnResultFinal.Visible = show;
             lbResultAbig.Visible = show;
             lbResultBbig.Visible = show;
@@ -1684,7 +1841,7 @@ namespace Micom_Inline
                     {
                         recive = reader.ReadLine();
                     }
-                    catch { }
+                    catch (Exception e) { Console.Write(' '); }
                     if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
@@ -1744,7 +1901,7 @@ namespace Micom_Inline
                     {
                         recive = reader.ReadLine();
                     }
-                    catch { }
+                    catch (Exception e) { Console.Write(' '); }
                     if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
@@ -1804,7 +1961,7 @@ namespace Micom_Inline
                     {
                         recive = reader.ReadLine();
                     }
-                    catch { }
+                    catch (Exception e) { Console.Write(' '); }
                     if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
@@ -1865,7 +2022,7 @@ namespace Micom_Inline
                     {
                         recive = reader.ReadLine();
                     }
-                    catch { }
+                    catch (Exception e) { Console.Write(' '); }
                     if (recive != null && recive.Length > 2)
                     {
                         tbLog.Invoke(new MethodInvoker(delegate
@@ -2383,14 +2540,18 @@ namespace Micom_Inline
         DateTime startLoad = DateTime.Now;
         private void openFileModel_FileOk(object sender, CancelEventArgs e)
         {
+            _CONFIG.recentModelPath = Path.GetDirectoryName(openFileModel.FileName);
+            model.ModelPath = _CONFIG.recentModelPath;
             string[] config;
             try
             {
                 startLoad = DateTime.Now;
-                _CONFIG.recentModelPath = Path.GetDirectoryName(openFileModel.FileName);
                 config = File.ReadAllLines(openFileModel.FileName);
-                lbModelName.Text = Path.GetFileNameWithoutExtension(openFileModel.FileName);
-                model.ModelName = lbModelName.Text;
+                
+                var fullName = Path.GetFileNameWithoutExtension(openFileModel.FileName);
+                model.ModelName = fullName;
+                model.Version = fullName.Split('_')[2];
+                lbModelName.Text = model.ModelName;
 
                 if (config[5] == "True") model.Layout.PCB1 = true; else if (config[5] == "False") model.Layout.PCB1 = false;
                 if (config[6] == "True") model.Layout.PCB2 = true; else if (config[6] == "False") model.Layout.PCB2 = false;
@@ -2411,29 +2572,89 @@ namespace Micom_Inline
                 model.Layout.ArrayCount = Convert.ToInt32(config[7]);
                 model.Layout.XasixArrayCount = Convert.ToInt32(config[8]);
                 model.Layout.MicomNumber = Convert.ToInt32(config[9]);
-
-                model.Layout.drawPCBLayout(pbLayout);
+                if (_CONFIG.InlineMachine)
+                {
+                    model.Layout.drawPCBLayout(pbLayout);
+                }
+                else
+                {
+                    model.Layout.drawPCBLayout(pbLayout, true);
+                }
 
                 tbHistory.AppendText("Load model config: PCB 1: " + model.Layout.PCB1.ToString() + "    PCB 2: " + model.Layout.PCB2.ToString() + "   Micom count: " + model.Layout.MicomNumber.ToString() + "  Program timeout: " + model.TimeOut.ToString() + Environment.NewLine);
 
-                if (Port.IsOpen)
+                if (Port.IsOpen && model != null)
                 {
-                    if (model.Layout.PCB1 && !model.Layout.PCB2)
+                    if (_CONFIG.InlineMachine == true) // Micom inline: send mode 1 array or 2 arry to control ler board
                     {
-                        Port.Write(Mode_1Array);
-                        tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
-                        tbHistory.AppendText("Mode 1 array had set.\r\n" + Environment.NewLine);
+                        if (model.Layout.PCB1 && !model.Layout.PCB2)
+                        {
+                            Port.Write(Mode_1Array);
+                            tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
+                            tbHistory.AppendText("Mode 1 array had set.\r\n");
+                        }
+                        else if (model.Layout.PCB1 && model.Layout.PCB2)
+                        {
+                            Port.Write(Mode_2Array);
+                            tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
+                            if (Port.IsOpen && model != null)
+                            {
+                                if (_CONFIG.InlineMachine == true) // Micom inline: send mode 1 array or 2 arry to control ler board
+                                {
+                                    if (model.Layout.PCB1 && !model.Layout.PCB2)
+                                    {
+                                        Port.Write(Mode_1Array);
+                                        tbSerialData.AppendText("[TX--] " + Mode_1Array + Environment.NewLine);
+                                        tbHistory.AppendText("Mode 1 array had set.\r\n");
+                                    }
+                                    else if (model.Layout.PCB1 && model.Layout.PCB2)
+                                    {
+                                        Port.Write(Mode_2Array);
+                                        tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
+                                        tbHistory.AppendText("Mode 2 array had set.\r\n");
+                                    }
+                                }
+                                else
+                                {
+                                    string sendCMD = "";
+                                    if (model.Layout.ArrayCount == 2 && model.Layout.MicomNumber == 2)
+                                    {
+                                        sendCMD = command.GetCMDByName("Mode_2PCB");
+                                        tbHistory.AppendText("Mode 2 PCB had set.\r\n");
+                                    }
+                                    else
+                                    {
+                                        sendCMD = command.GetCMDByName("Mode_4PCB");
+                                        tbHistory.AppendText("Mode 4 PCB had set.\r\n");
+                                    }
+                                    Port.Write(sendCMD);
+                                    tbSerialData.AppendText("[TX--] " + sendCMD + Environment.NewLine);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Com not connect, Array setting maybe not apply.");
+                            }
+                        }
                     }
-                    else if (model.Layout.PCB1 && model.Layout.PCB2)
+                    else
                     {
-                        Port.Write(Mode_2Array);
-                        tbSerialData.AppendText("[TX--] " + Mode_2Array + Environment.NewLine);
-                        tbHistory.AppendText("Mode 2 array had set.\r\n" + Environment.NewLine);
+                        string sendCMD = "";
+                        if (model.Layout.ArrayCount == 2 && model.Layout.MicomNumber == 2)
+                        {
+                            sendCMD = command.GetCMDByName("Mode_2PCB");
+                        }
+                        else
+                        {
+                            sendCMD = command.GetCMDByName("Mode_4PCB");
+                        }
+                        Port.Write(sendCMD);
+                        tbSerialData.AppendText("[TX--] " + sendCMD + Environment.NewLine);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Com not connect, Array setting can not apply.");
+                    MessageBox.Show("Com not connect, Array setting maybe not apply.");
                 }
 
 
@@ -2450,7 +2671,7 @@ namespace Micom_Inline
                 lbRomNameSite2.Text = lbRomNameSite2.Text.Remove(lbRomNameSite2.Text.IndexOf('@'), lbRomNameSite2.Text.Length - lbRomNameSite2.Text.IndexOf('@'));
 
                 model.ROMs[2].ROM_PATH = config[3].Remove(config[3].IndexOf('@'), config[3].Length - config[3].IndexOf('@'));
-                lbRomNameSite3.Text = config[3].Split('\\')[config[1].Split('\\').Length - 1];
+                lbRomNameSite3.Text = config[3].Split('\\')[config[3].Split('\\').Length - 1];
                 lbROM3checkSum.Text = lbRomNameSite3.Text.Remove(0, lbRomNameSite3.Text.IndexOf('@') + 1);
                 model.ROMs[2].ROM_CHECKSUM = lbROM3checkSum.Text;
                 lbRomNameSite3.Text = lbRomNameSite3.Text.Remove(lbRomNameSite3.Text.IndexOf('@'), lbRomNameSite3.Text.Length - lbRomNameSite3.Text.IndexOf('@'));
@@ -2465,6 +2686,15 @@ namespace Micom_Inline
                 tbHistory.AppendText("Site 2 ROM file: " + model.ROMs[1].ROM_PATH + Environment.NewLine + Environment.NewLine);
                 tbHistory.AppendText("Site 3 ROM file: " + model.ROMs[2].ROM_PATH + Environment.NewLine + Environment.NewLine);
                 tbHistory.AppendText("Site 4 ROM file: " + model.ROMs[3].ROM_PATH + Environment.NewLine + Environment.NewLine);
+
+                LoadToSettingPanel();
+                if (model.Layout.PCB2 && !_CONFIG.InlineMachine)
+                {
+                    MessageBox.Show("Warning: This project only use for Inline machine. Layout can't load correct.");
+                    tbHistory.ForeColor = Color.Yellow;
+                    tbHistory.AppendText("Warning: This project only use for Inline machine. Layout can't load correct.\n");
+                    tbHistory.ForeColor = Color.White;
+                }
             }
             catch (Exception err)
             {
@@ -2475,7 +2705,6 @@ namespace Micom_Inline
             lbRomNameSite2.BackColor = nonactiveColor;
             lbRomNameSite3.BackColor = nonactiveColor;
             lbRomNameSite4.BackColor = nonactiveColor;
-
 
             progressBarSite1.BackColor = Color.FromArgb(80, 80, 80);
             progressBarSite2.BackColor = Color.FromArgb(80, 80, 80);
@@ -2672,6 +2901,11 @@ namespace Micom_Inline
                         lbSiteName3.Click -= lbSiteName3_Click;
                         lbSiteName4.Click -= lbSiteName4_Click;
                         siteCheckSumRefrest.Click -= siteCheckSumRefrest_Click;
+
+                        cbSkipSite1.Enabled = false;
+                        cbSkipSite2.Enabled = false;
+                        cbSkipSite3.Enabled = false;
+                        cbSkipSite4.Enabled = false;
                         break;
                     }
                 case TECH:
@@ -2692,6 +2926,11 @@ namespace Micom_Inline
                         lbSiteName3.Click -= lbSiteName3_Click;
                         lbSiteName4.Click -= lbSiteName4_Click;
                         siteCheckSumRefrest.Click -= siteCheckSumRefrest_Click;
+
+                        cbSkipSite1.Enabled = true;
+                        cbSkipSite2.Enabled = true;
+                        cbSkipSite3.Enabled = true;
+                        cbSkipSite4.Enabled = true;
 
                         break;
                     }
@@ -2728,6 +2967,11 @@ namespace Micom_Inline
                         lbSiteName3.Click += lbSiteName3_Click;
                         lbSiteName4.Click += lbSiteName4_Click;
                         siteCheckSumRefrest.Click += siteCheckSumRefrest_Click;
+
+                        cbSkipSite1.Enabled = true;
+                        cbSkipSite2.Enabled = true;
+                        cbSkipSite3.Enabled = true;
+                        cbSkipSite4.Enabled = true;
                         break;
                     }
             }
@@ -2783,6 +3027,7 @@ namespace Micom_Inline
         {
             if (timerReleaseBoard.Interval == 5)
             {
+
                 highlinedgwTestMode(3);
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
                 {
@@ -3002,7 +3247,14 @@ namespace Micom_Inline
 
             model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
             model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
-            model.Layout.drawPCBLayout(pbPCBLayout);
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
         }
 
         public int[] xcountArray = new int[4];
@@ -3011,7 +3263,14 @@ namespace Micom_Inline
             nbUDXarrayCount.Maximum = PCBarrayCount.Value;
             model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
             model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
-            model.Layout.drawPCBLayout(pbPCBLayout);
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
         }
 
         private void MicomArray_ValueChanged(object sender, EventArgs e)
@@ -3052,14 +3311,28 @@ namespace Micom_Inline
             if (model.Layout.XasixArrayCount > nbUDXarrayCount.Maximum)
                 model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Maximum);
 
-            model.Layout.drawPCBLayout(pbPCBLayout);
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
         }
 
         private void nbUDXarrayCount_ValueChanged(object sender, EventArgs e)
         {
             model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
             model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
-            model.Layout.drawPCBLayout(pbPCBLayout);
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -3581,18 +3854,106 @@ namespace Micom_Inline
             lbNext.Visible = cbInlineMachine.Checked;
             lbBufferNG.Visible = cbInlineMachine.Checked;
 
-            
+            radioButton2.Enabled = cbInlineMachine.Checked;
+
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
 
             if (cbInlineMachine.Checked)
             {
                 lbFormName.Text = " Auto Multi Writing System (A-MS) - Inline";
                 panelMachineImage.BackgroundImage = Resources.Screenshot_2021_03_08_180014_removebg_preview;
+
+                tlpSiteResult.SetCellPosition(lbResultA, new TableLayoutPanelCellPosition(2, 0));
+                tlpSiteResult.SetCellPosition(lbResultB, new TableLayoutPanelCellPosition(1, 0));
+                tlpSiteResult.SetCellPosition(lbResultC, new TableLayoutPanelCellPosition(2, 1));
+                tlpSiteResult.SetCellPosition(lbResultD, new TableLayoutPanelCellPosition(1, 1));
+
+                tlpBigResult.SetCellPosition(pnBigResultA, new TableLayoutPanelCellPosition(1, 0));
+                tlpBigResult.SetCellPosition(pnBigResultB, new TableLayoutPanelCellPosition(0, 0));
+                tlpBigResult.SetCellPosition(pnBigResultC, new TableLayoutPanelCellPosition(1, 1));
+                tlpBigResult.SetCellPosition(pnBigResultD, new TableLayoutPanelCellPosition(0, 1));
+
+                lbArray2.Show();
+                lbArray1.Show();
             }
             else
             {
+                radioButton2.Checked = cbInlineMachine.Checked;
                 lbFormName.Text = " Auto Multi Writing System (A-MS) - Offline";
-                panelMachineImage.BackgroundImage = Resources.Screenshot_2021_03_08_180014_removebg_preview;
+
+                tlpSiteResult.SetCellPosition(lbResultA, new TableLayoutPanelCellPosition(1, 0));
+                tlpSiteResult.SetCellPosition(lbResultB, new TableLayoutPanelCellPosition(2, 0));
+                tlpSiteResult.SetCellPosition(lbResultC, new TableLayoutPanelCellPosition(1, 1));
+                tlpSiteResult.SetCellPosition(lbResultD, new TableLayoutPanelCellPosition(2, 1));
+
+                tlpBigResult.SetCellPosition(pnBigResultA, new TableLayoutPanelCellPosition(0, 0));
+                tlpBigResult.SetCellPosition(pnBigResultB, new TableLayoutPanelCellPosition(1, 0));
+                tlpBigResult.SetCellPosition(pnBigResultC, new TableLayoutPanelCellPosition(0, 1));
+                tlpBigResult.SetCellPosition(pnBigResultD, new TableLayoutPanelCellPosition(1, 1));
+
+                lbArray1.Hide();
+                lbArray2.Hide();
+
+                panelMachineImage.BackgroundImage = Resources.OfflineMachine;
+                Updatelayout();
             }
+        }
+
+        public void Updatelayout()
+        {
+            if (radioButton2.Checked == true)
+            {
+                model.Layout.PCB2 = true;
+                radioButton2.Checked = true;
+                if (model.Layout.PCB1)
+                {
+                    NumberArray = 2;
+                }
+                else
+                {
+                    NumberArray = 1;
+                }
+            }
+            else
+            {
+                model.Layout.PCB2 = false;
+                radioButton2.Checked = false;
+                if (model.Layout.PCB1)
+                {
+                    NumberArray = 1;
+                }
+                else
+                {
+                    NumberArray = 0;
+                }
+            }
+
+            if (NumberArray > 0)
+                PCBarrayCount.Maximum = 4 / (MicomArray.Value * NumberArray);
+            else
+                PCBarrayCount.Maximum = 1;
+
+            if (model.Layout.ArrayCount > PCBarrayCount.Maximum)
+                model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Maximum);
+
+            model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
+            model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
+
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -3605,15 +3966,119 @@ namespace Micom_Inline
 
         }
 
+        string LastStatus = "";
         private void timerUpdateStatus_Tick(object sender, EventArgs e)
         {
-            if (_CONFIG.ServerCompare)
+            if (LastStatus != MachineStatus)
             {
-                if (Database.Connect())
+                LastStatus = MachineStatus;
+                if (_CONFIG.ServerCompare)
                 {
-                    Database.UpdateRunStopStatus(MachineStatus, _CONFIG.Line);
+                    if (Database.Connect())
+                    {
+                        Database.UpdateRunStopStatus(MachineStatus, _CONFIG.Line);
+                        LostTimeSet = Database.checkUpdateStopTime(LostTimeSet);
+                        lbLostTimeSet.Text = LostTimeSet.ToString() + 's';
+                    }
                 }
             }
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButton2.CheckedChanged -= radioButton2_CheckedChanged;
+
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
+        }
+
+        private void rad(object sender, EventArgs e)
+        {
+            radioButton2.CheckedChanged -= radioButton2_CheckedChanged;
+            if (radioButton2.Checked == true)
+            {
+                model.Layout.PCB2 = false;
+                radioButton2.Checked = false;
+                if (model.Layout.PCB1)
+                {
+                    NumberArray = 1;
+                }
+                else
+                {
+                    NumberArray = 0;
+                }
+
+            }
+            else
+            {
+                model.Layout.PCB2 = true;
+                radioButton2.Checked = true;
+                if (model.Layout.PCB1)
+                {
+                    NumberArray = 2;
+                }
+                else
+                {
+                    NumberArray = 1;
+                }
+            }
+
+            if (NumberArray > 0)
+                PCBarrayCount.Maximum = 4 / (MicomArray.Value * NumberArray);
+            else
+                PCBarrayCount.Maximum = 1;
+
+            if (model.Layout.ArrayCount > PCBarrayCount.Maximum)
+                model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Maximum);
+
+            model.Layout.XasixArrayCount = Convert.ToInt32(nbUDXarrayCount.Value);
+            model.Layout.ArrayCount = Convert.ToInt32(PCBarrayCount.Value);
+            if (_CONFIG.InlineMachine)
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout);
+            }
+            else
+            {
+                model.Layout.drawPCBLayout(pbPCBLayout, true);
+            }
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
+        }
+
+        private void SkipSiteChange(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).Checked)
+                ((CheckBox)sender).BackColor = Color.Gray;
+            else
+                ((CheckBox)sender).BackColor = Color.Black;
+
+            string ctrl = ((CheckBox)sender).Name;
+            switch (ctrl)
+            {
+                case "cbSkipSite1":
+                    btRomSite1.BackColor = ((CheckBox)sender).BackColor;
+                    lbRomNameSite1.BackColor = ((CheckBox)sender).BackColor;
+                    break;
+                case "cbSkipSite2":
+                    btRomSite2.BackColor = ((CheckBox)sender).BackColor;
+                    lbRomNameSite2.BackColor = ((CheckBox)sender).BackColor;
+                    break;
+                case "cbSkipSite3":
+                    btRomSite3.BackColor = ((CheckBox)sender).BackColor;
+                    lbRomNameSite3.BackColor = ((CheckBox)sender).BackColor;
+                    break;
+                case "cbSkipSite4":
+                    btRomSite4.BackColor = ((CheckBox)sender).BackColor;
+                    lbRomNameSite4.BackColor = ((CheckBox)sender).BackColor;
+                    break;
+            }
+        }
+
+        private void tsmClearCounter_Click(object sender, EventArgs e)
+        {
+            AMWsProcess.Statitis_OK = 0;
+            AMWsProcess.Statitis_NG = 0;
+            CharCircle = 1;
+            DrawChart(AMWsProcess.Statitis_OK, AMWsProcess.Statitis_NG, CharCircle);
+            timerUpdateChar.Start();
         }
     }
 
@@ -3629,40 +4094,62 @@ namespace Micom_Inline
                 this.Data = Data;
             }
         }
+        public string BuidCommand(int commandCode, int Value)
+        {
+            int checkSum = (64 + 1 + commandCode + Value) % 256;
+            string returnCommand = "@01" + commandCode.ToString("D2") + Value.ToString("D2") + "*" + checkSum.ToString("D2");
+            return returnCommand;
+        }
         public List<CMD> CMDs = new List<CMD>();
+        public string GetCMDByName(string name)
+        {
+            foreach (var cmd in CMDs)
+            {
+                if (cmd.Name == name)
+                {
+                    return cmd.Data;
+                }
+            }
+            return " ";
+        }
         public MachineCommand()
         {
-            CMDs.Add(new CMD("NG_all ",         "@010300*68"));
-            CMDs.Add(new CMD("OK_all ",         "@010315*83"));
-            CMDs.Add(new CMD("OK_PCB1 ",        "@010301*69"));
-            CMDs.Add(new CMD("OK_PCB2 ",        "@010302*70"));
-            CMDs.Add(new CMD("OK_PCB12 ",       "@010303*71"));
-            CMDs.Add(new CMD("OK_PCB3 ",        "@010304*72"));
-            CMDs.Add(new CMD("OK_PCB13 ",       "@010305*73"));
-            CMDs.Add(new CMD("OK_PCB23 ",       "@010306*74"));
-            CMDs.Add(new CMD("OK_PCB123 ",      "@010307*75"));
-            CMDs.Add(new CMD("OK_PCB4 ",        "@010308*76"));
-            CMDs.Add(new CMD("OK_PCB14 ",       "@010309*77"));
-            CMDs.Add(new CMD("OK_PCB24 ",       "@010310*78"));
-            CMDs.Add(new CMD("OK_PCB124 ",      "@010311*79"));
-            CMDs.Add(new CMD("OK_PCB34 ",       "@010312*80"));
-            CMDs.Add(new CMD("OK_PCB134 ",      "@010313*81"));
-            CMDs.Add(new CMD("OK_PCB235 ",      "@010314*82"));
-            CMDs.Add(new CMD("Ready_pcb ",      "@010100*66"));
-            CMDs.Add(new CMD("String_getOK ",   "@010011*76"));
-            CMDs.Add(new CMD("String_getNG ",   "@010000*65"));
-            CMDs.Add(new CMD("Data_sendTest ",  "@010100*66"));
-            CMDs.Add(new CMD("Result_ngPBA ",   "@010200*67"));
-            CMDs.Add(new CMD("Result_okPBA1 ",  "@010201*68"));
-            CMDs.Add(new CMD("Result_okPBA2 ",  "@010210*77"));
-            CMDs.Add(new CMD("Result_okPBA ",   "@010211*78"));
-            CMDs.Add(new CMD("Data_sendQR ",    "@010300*68"));
-            CMDs.Add(new CMD("Data_skipQR ",    "@010400*69"));
-            CMDs.Add(new CMD("Data_enaQR ",     "@010401*70"));
-            CMDs.Add(new CMD("Result_ngQR ",    "@010410*79"));
-            CMDs.Add(new CMD("Result_okQR ",    "@010411*80"));
-            CMDs.Add(new CMD("Mode_1Array ",    "@010501*71"));
-            CMDs.Add(new CMD("Mode_2Array ",    "@010511*81"));
+            // Common command
+            CMDs.Add(new CMD("NG_all", "@010300*68"));
+            CMDs.Add(new CMD("OK_all", "@010315*83"));
+            CMDs.Add(new CMD("Ready_pcb", "@010100*66"));
+            CMDs.Add(new CMD("String_getOK", "@010011*76"));
+            CMDs.Add(new CMD("String_getNG", "@010000*65"));
+            CMDs.Add(new CMD("Data_sendTest", "@010100*66"));
+            CMDs.Add(new CMD("Result_ngPBA", "@010200*67"));
+            CMDs.Add(new CMD("Result_okPBA1", "@010201*68"));
+            CMDs.Add(new CMD("Result_okPBA2", "@010210*77"));
+            CMDs.Add(new CMD("Result_okPBA", "@010211*78"));
+            CMDs.Add(new CMD("Data_sendQR", "@010300*68"));
+            CMDs.Add(new CMD("Data_skipQR", "@010400*69"));
+            CMDs.Add(new CMD("Data_enaQR", "@010401*70"));
+            CMDs.Add(new CMD("Result_ngQR", "@010410*79"));
+            CMDs.Add(new CMD("Result_okQR", "@010411*80"));
+            //Inline machine mode
+            CMDs.Add(new CMD("Mode_1Array", "@010501*71"));
+            CMDs.Add(new CMD("Mode_2Array", "@010511*81"));
+            //Off line machine mode
+            CMDs.Add(new CMD("Mode_2PCB", "@010602*73"));
+            CMDs.Add(new CMD("Mode_4PCB", "@010604*75"));
+            CMDs.Add(new CMD("OK_PCB1", "@010301*69"));
+            CMDs.Add(new CMD("OK_PCB2", "@010302*70"));
+            CMDs.Add(new CMD("OK_PCB12", "@010303*71"));
+            CMDs.Add(new CMD("OK_PCB3", "@010304*72"));
+            CMDs.Add(new CMD("OK_PCB13", "@010305*73"));
+            CMDs.Add(new CMD("OK_PCB23", "@010306*74"));
+            CMDs.Add(new CMD("OK_PCB123", "@010307*75"));
+            CMDs.Add(new CMD("OK_PCB4", "@010308*76"));
+            CMDs.Add(new CMD("OK_PCB14", "@010309*77"));
+            CMDs.Add(new CMD("OK_PCB24", "@010310*78"));
+            CMDs.Add(new CMD("OK_PCB124", "@010311*79"));
+            CMDs.Add(new CMD("OK_PCB34", "@010312*80"));
+            CMDs.Add(new CMD("OK_PCB134", "@010313*81"));
+            CMDs.Add(new CMD("OK_PCB235", "@010314*82"));
         }
     }
 
@@ -3930,7 +4417,8 @@ namespace Micom_Inline
         public string PCBcode;
         public string ModelPath;
         public string ModelName;
-        public string CheckSum;
+        public string Version;
+
 
         public int TimeOut = 30;
 
@@ -3961,6 +4449,7 @@ namespace Micom_Inline
                 + this.Layout.MicomNumber.ToString() + Environment.NewLine
                 + this.TimeOut.ToString() + Environment.NewLine;
 
+            saveFileDialog.InitialDirectory = ModelPath;
             File.WriteAllText(saveFileDialog.FileName, configModel);
         }
         public void saveUpdate(string path)
@@ -4010,6 +4499,15 @@ namespace Micom_Inline
         }
         public void drawPCBLayout(PictureBox pbPCBLayout)
         {
+
+            if (MicomNumber == 2)
+            {
+                Name = new string[] { "A C", "B D" };
+            }
+            else
+            {
+                Name = new string[] { "A", "B", "C", "D" };
+            }
 
             int x = pbPCBLayout.Size.Width;
             int y = pbPCBLayout.Size.Height;
@@ -4077,6 +4575,79 @@ namespace Micom_Inline
                             g.FillRectangle(brush[1], (i - 1) * (3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
                             g.DrawString(this.Name[nameCounter], nameFont, brush_char, x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - this.Name[nameCounter].Length * charHeight / (float)1.8, (2 * j - 1) * (y1 / 2) - charHeight);
                             if (nameCounter > 0) nameCounter--;
+                        }
+                    }
+                }
+
+                if (pbPCBLayout.Image != null)
+                    pbPCBLayout.Image.Dispose();
+
+                pbPCBLayout.Image = custormChart;
+                brush[0].Dispose();
+                g.Dispose();
+            }
+        }
+
+        public void drawPCBLayout(PictureBox pbPCBLayout, bool OfflineMachine)
+        {
+            if (MicomNumber == 2)
+            {
+                Name = new string[] { "A C", "B D" };
+            }
+            else
+            {
+                Name = new string[] { "A", "B", "C", "D" };
+            }
+
+            int x = pbPCBLayout.Size.Width;
+            int y = pbPCBLayout.Size.Height;
+
+            int x1 = 0, x2 = 0;
+            int y1, y2;
+
+            y1 = y / (this.ArrayCount / this.XasixArrayCount);
+            y2 = y / (this.ArrayCount / this.XasixArrayCount);
+
+            x1 = x;
+
+            if (x > 50 && y > 50)
+            {
+                int nameCounter = 0;
+                //if (PCB1 || PCB2)
+                //{
+                //    nameCounter = this.ArrayCount - 1;
+                //}
+
+                //if (PCB1 && PCB2)
+                //{
+                //    nameCounter = 2 * this.ArrayCount - 1;
+                //}
+
+                Bitmap custormChart = new Bitmap(x, y);
+                Graphics g = Graphics.FromImage(custormChart);
+
+                SolidBrush[] brush = { new SolidBrush(Color.FromArgb(93, 106, 104)), new SolidBrush(Color.FromArgb(138, 108, 137)) };
+                SolidBrush brush_char = new SolidBrush(Color.White);
+
+                int charHeight = y1 / 2;
+                if (x / (2 * this.XasixArrayCount) < y1)
+                    charHeight = x / (4 * this.XasixArrayCount);
+
+                Font nameFont = new Font("Microsoft YaHei UI", charHeight, FontStyle.Bold);
+
+                for (int j = 1; j <= this.ArrayCount / this.XasixArrayCount; j++)
+                {
+                    if (PCB1)
+                    {
+                        for (int i = 1; i <= this.XasixArrayCount; ++i)
+                        {
+                            g.FillRectangle(brush[1], (i - 1) * (3 + x1 / this.XasixArrayCount) + x2, (j - 1) * y1, x1 / this.XasixArrayCount, y1 - 3);
+                            g.DrawString(this.Name[nameCounter],
+                                nameFont,
+                                brush_char,
+                                x2 + (x1 / (2 * this.XasixArrayCount)) + (i - 1) * (x1 / this.XasixArrayCount) - this.Name[nameCounter].Length * charHeight / (float)1.8,
+                                (2 * j - 1) * (y1 / 2) - charHeight);
+                            if (nameCounter < 2 * this.ArrayCount - 1) nameCounter++;
                         }
                     }
                 }
@@ -4368,4 +4939,5 @@ namespace Micom_Inline
             }
         }
     }
+
 }

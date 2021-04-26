@@ -60,6 +60,35 @@ namespace Micom_Inline
             }
         }
 
+        public int checkUpdateStopTime(int time)
+        {
+            string CommandText = "SELECT TOP 1 \"Properties\", \"Value\" FROM \"Tech\".\"dbo\".\"SystemProperties\" WHERE  \"Properties\" = 'timeStop';";
+                using (SqlConnection myConnection = new SqlConnection(connectionStr))
+                {
+                    SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
+                    try
+                    {
+                        myConnection.Open();
+                        using (SqlDataReader dataReader = Cmd.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                Console.WriteLine(dataReader.GetString(1));
+                                time = Convert.ToInt32(dataReader.GetString(1));
+                                return time;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            return time;
+        }
+
+
+
         public void UpdateRunStopStatus(string status, string line)
         {
             //UPDATE "Tech"."dbo"."MicomVersionMornitor" SET "PCB Code"='PCB1', "PBA Code"='1', "Main Micom Assy Code"='1', "Main Micom Checksum"='1', "Main Micom Version"='1', "Inv Micom Assy Code"='1', "Inv Micom Checksum"='1', "Inv Micom Version"='1', "Time Change"='2/10/2021 15:38' WHERE  "Line"='DISPLAY_1';
@@ -115,7 +144,6 @@ namespace Micom_Inline
         public string UpdateUsedModel(Model model, string line)
         {
             //UPDATE `MicomVersionMornitor` SET `PCBcode` = 'DC92-02505A0', `PBAcode` = 'DC92-02505A0', `MicomAssycode` = 'DC94-002150', `ChecksumCode` = '0xFF0', `VersionCode` = 'AD350', `InvMicomAssCode` = 'DC94-002160', `InvMicomChecksum` = 'FDFA0', `InvMicomVersion` = 'AFAD0', `TimeChange` = '2/10/2021 15:38' WHERE `MicomVersionMornitor`.`Line` = 'DISPLAY_1';
-
             string returnStr = "success.";
             string CommandText = "UPDATE \"MicomVersionMornitor\" SET \"" +
                 "PCB Code\" = '" + model.PCBCode + "', \"" +
@@ -126,7 +154,7 @@ namespace Micom_Inline
                 "Inv Micom Assy Code\" = '" + model.ROMs[1].AssyMicomCode + "', \"" +
                 "Inv Micom Checksum\" = '" + model.ROMs[1].Checksum + "', \"" +
                 "Inv Micom Version\" = '" + model.ROMs[1].Version + "',  \"" +
-                "Time Change\" = '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "'" +
+                "Change Model\" = '" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "'" +
                 "WHERE \"Line\" = '" + line + "';";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
