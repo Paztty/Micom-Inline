@@ -1014,8 +1014,6 @@ namespace Micom_Inline
         }
         public void FinalTestLabel()
         {
-            pnWriting.Hide();
-            TestingFlag = false;
             Port.DiscardInBuffer();
             Port.DiscardOutBuffer();
             string final = "";
@@ -1023,64 +1021,6 @@ namespace Micom_Inline
             {
                 if (model.Layout.PCB1 && !model.Layout.PCB2)
                 {
-                    if (model.Layout.MicomNumber == 1)
-                    {
-                        if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
-                        {
-                            string now = DateTime.Now.ToString();
-
-                            if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
-                            {
-                                AMWsProcess.Statitis_OK += 1;
-                                lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "OK"; lbMachineStatus.BackColor = Color.Green; }));
-                                ResultRespoonse = Result_okPBA1;
-                            }
-                            else if (Site1.Result == ElnecSite.RESULT_NG || Site3.Result == ElnecSite.RESULT_NG)
-                            {
-                                AMWsProcess.Statitis_NG += 1;
-                                ResultRespoonse = Result_okPBA2;
-                                lbMachineStatus.Invoke(new MethodInvoker(delegate { lbMachineStatus.Text = "FAIL"; lbMachineStatus.BackColor = Color.Red; }));
-                            }
-
-                            if (Site1.Result == ElnecSite.RESULT_OK && Site3.Result == ElnecSite.RESULT_OK)
-                                final = "OK";
-                            else
-                                final = "FAIL";
-
-                            _CONFIG.reportWriteLine(now, lbModelName.Text, final, Site1.Result, Site2.Result, Site3.Result, Site4.Result);
-
-                            tbHistory.Invoke(new MethodInvoker(delegate
-                            {
-                                timerTimeOut.Stop();
-                                timerTimeOut.Dispose();
-                                FinalTestBigLabel(true);
-                                percentProcess = tbLogLineNumber;
-                                tbHistory.AppendText("        A: " + Site1.Result + "  B: " + Site2.Result + "  C: " + Site3.Result + "  D: " + Site4.Result + Environment.NewLine);
-                                tbHistory.AppendText(ResultRespoonse + Environment.NewLine);
-                                Console.WriteLine(ResultRespoonse);
-                                CharCircle = 1;
-                                timerUpdateChar.Start();
-                                highlinedgwTestMode(2);
-                                timerReleaseBoard.Interval = 5;
-                                timerReleaseBoard.Start();
-
-                                Site1.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-                                Site2.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-                                Site3.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-                                Site4.WorkProcess.PutComandToFIFO(ElnecSite.STOP_OPERATION);
-
-                                Site1.ClearSiteParam();
-                                Site2.ClearSiteParam();
-                                Site3.ClearSiteParam();
-                                Site4.ClearSiteParam();
-
-                            }));
-                            startTest = false;
-                            endTest = true;
-                        }
-                    }
-                    else if (model.Layout.MicomNumber == 2)
-                    {
                         if (Site1.Result != ElnecSite.EMPTY && Site2.Result != ElnecSite.EMPTY && Site3.Result != ElnecSite.EMPTY && Site4.Result != ElnecSite.EMPTY)
                         {
                             string now = DateTime.Now.ToString();
@@ -1135,7 +1075,6 @@ namespace Micom_Inline
                             startTest = false;
                             endTest = true;
                         }
-                    }
                 }
                 else if (model.Layout.PCB1 && model.Layout.PCB2)
                 {
@@ -2464,6 +2403,8 @@ namespace Micom_Inline
         private void Main_MouseMove(object sender, MouseEventArgs e)
         {
             btNameReview.Text = "Technical Team";
+            pnWriting.Visible = TestingFlag;
+
         }
 
         private void btLoadModel_MouseMove(object sender, MouseEventArgs e)
@@ -3027,7 +2968,8 @@ namespace Micom_Inline
         {
             if (timerReleaseBoard.Interval == 5)
             {
-
+                pnWriting.Hide();
+                TestingFlag = false;
                 highlinedgwTestMode(3);
                 if (Port.IsOpen && lbAutoManual.Text == "Auto mode")
                 {
