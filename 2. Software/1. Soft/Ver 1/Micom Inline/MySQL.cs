@@ -33,7 +33,6 @@ namespace Micom_Inline
             try
             {
                 connection.Open();
-                connection.Close();
                 return true;
             }
             catch(Exception)

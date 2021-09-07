@@ -11,7 +11,6 @@ void serialEvent(){  //serialEven
     Response = Serial.readString();
     if(Response == "@010602*45")
     {
-        //Serial.println("@010100*66");
         digitalWrite(13,LOW);
         delay(1000);
         digitalWrite(13,HIGH);
